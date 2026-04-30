@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Formation BDD - Introduction</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+		
+		<style>
+            /* PROVIDED CORPORATE CSS INTEGRATION */
+            @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400,600,700|Roboto:300,400,500,700,900&display=swap);
+            
+            :root {
+                --blue-dirmob: #009fe3;
+                --green-dirmob: #95c11f;
+                --grey-dirmob: #333;
+                --light-grey: #f0f0f0;
+            }
+
+            /* Reveal.js Overrides to match Corporate Style */
+            .reveal {
+                font-family: "Roboto", sans-serif;
+                background-color: #fff;
+                color: var(--grey-dirmob);
+            }
+            .reveal h1 { font-family: "IBM Plex Serif", serif; color: var(--grey-dirmob); text-transform: uppercase; font-size: 3rem; }
+            .reveal h2 { font-family: "Roboto", sans-serif; font-weight: 500; color: var(--grey-dirmob); margin-bottom: 30px; }
+            .reveal h3 { color: var(--blue-dirmob); font-weight: 500; }
+            
+            /* Custom styles from your CSS */
+            .separator {
+                height: 2px;
+                width: 100%;
+                background: linear-gradient(90deg, var(--blue-dirmob), var(--green-dirmob));
+                margin: 20px 0;
+            }
+            
+            .block--blue {
+                background: var(--blue-dirmob);
+                border-radius: 5px;
+                padding: 40px !important;
+                color: #fff !important;
+            }
+            .block--blue h2, .block--blue p { color: #fff !important; }
+
+            .citation {
+                background: var(--blue-dirmob);
+                border-radius: 5px;
+                padding: 40px !important;
+                margin: 40px 0;
+                position: relative;
+            }
+            .citation p { color: #fff !important; font-family: "IBM Plex Serif", serif; font-size: 1.5rem !important; line-height: 1.3 !important; }
+            
+            .button--green {
+                background: var(--green-dirmob);
+                border: 2px solid var(--green-dirmob);
+                border-radius: 32px;
+                padding: 10px 25px;
+                color: #fff;
+                text-transform: uppercase;
+                display: inline-block;
+                font-size: 0.8rem;
+            }
+
+            .block--offbeat {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+            }
+            .offbeat-card {
+                background: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 24px 0 rgba(0,0,0,.1);
+                padding: 20px;
+                border-left: 5px solid var(--blue-dirmob);
+            }
+
+            /* Visual Mockups */
+            .mockup-table {
+                font-size: 0.5em;
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+            }
+            .mockup-table td, .mockup-table th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            .mockup-table th { background: var(--light-grey); font-weight: bold; }
+            
+            .fragment.fade-out.visible-only {
+                display: none;
+            }
+            .visible-only.visible {
+                display: block;
+            }
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- SLIDE 1: TITRE CORPORATE -->
+				<section data-background-gradient="linear-gradient(135deg, #009fe3 0%, #95c11f 100%)">
+					<div style="background: rgba(255,255,255,0.9); padding: 50px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        <h1 style="margin:0;">Vers des données robustes</h1>
+                        <div class="separator"></div>
+                        <p style="font-family: 'IBM Plex Serif'; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;">Formation Base de Données (BDD)</p>
+                        <p style="font-size: 0.9rem; color: #666;">DIRMOB - Direction de la Mobilité</p>
+                    </div>
+				</section>
+
+				<!-- SLIDE 2: LE CONSTAT VISUEL -->
+				<section>
+					<h2>Le constat : nos tableaux actuels</h2>
+                    <div style="display: flex; gap: 20px; align-items: stretch;">
+                        <div class="offbeat-card fragment" style="flex: 1;">
+                            <h3 style="font-size: 1rem; color: var(--grey-dirmob);">Tableau "Aide-mémoire" (Humain)</h3>
+                            <table class="mockup-table">
+                                <tr><th>Ligne</th><th>Statut</th><th>Détails</th></tr>
+                                <tr><td style="background: #fff9c4;">Bus 21</td><td style="background: #ffcdd2;">Urgent</td><td>Retard + Propreté</td></tr>
+                                <tr><td>Bus 64</td><td style="background: #c8e6c9;">OK</td><td>R.A.S.</td></tr>
+                            </table>
+                            <p style="font-size: 0.6rem; color: #dc3545; margin-top:10px;">✖ Bloqué par les couleurs<br>✖ Bloqué par les listes (+) <br>✖ Fragile</p>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 2rem;">➡</span>
+                        </div>
+                        <div class="offbeat-card fragment" style="flex: 1; border-left-color: var(--green-dirmob);">
+                            <h3 style="font-size: 1rem; color: var(--grey-dirmob);">Base de données (Machine)</h3>
+                            <table class="mockup-table">
+                                <tr><th>id</th><th>priorite</th><th>motif</th></tr>
+                                <tr><td>R001</td><td>3</td><td>Retard</td></tr>
+                                <tr><td>R002</td><td>3</td><td>Propreté</td></tr>
+                            </table>
+                            <p style="font-size: 0.6rem; color: #28a745; margin-top:10px;">✔ Analysable en 2 clics<br>✔ Fiable et partagé<br>✔ Robuste</p>
+                        </div>
+                    </div>
+                    <div class="separator fragment"></div>
+                    <p class="fragment" style="font-family: 'IBM Plex Serif'; font-style: italic; font-size: 1.1rem;">
+                        "Passer d'un tableau qu'on <strong>lit</strong> à une donnée qu'on <strong>exploite</strong>."
+                    </p>
+				</section>
+
+                <!-- SLIDE 3: LE PROGRAMME VISUALISÉ -->
+                <section>
+                    <h2>À quoi s'attendre aujourd'hui ?</h2>
+                    <div style="position: relative; height: 400px; margin-top: 50px;">
+                        <!-- Timeline -->
+                        <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: var(--light-grey); z-index: 1;"></div>
+                        
+                        <div style="display: flex; justify-content: space-between; position: relative; z-index: 2;">
+                            <!-- Etape 1 -->
+                            <div class="fragment" style="width: 30%;">
+                                <div style="width: 60px; height: 60px; background: var(--blue-dirmob); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 20px;">1</div>
+                                <div class="offbeat-card">
+                                    <h4 style="margin:0; font-size: 1rem;">Théorie (45 min)</h4>
+                                    <p style="font-size: 0.7rem; margin:0;">Les règles d'hygiène, le typage et l'anatomie d'une base propre.</p>
+                                </div>
+                            </div>
+
+                            <!-- Etape 2 -->
+                            <div class="fragment" style="width: 50%;">
+                                <div style="width: 60px; height: 60px; background: var(--green-dirmob); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 20px;">2</div>
+                                <div class="offbeat-card" style="border-left-color: var(--green-dirmob);">
+                                    <h4 style="margin:0; font-size: 1rem;">Pratique (1h15)</h4>
+                                    <p style="font-size: 0.7rem; margin:0;"><strong>Serious Game :</strong> Vous héritez d'un fichier "sale". Votre mission : le transformer en outil de pilotage.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 4: LES CONCEPTS CLES (TEASER) -->
+                <section>
+                    <h2>Quelques concepts pour commencer...</h2>
+                    <div class="row">
+                        <div class="col-6 fragment">
+                            <div class="citation" style="padding: 20px !important;">
+                                <p style="font-size: 1.2rem !important; margin:0;">L'ATOMICITÉ</p>
+                                <div style="height: 1px; background: rgba(255,255,255,0.3); margin: 10px 0;"></div>
+                                <p style="font-size: 0.8rem !important; font-family: 'Roboto';">
+                                    "1 Colonne = 1 seule information"<br>
+                                    Fini les cellules fourre-tout.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 fragment">
+                            <div class="citation" style="background: var(--grey-dirmob); padding: 20px !important;">
+                                <p style="font-size: 1.2rem !important; margin:0;">L'IDENTITÉ</p>
+                                <div style="height: 1px; background: rgba(255,255,255,0.3); margin: 10px 0;"></div>
+                                <p style="font-size: 0.8rem !important; font-family: 'Roboto';">
+                                    "Chaque ligne est unique"<br>
+                                    Grâce à l'ID, on ne perd plus jamais une réclamation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fragment" style="margin-top: 30px;">
+                        <span class="button--green">Prêt à changer de regard sur vos données ?</span>
+                    </div>
+                </section>
+
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				slideNumber: 'c/t',
+				transition: 'slide',
+                center: true,
+                width: 1100
+			});
+		</script>
+	</body>
+</html>
