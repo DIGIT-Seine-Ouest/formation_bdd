@@ -1,32 +1,33 @@
-# Project Overview: Formation BDD
+# Project Overview: Formation BDD (DIRMOB)
 
-This directory contains the pedagogical resources and administrative documentation for a training course on Database (BDD) fundamentals. It is a non-code project structured to support both the preparation and delivery of the training.
+This workspace manages the pedagogical resources for the "Vers des données robustes" training. The course is a 2-hour session (45m theory / 1h15 practice) designed for DIRMOB agents to transition from "Human-readable tables" (Excel-as-notepad) to "Machine-exploitable data" (Excel-as-database).
 
-## Directory Overview
+## Pedagogical Pillars
 
-The project is organized to provide a clear path from training objectives to practical exercises:
+The training is built around the **"Serious Game: Réclamations Dirmob"**, where agents inherit a "dirty" file and must fix three core frictions:
+1.  **Friction 1: Eclatement (Data Fragmentation)**: Data split across multiple tabs (e.g., one tab per bus line).
+2.  **Friction 2: Encodage par la couleur (Color Encoding)**: Information stored in cell formatting rather than data values.
+3.  **Friction 3: Listes dans une cellule (Concatened Lists)**: Multiple values in a single cell (violating atomicity).
 
-- **Curriculum & Scoping**: High-level documents defining the goals, audience, and program of the training.
-- **Educational Content**: Visual diagrams and conceptual explanations.
-- **Practical Material**: Data sets and corrections used during hands-on sessions.
+## Key Files & Development Status
 
-## Key Files and Folders
-
-- **`Programme_Formation_BDD.docx`**: The core training program outlining the modules and schedule.
+### Core Supports
+- **`index.html`**: [⚠️ INCOMPLETE] Interactive Reveal.js presentation (served via GitHub Pages).
+    - ✅ **DONE**: Title, Constat (Human vs Machine), Program Overview, Teaser (Atomicity/Identity).
+    - ❌ **TODO**: Module 1 (OLTP/OLAP/CRUD), Module 2 (Detailed Types/Snake_case), Module 3 (The 3 Frictions), Serious Game Instructions (Acts 1-3), Final Impact (Pivot Tables).
+- **`Programme_Formation_BDD.docx`**: Full minute-by-minute schedule.
 - **`Document cadrage/`**:
-  - `Formation BDD - Document de cadrage.docx`: Detailed project scoping and objectives.
-  - `Formation BDD - Concepts abordés.docx`: Summary of the technical topics covered.
-  - `Formation BDD - Fiche formation.docx`: Administrative summary sheet for the training.
-- **`Contenu/`**:
-  - `anatomie_bdd.excalidraw`: Diagram explaining the basic structure of a database.
-  - `la_jointure.excalidraw`: Visual guide to SQL joins.
-  - `regle_fondatrice.excalidraw`: Fundamental rules of database design.
-- **`bdd_correction/`**:
-  - `bdd_reclamations_dirmob.xlsx`: Excel file containing data for exercises or their corrections (focused on "reclamations dirmob").
+    - `Formation BDD - Concepts abordés.docx`: Technical glossary and pedagogical goals.
+    - `Formation BDD - Document de cadrage.docx`: Project scoping.
 
-## Usage
+### Practical Material
+- **`assets/`**: Excalidraw diagrams (Anatomy, Joins, Golden Rule).
+- **`exercice/`**:
+    - `bdd_reclamations_dirmob.xlsx`: The "Fil Rouge" dataset containing the 3 frictions and their corrections.
 
-This workspace is used for:
-1.  **Instructional Reference**: Accessing curriculum and scoping documents to ensure training alignment.
-2.  **Visual Teaching**: Utilizing the `.excalidraw` diagrams (viewable via [excalidraw.com](https://excalidraw.com)) to explain complex concepts like joins and database structures.
-3.  **Hands-on Exercises**: Using the Excel data in `bdd_correction/` for practical demonstrations or student assignments.
+## Roadmap & Usage
+
+1.  **Complete Presentation**: Use `Concepts abordés.docx` to fill the missing slides in `index.html`.
+2.  **Prepare Exercise**: Ensure the Excel file in `bdd_correction/` matches the "Acte 1" starting state described in the program.
+3.  **Delivery**: Projected presentation for theory, hands-on "Serious Game" for practice.
+

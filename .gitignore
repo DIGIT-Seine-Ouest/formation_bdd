@@ -1,0 +1,5 @@
+# Documents de cadrage internes (jamais publiés)
+document_cadrage/
+
+# Mémoire locale Claude Code
+.claude/
