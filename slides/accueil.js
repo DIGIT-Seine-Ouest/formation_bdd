@@ -19,44 +19,111 @@ window.SLIDES.accueil = `
 </section>
 
 
-<!-- 2 · LE CONSTAT -->
+<!-- 2 · CERCLE VERTUEUX -->
 <section>
-    <h2>Le constat : nos tableaux actuels</h2>
-    <div class="row">
-        <div class="offbeat-card fragment card--red" style="flex:1;">
-            <div class="label--bad">Tableau "aide-mémoire"</div>
-            <table class="mockup-table">
-                <tr><th>Ligne</th><th>Statut</th><th>Détails</th></tr>
-                <tr><td style="background:#fff9c4">Bus 21</td><td style="background:#ffcdd2">Urgent</td><td>Retard + Propreté</td></tr>
-                <tr><td>Bus 64</td><td style="background:#c8e6c9">OK</td><td>R.A.S.</td></tr>
-                <tr><td style="background:#fff9c4">Bus 21</td><td style="background:#ffe082">Attente</td><td>Attitude + Retard</td></tr>
-            </table>
-            <p style="font-size:0.6rem; color:var(--red-alert); margin:8px 0 0;">
-                ✖ Statut stocké dans une couleur<br>
-                ✖ Plusieurs motifs dans une cellule<br>
-                ✖ Un onglet par ligne de bus
-            </p>
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">À la fin de cette formation, vos données vous donneront :</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:10px;">
+
+        <div style="background:var(--blue-dirmob); border-radius:12px; padding:26px 24px; color:white;">
+            <p style="font-family:'IBM Plex Serif', serif; font-size:1.9rem; font-weight:700; margin:0 0 10px; line-height:1;">EFFICIENCE</p>
+            <div style="height:2px; background:rgba(255,255,255,0.3); margin-bottom:12px;"></div>
+            <p style="font-size:0.75rem; margin:0; opacity:0.92; line-height:1.5;">Bilan mensuel en 30 secondes<br>au lieu de 45 minutes</p>
         </div>
-        <div style="display:flex; align-items:center; font-size:1.4rem; color:#ccc; padding:0 4px;">→</div>
-        <div class="offbeat-card fragment card--green" style="flex:1;">
-            <div class="label--good">Base de données</div>
-            <table class="mockup-table">
-                <tr><th>id</th><th>date</th><th>reclamant_id</th><th>motif</th><th>statut</th></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="color:#a16207;">1</td><td>retard</td><td>ouverte</td></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="color:#a16207;">2</td><td>avance</td><td>cloture</td></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="color:#a16207;">1</td><td>retard</td><td>ouverte</td></tr>
-            </table>
-            <p style="font-size:0.6rem; color:#2e7d32; margin:8px 0 0;">
-                ✔ Filtrable, triable, comptable<br>
-                ✔ TCD en 2 clics<br>
-                ✔ Repris par n'importe qui
-            </p>
+
+        <div style="background:var(--green-dirmob); border-radius:12px; padding:26px 24px; color:white;">
+            <p style="font-family:'IBM Plex Serif', serif; font-size:1.9rem; font-weight:700; margin:0 0 10px; line-height:1;">VISIBILITÉ</p>
+            <div style="height:2px; background:rgba(255,255,255,0.3); margin-bottom:12px;"></div>
+            <p style="font-size:0.75rem; margin:0; opacity:0.92; line-height:1.5;">Réclamations par ligne, par motif,<br>par prestataire — en 2 clics</p>
         </div>
+
+        <div style="background:var(--grey-dirmob); border-radius:12px; padding:26px 24px; color:white;">
+            <p style="font-family:'IBM Plex Serif', serif; font-size:1.9rem; font-weight:700; margin:0 0 10px; line-height:1;">COMPRÉHENSION</p>
+            <div style="height:2px; background:rgba(255,255,255,0.3); margin-bottom:12px;"></div>
+            <p style="font-size:0.75rem; margin:0; opacity:0.92; line-height:1.5;">Tendances sur 12 mois,<br>pas seulement le mois courant</p>
+        </div>
+
+        <div style="background:#2d6a4f; border-radius:12px; padding:26px 24px; color:white;">
+            <p style="font-family:'IBM Plex Serif', serif; font-size:1.9rem; font-weight:700; margin:0 0 10px; line-height:1;">AUTONOMIE</p>
+            <div style="height:2px; background:rgba(255,255,255,0.3); margin-bottom:12px;"></div>
+            <p style="font-size:0.75rem; margin:0; opacity:0.92; line-height:1.5;">Répondre soi-même aux questions<br>sans attendre le service IT</p>
+        </div>
+
     </div>
-    <div class="separator fragment"></div>
-    <p class="fragment" style="font-family:'IBM Plex Serif'; font-style:italic; font-size:1rem; margin:0;">
-        "Passer d'un tableau qu'on <strong>lit</strong> à une donnée qu'on <strong>exploite</strong>."
+    <p style="font-family:'IBM Plex Serif', serif; font-size:0.9rem; font-style:italic; color:#888; margin:16px 0 0; text-align:right;">
+        Ce n'est pas de l'informatique. C'est de la rigueur.
     </p>
+</section>
+
+
+<!-- 3 · AVANT / APRÈS -->
+<section>
+    <div class="row" style="align-items:stretch; height:100%;">
+
+        <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+            <div class="label--bad" style="font-size:0.65rem;">✖ &nbsp;Fait pour l'œil</div>
+            <div class="offbeat-card card--red" style="flex:1; padding:16px;">
+                <p style="font-size:0.55rem; color:#aaa; margin:0 0 8px; font-family:monospace;">[ Ligne 389 ] &nbsp;[ Ligne 160 ] &nbsp;[ Ligne 91 ]</p>
+                <table class="mockup-table">
+                    <tr>
+                        <th style="background:#ffe082;">Date</th>
+                        <th style="background:#ffe082;">Nom / Email</th>
+                        <th style="background:#ffe082;">Ligne / Prestataire</th>
+                        <th style="background:#ffe082;">Problème</th>
+                    </tr>
+                    <tr style="background:#ffcdd2;">
+                        <td>05/03</td><td>Martin j.martin@…</td><td>389 - Keolis</td><td>retard 10 min</td>
+                    </tr>
+                    <tr style="background:#c8e6c9;">
+                        <td>07/03</td><td>a.dupont@…</td><td>160 - RATP</td><td>avance</td>
+                    </tr>
+                    <tr style="background:#ffcdd2;">
+                        <td>10/03</td><td>n.nguyen@…</td><td>389 - Keolis</td><td>retard 10 min</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div style="display:flex; align-items:center; padding:0 14px; font-size:1.6rem; color:#ccc;">→</div>
+
+        <div class="fragment" style="flex:1; display:flex; flex-direction:column; gap:10px;">
+            <div class="label--good" style="font-size:0.65rem;">✔ &nbsp;Fait pour la machine</div>
+            <div class="offbeat-card card--green" style="flex:1; padding:16px;">
+                <p style="font-size:0.55rem; color:#1e3a5f; background:#dbe4ff; margin:0 0 8px; padding:3px 8px; border-radius:4px; font-weight:700; font-family:monospace; display:inline-block;">reclamations</p>
+                <table class="mockup-table">
+                    <tr>
+                        <th style="background:#1e40af; color:white;">id</th>
+                        <th>date</th>
+                        <th style="background:#fef3c7; color:#a16207;">reclamant_id</th>
+                        <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+                        <th>motif</th>
+                        <th>statut</th>
+                    </tr>
+                    <tr>
+                        <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
+                        <td>05/03/2026</td>
+                        <td style="color:#a16207; font-weight:700;">1</td>
+                        <td style="color:#a16207; font-weight:700;">L1</td>
+                        <td>retard</td><td>ouverte</td>
+                    </tr>
+                    <tr>
+                        <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
+                        <td>07/03/2026</td>
+                        <td style="color:#a16207; font-weight:700;">2</td>
+                        <td style="color:#a16207; font-weight:700;">L2</td>
+                        <td>avance</td><td>cloture</td>
+                    </tr>
+                    <tr>
+                        <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
+                        <td>10/03/2026</td>
+                        <td style="color:#a16207; font-weight:700;">1</td>
+                        <td style="color:#a16207; font-weight:700;">L1</td>
+                        <td>retard</td><td>ouverte</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </section>
 
 

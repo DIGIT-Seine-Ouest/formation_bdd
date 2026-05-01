@@ -4,6 +4,10 @@
 > **Fil conducteur :** chaque concept arrive comme réponse à une frustration concrète.
 > Jamais de règle sans avoir d'abord montré ce qu'elle coûte de ne pas la respecter.
 
+> **Sources de référence intégrées :**
+> - *Exploiter le plein potentiel des données* — Les Ateliers de la DIGIT / GPSO, mars 2024 (document parent de cette formation)
+> - Script MOOC SNT *Données, comment les manipuler ?* — Class'Code / Pixees
+
 ---
 
 ## ACCUEIL · 4 slides
@@ -21,31 +25,40 @@
 
 ---
 
-### Slide 2 — La question à 2 minutes
-**Idée clé :** ouvrir sur la douleur, pas sur les concepts.
-Le public doit se reconnaître dans la situation avant qu'on lui propose quoi que ce soit.
+### Slide 2 — Le cercle vertueux de la donnée
+**Idée clé :** montrer la destination AVANT le voyage.
+Le public doit savoir où il va avant qu'on lui explique comment y aller.
+Pas de fragments — tout visible d'un coup, comme une promesse.
 
-**Scénario (texte intro, lu à voix haute par le formateur) :**
-> Réunion de bilan mensuel. La responsable de secteur pose la question :
-> "Quels motifs de réclamations sont en hausse ce mois-ci, toutes lignes confondues ?"
+**Titre (grand, centré) :**
+> "À la fin de cette formation, vos données vous donneront :"
 
-**Colonne gauche — Avec le fichier actuel :**
-- Ouvrir les 3 onglets (ligne 389, ligne 160, ligne 91)
-- Copier-coller les lignes dans un 4e onglet
-- Filtrer à la main, compter, vérifier
-- ⏱ 45 minutes · risque d'erreur · réponse partielle
+**4 cards en 2×2 (source directe : DIGIT/GPSO 2024) :**
 
-**Colonne droite — Avec une base de données :**
-- Un filtre sur la colonne `motif`
-- Un tableau croisé dynamique
-- ⏱ 30 secondes · réponse exacte · reproductible
+| Mot | Traduction DIRMOB concrète |
+|---|---|
+| **EFFICIENCE** | Bilan mensuel en 30 sec au lieu de 45 min |
+| **VISIBILITÉ** | Réclamations par ligne, par motif, par prestataire — en 2 clics |
+| **COMPRÉHENSION** | Identifier les tendances sur 12 mois, pas juste le mois courant |
+| **AUTONOMIE** | Répondre soi-même aux questions sans attendre le service IT |
 
-**Phrase de conclusion (fragment) :**
-> "Même donnée. Pas la même structure. Pas le même résultat."
+**Phrase de fond (sous les cards) :**
+> "Ce n'est pas de l'informatique. C'est de la rigueur."
 
 ---
 
-### Slide 3 — Programme
+### Slide 3 — Avant / Après
+**Idée clé :** montrer concrètement l'écart entre les deux états — pas de texte, juste les deux schémas.
+
+**Gauche — ✖ Fait pour l'œil :**
+Mockup fichier sale DIRMOB : onglets multiples, cellules colorées, colonnes mélangées (Nom/Email, Ligne/Prestataire).
+
+**Droite (fragment) — ✔ Fait pour la machine :**
+Table `reclamations` propre : id (PK bleu), date, reclamant_id (FK amber), id_ligne (FK amber), motif, statut.
+
+---
+
+### Slide 4 — Programme
 **Idée clé :** rassurer sur le déroulé, ancrer le fil rouge.
 
 **Partie gauche — Timeline :**
@@ -61,7 +74,7 @@ Le public doit se reconnaître dans la situation avant qu'on lui propose quoi qu
 
 ---
 
-### Slide 4 — Deux concepts à garder en tête
+### Slide 5 — Deux concepts à garder en tête
 **Idée clé :** planter deux mots dans la tête du public avant de commencer.
 Ils reviendront comme un leitmotiv tout au long de la formation.
 
@@ -243,6 +256,19 @@ Le "test de la phrase" est le moment pédagogique le plus fort du module — il 
 >
 > → Phrase cohérente : chaque mot a sa colonne. C'est le signe d'une ligne robuste.
 
+**Encadré pratique — Nommage des champs (fragment, source : DIGIT 2024) :**
+> Le nom d'un champ, c'est un contrat avec la machine.
+> Règles : **minuscules · sans accents · sans espaces · underscore `_` comme séparateur**
+>
+> | ✖ À éviter | ✔ Conforme |
+> |---|---|
+> | `Nom Réclamant` | `reclamant_id` |
+> | `Date réclamation` | `date_reclamation` |
+> | `Durée (min)` | `duree_min` |
+> | `Ligne/Prestataire` | `id_ligne` |
+>
+> → Ces règles s'appliquent directement dans l'acte 2 du Serious Game (Reconstruction).
+
 ---
 
 ### Slide 12 — Les types de données
@@ -266,6 +292,15 @@ Chaque type illustré avec un champ réel de la table réclamations DIRMOB.
 | NULL | Valeur manquante — ≠ zéro, ≠ vide | date_cloture : NULL (pas encore traitée) |
 
 ✦ L'énumération est mis en évidence (couleur verte) — c'est la réponse directe à la friction "statut stocké en couleur".
+
+**Nuance importante sur les nombres (source : DIGIT 2024) :**
+> ⚠️ Certains chiffres se stockent en **Texte**, pas en Nombre — quand ils ne servent pas à calculer :
+> - Code postal : `92012` → Texte (deux communes peuvent partager le même code postal)
+> - Code INSEE : `01001` → Texte (un stockage Numérique effacerait le zéro initial)
+> - Numéro de ligne de bus : `389` → peut rester Texte si on ne fait jamais de calcul dessus
+>
+> **Règle de décision :** "Est-ce que je vais un jour faire SOMME() ou MOYENNE() sur cette valeur ?"
+> Si non → Texte. Si oui → Nombre.
 
 ---
 
@@ -311,6 +346,20 @@ Table `lignes` :
 - **Unique** — aucune réclamation ne partage le même ID
 - **Stable** — ne change jamais, même si la réclamation évolue
 - **Non signifiant** — n'encode pas d'info → `R001`, jamais `Paris-389-Urgent-2026`
+
+**Formats concrets pour construire un ID (source : DIGIT 2024) :**
+> - Série pure : `1, 2, 3…`
+> - Radical + série : `RECL1, RECL2, RECL3…`
+> - Radical + format fixe : `RECL001, RECL002, RECL003…` ← recommandé (tri alphabétique = tri chronologique)
+
+**⚠️ Les "faux identifiants" à ne jamais utiliser (fragment, fort impact) :**
+> Le **code postal** semble unique — il ne l'est pas.
+> Une commune peut avoir plusieurs codes postaux. Deux communes peuvent partager le même.
+> Un vrai identifiant n'est jamais porteur d'une signification métier réutilisée ailleurs.
+
+**Les 4 types de relations (mention rapide, source : DIGIT 2024) :**
+> - 1 à 1 · 1 à plusieurs · Plusieurs à 1 · Plusieurs à plusieurs
+> Pour la DIRMOB : `reclamations` → `lignes` = relation **plusieurs à 1** (plusieurs réclamations pour une même ligne de bus).
 
 ---
 
@@ -427,6 +476,57 @@ Table `lignes` :
 
 ---
 
+---
+
+## SLIDE BONUS — RGPD & données personnelles
+*(À insérer en fin de Module 3, ou en introduction du Serious Game selon le temps disponible)*
+
+**Idée clé :** le fichier réclamations contient des données personnelles (nom, email du réclamant).
+Bien structurer les données, c'est aussi respecter les obligations légales.
+
+**Titre :** Vos données et le RGPD
+
+**Contenu (concis — 1 fragment max) :**
+
+Le fichier réclamations DIRMOB contient :
+- Nom et prénom du réclamant
+- Adresse email
+- Potentiellement : adresse, numéro de téléphone
+
+Ces informations sont des **données personnelles** au sens du RGPD (Règlement Général de Protection des Données, en vigueur depuis mai 2018).
+
+**2 règles immédiates :**
+1. **Ne collecter que le strict nécessaire** — si l'email n'est jamais utilisé pour relancer : ne pas le collecter
+2. **Séparer l'identité du contenu** — stocker `reclamant_id` dans la table réclamations, et le nom/email dans une table `reclamants` séparée → en cas de demande de suppression, une seule ligne à effacer
+
+> Source : DIGIT/GPSO 2024 + CNIL — "toute information se rapportant à une personne physique identifiée ou identifiable"
+
+---
+
+## SLIDE IMPACT — Le cercle vertueux de la donnée
+*(Slide de clôture, après le Serious Game — le TODO manquant)*
+
+**Idée clé :** montrer où mène le chemin parcouru. Sortir de la formation avec une vision.
+
+**Titre :** Ce que ça change, concrètement
+
+**Source directe : DIGIT 2024 — "Le cercle vertueux de la donnée"**
+> Un gain en efficience, visibilité, compréhension et autonomie
+
+**4 bénéfices (cards, fragments) :**
+| Bénéfice | Traduction DIRMOB |
+|---|---|
+| **Efficience** | Bilan mensuel en 30 sec au lieu de 45 min |
+| **Visibilité** | Tableau de bord réclamations par ligne, par motif, par prestataire |
+| **Compréhension** | Identifier les tendances sur 12 mois, pas juste le mois courant |
+| **Autonomie** | Répondre soi-même aux questions sans attendre le service informatique |
+
+**Phrase de clôture :**
+> "Vous avez nettoyé un fichier aujourd'hui.
+> Demain, ce fichier vous donnera des réponses que vous ne saviez pas encore formuler."
+
+---
+
 ## Notes de mise en scène (pour le formateur)
 
 - **Slide 2** : poser la question à voix haute avant d'afficher la slide. Laisser 3 secondes de silence.
@@ -434,3 +534,7 @@ Table `lignes` :
 - **Slide 11** : lire la "phrase test" à voix haute. C'est le moment le plus fort du module 2.
 - **Slide 13** : l'analogie "si Keolis change de nom" doit être dite, pas lue sur la slide.
 - **Module 3** : enchaîner vite (5 min). Ce sont des illustrations du module 2, pas de nouveaux concepts.
+- **Nommage des champs** : l'encadré snake_case de la slide 11 est clé pour le Serious Game — les participants vont renommer les colonnes pendant l'acte 2.
+- **Nuance Texte vs Nombre** : ne pas s'attarder longtemps, juste planter la règle de décision ("est-ce que je vais calculer dessus ?").
+- **RGPD** : ne pas en faire un cours juridique. 2 minutes max, 2 règles concrètes. L'objectif est la prise de conscience, pas la formation CNIL.
+- **Slide Impact (cercle vertueux)** : c'est la slide de fermeture émotionnelle. Laisser un silence après la phrase de clôture.
