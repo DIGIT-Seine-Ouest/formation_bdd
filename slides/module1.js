@@ -96,6 +96,57 @@ window.SLIDES.module1 = `
 </section>
 
 
+<!-- 6B · LA DONNÉE, SOURCE DE VOS TABLEAUX DE SUIVI -->
+<section>
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 14px; font-weight:700;">Renverser le regard</p>
+    <h2 style="margin-top:0;">La donnée, source de vos tableaux de bord</h2>
+
+    <div style="display:flex; align-items:stretch; gap:0; margin-bottom:18px;">
+
+        <!-- BDD -->
+        <div style="flex:1; background:#f0f8ff; border-radius:10px 0 0 10px; padding:18px 20px; border:2px solid #009fe3; border-right:none;">
+            <p style="font-size:0.58rem; text-transform:uppercase; letter-spacing:2px; color:#009fe3; font-weight:700; margin:0 0 10px;">Base de données</p>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">📋 réclamations</div>
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">🚌 lignes_bus</div>
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">🏢 prestataires</div>
+            </div>
+        </div>
+
+        <!-- Jointure -->
+        <div style="background:#009fe3; padding:14px 18px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:5px; min-width:84px;">
+            <div style="font-size:1.5rem; color:white; line-height:1;">⊗</div>
+            <p style="font-size:0.5rem; font-weight:700; color:white; text-transform:uppercase; letter-spacing:1.5px; margin:0; text-align:center;">jointure</p>
+            <div style="font-size:1.2rem; color:rgba(255,255,255,0.7);">→</div>
+        </div>
+
+        <!-- Tableaux de bord -->
+        <div style="flex:1.3; background:#f0f9e8; border-radius:0 10px 10px 0; padding:18px 20px; border:2px solid #95c11f; border-left:none;">
+            <p style="font-size:0.58rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 10px;">Tableaux de bord</p>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">📊 Réclamations par prestataire</div>
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">📈 Évolution mensuelle par ligne</div>
+                <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">🗂️ Bilan filtrable en 2 clics</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="background:#fff8e1; border-radius:8px; padding:14px 20px; border-left:4px solid #f59e0b; margin-bottom:12px;">
+        <p style="font-size:0.78rem; color:#444; margin:0; line-height:1.65;">
+            Ce que vous appelez <strong>"tableau de suivi"</strong> est une <em>vue générée</em> depuis des données bien structurées.<br>
+            La base de données est la <strong>source</strong> — le tableau coloré est l'<strong>affichage</strong>.
+        </p>
+    </div>
+
+    <div class="fragment" style="background:#fde8e8; border-radius:8px; padding:11px 18px; border-left:3px solid var(--red-alert);">
+        <p style="font-size:0.7rem; color:#555; margin:0; line-height:1.6;">
+            <strong>Si les données sont mal structurées</strong> — tableaux colorés, cellules fourre-tout, onglets par ligne — les bilans sont faux, incomplets ou impossibles à produire automatiquement.
+        </p>
+    </div>
+</section>
+
+
 <!-- 7 · ANATOMIE D'UNE TABLE -->
 <section>
     <h2>Anatomie d'une table — le vocabulaire</h2>
@@ -158,6 +209,102 @@ window.SLIDES.module1 = `
             <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 2px;">ATTRIBUT</p>
             <p style="font-size:0.58rem; color:#333; margin:0;">Valeur à l'intersection ligne/colonne</p>
         </div>
+    </div>
+</section>
+
+
+<!-- 7B · LA JOINTURE EN PRATIQUE -->
+<section>
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Le mécanisme clé</p>
+    <h2 style="margin-top:0;">La jointure — relier pour mieux analyser</h2>
+    <p style="font-size:0.72rem; color:#888; margin-top:-14px; margin-bottom:12px;">Les clés étrangères (FK) permettent de croiser les tables — c'est là que naît l'analyse multi-dimensionnelle</p>
+
+    <div class="row" style="margin-bottom:12px; align-items:flex-start; gap:8px;">
+
+        <div style="flex:1;">
+            <p style="font-size:0.54rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">réclamations</p>
+            <table class="mockup-table">
+                <tr>
+                    <th style="background:#1e40af; color:white;">id</th>
+                    <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+                    <th>motif</th>
+                </tr>
+                <tr>
+                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
+                    <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
+                    <td>retard</td>
+                </tr>
+                <tr>
+                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
+                    <td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td>
+                    <td>avance</td>
+                </tr>
+                <tr>
+                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
+                    <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
+                    <td>retard</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:center; padding:0 6px; flex-direction:column; gap:5px; padding-top:24px;">
+            <div style="width:36px; height:36px; background:#009fe3; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <span style="color:white; font-size:0.9rem; font-weight:700; line-height:1;">⊗</span>
+            </div>
+            <p style="font-size:0.5rem; color:#009fe3; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center;">JOIN<br>id_ligne</p>
+        </div>
+
+        <div style="flex:1;">
+            <p style="font-size:0.54rem; color:#155724; background:#dcfce7; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">lignes_bus</p>
+            <table class="mockup-table">
+                <tr>
+                    <th style="background:#15803d; color:white;">id_ligne</th>
+                    <th>numéro</th>
+                    <th>prestataire</th>
+                </tr>
+                <tr>
+                    <td style="background:#dcfce7; color:#15803d; font-weight:700;">L1</td>
+                    <td>389</td>
+                    <td>Keolis</td>
+                </tr>
+                <tr>
+                    <td style="background:#dcfce7; color:#15803d; font-weight:700;">L2</td>
+                    <td>160</td>
+                    <td>RATP</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="fragment" style="border-top:2px dashed #009fe3; padding-top:12px;">
+        <p style="font-size:0.56rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 6px;">↓ Résultat — vue enrichie, prête pour le TCD</p>
+        <table class="mockup-table" style="font-size:0.47em;">
+            <tr>
+                <th style="background:#1e40af; color:white;">id</th>
+                <th>motif</th>
+                <th>ligne n°</th>
+                <th style="background:#dcfce7; color:#15803d;">prestataire</th>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
+                <td>retard</td><td>389</td>
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">Keolis</td>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
+                <td>avance</td><td>160</td>
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">RATP</td>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
+                <td>retard</td><td>389</td>
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">Keolis</td>
+            </tr>
+        </table>
+        <p style="font-size:0.62rem; color:#95c11f; margin:7px 0 0; font-weight:700;">
+            → 2 retards Keolis ligne 389 ce mois — calculable en 1 COUNTIFS, 1 TCD, sans manipulation manuelle
+        </p>
     </div>
 </section>
 
