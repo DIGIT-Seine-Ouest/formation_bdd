@@ -309,39 +309,5 @@ window.SLIDES.module1 = `
 </section>
 
 
-<!-- 8 · CRUD -->
-<section>
-    <h2>Les 4 opérations d'une base</h2>
-    <p style="font-size:0.76rem; color:#888; margin-top:-16px; margin-bottom:16px;">
-        Une base robuste doit permettre ces 4 actions sur <strong>n'importe quelle ligne</strong>, sans manipulation manuelle
-    </p>
-    <div class="crud-grid">
-        <div class="crud-box fragment" style="background:#1e40af;">
-            <div class="crud-letter">C</div>
-            <div class="crud-name">Create</div>
-            <div class="crud-example">Nouvelle réclamation R004 — Martin, ligne 389, motif : retard</div>
-        </div>
-        <div class="crud-box fragment" style="background:#15803d;">
-            <div class="crud-letter">R</div>
-            <div class="crud-name">Read</div>
-            <div class="crud-example">Toutes les réclamations statut = "ouverte" de la ligne L1</div>
-        </div>
-        <div class="crud-box fragment" style="background:var(--grey-dirmob);">
-            <div class="crud-letter">U</div>
-            <div class="crud-name">Update</div>
-            <div class="crud-example">R001 → statut passe de "ouverte" à "cloture"</div>
-        </div>
-        <div class="crud-box fragment" style="background:var(--red-alert);">
-            <div class="crud-letter">D</div>
-            <div class="crud-name">Delete</div>
-            <div class="crud-example">Supprimer R002 : doublon identifié lors du diagnostic</div>
-        </div>
-    </div>
-    <div class="fragment" style="margin-top:16px; background:#fde8e8; border-radius:8px; padding:12px 18px; border-left:4px solid var(--red-alert);">
-        <p style="margin:0; font-size:0.76rem; color:#b91c1c;">
-            Sur un tableau coloré : le <strong>R</strong> passe par un filtre manuel fragile · le <strong>U</strong> = changer une couleur à la main · le résultat est introuvable pour une machine.
-        </p>
-    </div>
-</section>
-
 `;
+
