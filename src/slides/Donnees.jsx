@@ -413,7 +413,7 @@ const definition = `
     <div style="flex:1; background:#f8fafc; border-radius:8px; padding:13px 14px; border:2px solid #15803d;">
         <p style="font-size:0.54rem; color:#15803d; font-weight:700; font-family:monospace; margin:0 0 7px;">lignes_bus</p>
         <table class="mockup-table" style="font-size:0.47em;">
-            <tr><th style="background:#15803d; color:white;">id</th><th>numéro</th><th style="background:#fef3c7; color:#a16207;">id_presta</th></tr>
+            <tr><th style="background:#15803d; color:white;">id</th><th>numero</th><th style="background:#fef3c7; color:#a16207;">id_presta</th></tr>
             <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L1</td><td>389</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">P1</td></tr>
             <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L2</td><td>160</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">P2</td></tr>
         </table>
@@ -427,9 +427,9 @@ const definition = `
     <div style="flex:1; background:#f8fafc; border-radius:8px; padding:13px 14px; border:2px solid #555;">
         <p style="font-size:0.54rem; color:#555; font-weight:700; font-family:monospace; margin:0 0 7px;">prestataires</p>
         <table class="mockup-table" style="font-size:0.47em;">
-            <tr><th style="background:#555; color:white;">id</th><th>nom</th><th>contrat</th></tr>
-            <tr><td style="font-weight:700; color:#555;">P1</td><td>Keolis</td><td>2023–2027</td></tr>
-            <tr><td style="font-weight:700; color:#555;">P2</td><td>RATP</td><td>2021–2025</td></tr>
+            <tr><th style="background:#555; color:white;">id</th><th>nom</th><th>debut_contrat</th><th>fin_contrat</th></tr>
+            <tr><td style="font-weight:700; color:#555;">P1</td><td>Keolis</td><td>2023-01-01</td><td>2027-12-31</td></tr>
+            <tr><td style="font-weight:700; color:#555;">P2</td><td>RATP</td><td>2021-03-01</td><td>2025-02-28</td></tr>
         </table>
     </div>
 

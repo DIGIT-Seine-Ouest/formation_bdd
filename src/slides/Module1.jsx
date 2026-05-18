@@ -234,7 +234,7 @@ const jointure = `
         <table class="mockup-table">
             <tr>
                 <th style="background:#15803d; color:white;">id_ligne</th>
-                <th>numéro</th><th>prestataire</th>
+                <th>numero</th><th>prestataire</th>
             </tr>
             <tr>
                 <td style="background:#dcfce7; color:#15803d; font-weight:700;">L1</td>
