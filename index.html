@@ -1,31 +1,12 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Vers des données robustes — DIRMOB</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
-    <link rel="stylesheet" href="assets/styles.css">
-</head>
-<body>
-<div class="reveal">
-    <div class="slides" id="slides-container"></div>
-</div>
-<script src="slides/accueil.js"></script>
-<script src="slides/donnees.js"></script>
-<script src="slides/module1.js"></script>
-<script src="slides/module2.js"></script>
-<script src="slides/module3.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
-<script>
-    document.getElementById('slides-container').innerHTML =
-        (window.SLIDES.accueil  || '') +
-        (window.SLIDES.donnees  || '') +
-        (window.SLIDES.module1  || '') +
-        (window.SLIDES.module2  || '') +
-        (window.SLIDES.module3  || '');
-    Reveal.initialize({ hash: true, slideNumber: 'c/t', transition: 'slide', center: true, width: 1100, height: 700 });
-</script>
-</body>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
