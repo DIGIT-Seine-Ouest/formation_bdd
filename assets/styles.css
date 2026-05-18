@@ -1,5 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400,600,700|Roboto:300,400,500,700,900&display=swap);
 
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 :root {
     --blue-dirmob:  #009fe3;
     --green-dirmob: #95c11f;

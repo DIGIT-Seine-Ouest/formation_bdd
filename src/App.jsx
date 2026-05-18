@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Reveal from 'reveal.js';
 import 'reveal.js/dist/reset.css';
 import 'reveal.js/dist/reveal.css';
@@ -10,10 +10,8 @@ import { Module2 } from './slides/Module2';
 import { Module3 } from './slides/Module3';
 
 export function App() {
-  const revealRef = useRef(null);
-
   useEffect(() => {
-    const deck = new Reveal(revealRef.current, {
+    const deck = new Reveal({
       hash: true,
       slideNumber: 'c/t',
       transition: 'slide',
@@ -21,12 +19,12 @@ export function App() {
       width: 1100,
       height: 700,
     });
-    deck.initialize();
+    deck.initialize().catch(console.error);
     return () => deck.destroy();
   }, []);
 
   return (
-    <div className="reveal" ref={revealRef}>
+    <div className="reveal">
       <div className="slides">
         <Accueil />
         <Donnees />
