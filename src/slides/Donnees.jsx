@@ -166,58 +166,105 @@ const netflixSchema = `
 `;
 
 const netflixMaListe = `
-<div style="display:flex; gap:20px; align-items:flex-start; max-width:960px; margin:0 auto;">
+<div style="display:flex; gap:18px; align-items:flex-start; max-width:980px; margin:0 auto;">
 
-    <div style="flex:1.1;">
+    <!-- Explication gauche -->
+    <div style="flex:0.9;">
         <p style="font-size:0.6rem; text-transform:uppercase; letter-spacing:3px; color:#16a34a; margin:0 0 6px; font-weight:700;">Fonctionnalité 1 / 3</p>
-        <h2 style="margin:0 0 14px; line-height:1.3;">❤️ Ma liste —<br>comment Netflix l'affiche ?</h2>
-        <div style="background:#f0fdf4; border-radius:8px; padding:13px 16px; border-left:4px solid #16a34a; margin-bottom:12px;">
-            <p style="font-size:0.68rem; color:#333; margin:0; line-height:1.8;">
-                <strong>Question :</strong> quelles séries Martin a-t-il ajoutées ?<br>
-                <strong>Réponse :</strong> lire dans <code style="background:#dcfce7; padding:1px 5px; border-radius:3px; color:#16a34a;">ma_liste</code>
-                toutes les lignes où <code style="color:#2563eb; font-weight:700;">id_user = U1</code>.
+        <h2 style="margin:0 0 12px; line-height:1.3;">❤️ Ma liste —<br>la jointure en action</h2>
+
+        <div style="background:#f0fdf4; border-radius:8px; padding:11px 14px; border-left:4px solid #16a34a; margin-bottom:8px;">
+            <p style="font-size:0.65rem; color:#333; margin:0; line-height:1.8;">
+                <strong>Étape 1 :</strong> dans <code style="color:#16a34a;">ma_liste</code>, filtrer<br>
+                les lignes de Martin <code style="color:#2563eb; font-weight:700;">(U1)</code>.<br>
+                → On récupère : <code style="color:#e50914; font-weight:700;">S03</code> et <code style="color:#e50914; font-weight:700;">S02</code>.
             </p>
         </div>
-        <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:13px 16px; border-left:4px solid #2563eb;">
-            <p style="font-size:0.68rem; color:#333; margin:0 0 6px; line-height:1.8;">
-                <strong>Et pour avoir le titre ?</strong><br>
-                On suit la flèche : <code style="color:#e50914; font-weight:700;">id_serie →</code> table <code style="color:#e50914;">series</code>.
+
+        <div class="fragment" style="background:#fff5f5; border-radius:8px; padding:11px 14px; border-left:4px solid #e50914; margin-bottom:8px;">
+            <p style="font-size:0.65rem; color:#333; margin:0; line-height:1.8;">
+                <strong>Étape 2 — la jointure :</strong><br>
+                Pour chaque <code style="color:#e50914; font-weight:700;">id_serie</code>, Netflix<br>
+                cherche le titre dans <code style="color:#e50914;">series</code>.<br>
+                <span style="color:#555;">S03 → <strong>Dark</strong> &nbsp;·&nbsp; S02 → <strong>Wednesday</strong></span>
             </p>
-            <p style="font-size:0.62rem; color:#555; margin:0; line-height:1.7;">
-                S03 → <strong>Dark</strong> (sci-fi)<br>
-                S02 → <strong>Wednesday</strong> (fantastique)
+        </div>
+
+        <div class="fragment" style="background:#111; border-radius:8px; padding:11px 14px; border-left:4px solid #4ade80;">
+            <p style="font-size:0.65rem; color:rgba(255,255,255,0.8); margin:0; line-height:1.7;">
+                <strong style="color:#4ade80;">C'est ça, une jointure :</strong><br>
+                relier deux tables par un identifiant commun pour assembler les informations.
             </p>
         </div>
     </div>
 
-    <div style="flex:1.2; display:flex; flex-direction:column; gap:10px;">
-        <div style="background:#f0fdf4; border-radius:8px; padding:12px 14px; border:2px solid #16a34a;">
-            <p style="font-size:0.54rem; font-weight:700; color:#16a34a; font-family:monospace; margin:0 0 7px;">❤️ ma_liste</p>
-            <table class="mockup-table" style="font-size:0.52em;">
+    <!-- Visuel JOIN droite -->
+    <div style="flex:1.4; display:flex; flex-direction:column; gap:0;">
+
+        <!-- Table ma_liste -->
+        <div style="background:#f0fdf4; border-radius:8px 8px 0 0; padding:10px 12px; border:2px solid #16a34a; border-bottom:none;">
+            <p style="font-size:0.52rem; font-weight:700; color:#16a34a; font-family:monospace; margin:0 0 6px;">❤️ ma_liste</p>
+            <table class="mockup-table" style="font-size:0.5em;">
                 <tr>
-                    <th style="background:#dbeafe; color:#2563eb;">id_user →</th>
-                    <th style="background:#fde8e8; color:#e50914;">id_serie →</th>
+                    <th style="background:#dbeafe; color:#2563eb;">id_user</th>
+                    <th style="background:#fde8e8; color:#e50914;">id_serie</th>
                     <th>date_ajout</th>
                 </tr>
-                <tr style="background:#bbf7d0; outline:2px solid #16a34a; outline-offset:-1px;">
-                    <td style="color:#2563eb; font-weight:700;">U1 ✓</td><td style="color:#e50914; font-weight:700;">S03</td><td>il y a 2j</td>
+                <tr style="background:#bbf7d0;">
+                    <td style="color:#2563eb; font-weight:700;">U1</td>
+                    <td style="background:#fca5a5; color:#b91c1c; font-weight:700; outline:2px solid #e50914; outline-offset:-1px;">S03 →</td>
+                    <td>il y a 2j</td>
                 </tr>
-                <tr style="background:#bbf7d0; outline:2px solid #16a34a; outline-offset:-1px;">
-                    <td style="color:#2563eb; font-weight:700;">U1 ✓</td><td style="color:#e50914; font-weight:700;">S02</td><td>il y a 5j</td>
+                <tr style="background:#bbf7d0;">
+                    <td style="color:#2563eb; font-weight:700;">U1</td>
+                    <td style="background:#fca5a5; color:#b91c1c; font-weight:700; outline:2px solid #e50914; outline-offset:-1px;">S02 →</td>
+                    <td>il y a 5j</td>
                 </tr>
-                <tr style="opacity:0.35;"><td>U2</td><td>S01</td><td>il y a 1j</td></tr>
+                <tr style="opacity:0.3;"><td>U2</td><td>S01</td><td>il y a 1j</td></tr>
             </table>
-            <p style="font-size:0.5rem; color:#16a34a; font-weight:700; margin:6px 0 0;">↑ Les 2 lignes surlignées = Ma liste de Martin</p>
         </div>
-        <div class="fragment" style="background:#fff5f5; border-radius:8px; padding:11px 14px; border:2px solid #e50914;">
-            <p style="font-size:0.54rem; font-weight:700; color:#e50914; font-family:monospace; margin:0 0 7px;">🎬 series</p>
-            <table class="mockup-table" style="font-size:0.52em;">
+
+        <!-- Connecteur JOIN -->
+        <div class="fragment" style="background:#e50914; padding:6px 14px; display:flex; align-items:center; gap:10px;">
+            <div style="height:1px; flex:1; background:rgba(255,255,255,0.4);"></div>
+            <p style="font-size:0.54rem; color:white; font-weight:700; margin:0; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;">
+                JOIN sur id_serie
+            </p>
+            <div style="font-size:1rem; color:white;">↓</div>
+            <div style="height:1px; flex:1; background:rgba(255,255,255,0.4);"></div>
+        </div>
+
+        <!-- Table series -->
+        <div class="fragment" style="background:#fff5f5; border-radius:0; padding:10px 12px; border:2px solid #e50914; border-top:none; border-bottom:none;">
+            <p style="font-size:0.52rem; font-weight:700; color:#e50914; font-family:monospace; margin:0 0 6px;">🎬 series</p>
+            <table class="mockup-table" style="font-size:0.5em;">
                 <tr><th style="background:#e50914; color:white;">id</th><th>titre</th><th>genre</th></tr>
-                <tr style="opacity:0.35;"><td style="color:#e50914; font-weight:700;">S01</td><td>Squid Game</td><td>thriller</td></tr>
-                <tr style="background:#fde8e8; outline:2px solid #e50914; outline-offset:-1px;"><td style="color:#e50914; font-weight:700;">S02</td><td><strong>Wednesday</strong></td><td>fantastique</td></tr>
-                <tr style="background:#fde8e8; outline:2px solid #e50914; outline-offset:-1px;"><td style="color:#e50914; font-weight:700;">S03</td><td><strong>Dark</strong></td><td>sci-fi</td></tr>
+                <tr style="opacity:0.25;"><td>S01</td><td>Squid Game</td><td>thriller</td></tr>
+                <tr style="background:#fecaca; outline:2px solid #e50914; outline-offset:-1px;">
+                    <td style="background:#e50914; color:white; font-weight:700;">S02</td>
+                    <td><strong>Wednesday</strong></td><td>fantastique</td>
+                </tr>
+                <tr style="background:#fecaca; outline:2px solid #e50914; outline-offset:-1px;">
+                    <td style="background:#e50914; color:white; font-weight:700;">S03</td>
+                    <td><strong>Dark</strong></td><td>sci-fi</td>
+                </tr>
             </table>
         </div>
+
+        <!-- Résultat fusionné -->
+        <div class="fragment" style="background:#14532d; border-radius:0 0 8px 8px; padding:10px 12px; border:2px solid #16a34a; border-top:none;">
+            <p style="font-size:0.52rem; font-weight:700; color:#4ade80; margin:0 0 6px; text-transform:uppercase; letter-spacing:2px;">→ Résultat · Ma liste ❤️</p>
+            <table class="mockup-table" style="font-size:0.5em;">
+                <tr>
+                    <th style="background:#16a34a; color:white;">titre</th>
+                    <th style="background:#16a34a; color:white;">genre</th>
+                    <th style="background:#16a34a; color:white;">ajoutée</th>
+                </tr>
+                <tr><td style="color:white; font-weight:700;">Dark</td><td style="color:#86efac;">sci-fi</td><td style="color:#86efac;">il y a 2j</td></tr>
+                <tr><td style="color:white; font-weight:700;">Wednesday</td><td style="color:#86efac;">fantastique</td><td style="color:#86efac;">il y a 5j</td></tr>
+            </table>
+        </div>
+
     </div>
 
 </div>
