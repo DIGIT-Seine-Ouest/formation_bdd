@@ -3,3 +3,7 @@ document_cadrage/
 
 # Mémoire locale Claude Code
 .claude/
+
+# Vite build output & dependencies
+dist/
+node_modules/

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Reveal from 'reveal.js';
 import 'reveal.js/dist/reset.css';
 import 'reveal.js/dist/reveal.css';
-import '../assets/styles.css';
+import './styles.css';
 import { Accueil } from './slides/Accueil';
 import { Donnees } from './slides/Donnees';
 import { Module1 } from './slides/Module1';
