@@ -141,9 +141,9 @@ const netflixSchema = `
                 <th>position</th>
                 <th>date</th>
             </tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>S02E03</td><td>00:24:00</td><td>hier</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>S01E01</td><td>00:00:00</td><td>lundi</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S02</td><td>S01E05</td><td>00:38:00</td><td>mardi</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>S02E03</td><td>00:24:00</td><td>2026-05-17</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>S01E01</td><td>00:00:00</td><td>2026-05-12</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S02</td><td>S01E05</td><td>00:38:00</td><td>2026-05-13</td></tr>
         </table>
         <p style="font-size:0.5rem; color:#666; margin:6px 0 0; font-style:italic;">Qui a regardé quoi, et jusqu'où ?</p>
     </div>
@@ -156,9 +156,9 @@ const netflixSchema = `
                 <th style="background:#fde8e8; color:#e50914;">id_serie →</th>
                 <th>date_ajout</th>
             </tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>il y a 2j</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S02</td><td>il y a 5j</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S01</td><td>il y a 1j</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>2026-05-16</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S02</td><td>2026-05-13</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S01</td><td>2026-05-17</td></tr>
         </table>
         <p style="font-size:0.5rem; color:#666; margin:6px 0 0; font-style:italic;">Quelles séries chaque abonné a enregistrées ?</p>
     </div>
@@ -214,14 +214,14 @@ const netflixMaListe = `
                 <tr style="background:#bbf7d0;">
                     <td style="color:#2563eb; font-weight:700;">U1</td>
                     <td style="background:#fca5a5; color:#b91c1c; font-weight:700; outline:2px solid #e50914; outline-offset:-1px;">S03 →</td>
-                    <td>il y a 2j</td>
+                    <td>2026-05-16</td>
                 </tr>
                 <tr style="background:#bbf7d0;">
                     <td style="color:#2563eb; font-weight:700;">U1</td>
                     <td style="background:#fca5a5; color:#b91c1c; font-weight:700; outline:2px solid #e50914; outline-offset:-1px;">S02 →</td>
-                    <td>il y a 5j</td>
+                    <td>2026-05-13</td>
                 </tr>
-                <tr style="opacity:0.3;"><td>U2</td><td>S01</td><td>il y a 1j</td></tr>
+                <tr style="opacity:0.3;"><td>U2</td><td>S01</td><td>2026-05-17</td></tr>
             </table>
         </div>
 
@@ -261,8 +261,8 @@ const netflixMaListe = `
                     <th style="background:#16a34a; color:white;">genre</th>
                     <th style="background:#16a34a; color:white;">ajoutée</th>
                 </tr>
-                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Dark</td><td style="background:#14532d; color:#86efac;">sci-fi</td><td style="background:#14532d; color:#86efac;">il y a 2j</td></tr>
-                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Wednesday</td><td style="background:#14532d; color:#86efac;">fantastique</td><td style="background:#14532d; color:#86efac;">il y a 5j</td></tr>
+                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Dark</td><td style="background:#14532d; color:#86efac;">sci-fi</td><td style="background:#14532d; color:#86efac;">2026-05-16</td></tr>
+                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Wednesday</td><td style="background:#14532d; color:#86efac;">fantastique</td><td style="background:#14532d; color:#86efac;">2026-05-13</td></tr>
             </table>
         </div>
 
@@ -306,10 +306,10 @@ const netflixTop10 = `
                     <th>pays</th>
                     <th>date</th>
                 </tr>
-                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>🇫🇷</td><td>auj.</td></tr>
-                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U2</td><td style="color:#e50914; font-weight:700;">S01</td><td>🇫🇷</td><td>auj.</td></tr>
-                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U3</td><td style="color:#e50914; font-weight:700;">S02</td><td>🇫🇷</td><td>auj.</td></tr>
-                <tr style="opacity:0.35;"><td style="color:#2563eb;">U4</td><td style="color:#e50914;">S01</td><td>🇧🇪</td><td>auj.</td></tr>
+                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>🇫🇷</td><td>2026-05-18</td></tr>
+                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U2</td><td style="color:#e50914; font-weight:700;">S01</td><td>🇫🇷</td><td>2026-05-18</td></tr>
+                <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;"><td style="color:#2563eb;">U3</td><td style="color:#e50914; font-weight:700;">S02</td><td>🇫🇷</td><td>2026-05-18</td></tr>
+                <tr style="opacity:0.35;"><td style="color:#2563eb;">U4</td><td style="color:#e50914;">S01</td><td>🇧🇪</td><td>2026-05-18</td></tr>
             </table>
             <p style="font-size:0.5rem; color:#d97706; font-weight:700; margin:6px 0 0;">↑ On compte par serie_id, pays = 🇫🇷 uniquement</p>
         </div>
@@ -366,10 +366,10 @@ const netflixReprendre = `
                     <td style="color:#e50914; font-weight:700;">S01</td>
                     <td>S02E03</td>
                     <td style="color:#d97706; font-weight:700;">00:24:00 ✓</td>
-                    <td>hier</td>
+                    <td>2026-05-17</td>
                 </tr>
-                <tr style="opacity:0.4;"><td style="color:#2563eb;">U1</td><td style="color:#e50914;">S03</td><td>S01E01</td><td>00:00:00</td><td>lundi</td></tr>
-                <tr style="opacity:0.4;"><td style="color:#2563eb;">U2</td><td style="color:#e50914;">S02</td><td>S01E05</td><td>00:38:00</td><td>mardi</td></tr>
+                <tr style="opacity:0.4;"><td style="color:#2563eb;">U1</td><td style="color:#e50914;">S03</td><td>S01E01</td><td>00:00:00</td><td>2026-05-12</td></tr>
+                <tr style="opacity:0.4;"><td style="color:#2563eb;">U2</td><td style="color:#e50914;">S02</td><td>S01E05</td><td>00:38:00</td><td>2026-05-13</td></tr>
             </table>
         </div>
         <div class="fragment" style="background:linear-gradient(135deg,#111,#1a1a1a); border-radius:8px; padding:14px 16px; border:1px solid #e50914; text-align:center;">
