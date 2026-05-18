@@ -15,281 +15,91 @@ const intro = `
 </div>
 `;
 
-// ─── Le cas Netflix : 4 slides verticales ────────────────────────────────────
+const autourDeNous = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Le même principe partout</p>
+<h2 style="margin-top:0;">Les bases de données autour de vous</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Chaque service numérique repose sur des données organisées en tables.</p>
 
-const netflixV1 = `
-<div style="max-width:870px; margin:0 auto;">
+<div class="row" style="align-items:flex-start; gap:14px; margin-bottom:16px;">
 
-    <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-        <span style="font-size:1.6rem; font-weight:900; color:#e50914; font-family:'IBM Plex Serif',serif; letter-spacing:-1px; line-height:1;">N</span>
-        <div style="height:1px; flex:1; background:rgba(255,255,255,0.08);"></div>
-        <span style="font-size:0.58rem; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:3px;">Ce que vous voyez chaque soir</span>
-    </div>
-
-    <!-- Reprendre -->
-    <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:9px 12px; margin-bottom:7px;">
-        <p style="font-size:0.6rem; color:rgba(255,255,255,0.7); margin:0 0 6px; font-weight:600;">🔄 Reprendre la lecture</p>
-        <div style="display:flex; gap:5px;">
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a4a; border:2px solid #e50914; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Squid Game</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1e2a3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Wednesday</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a1e3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Adolescence</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a2a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Élite</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#3a2a1a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Lupin</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1e1e3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">The Crown</span></div>
-        </div>
-    </div>
-
-    <!-- Ma liste -->
-    <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:9px 12px; margin-bottom:7px;">
-        <p style="font-size:0.6rem; color:rgba(255,255,255,0.7); margin:0 0 6px; font-weight:600;">❤️ Ma liste</p>
-        <div style="display:flex; gap:5px;">
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a1e3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">The Diplomat</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a2a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Stranger Things</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#3a1e1e; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Narcos</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1e2a3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Dark</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a2a1e; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">House of Cards</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a4a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Ozark</span></div>
-        </div>
-    </div>
-
-    <!-- Top 10 -->
-    <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:9px 12px; margin-bottom:7px;">
-        <p style="font-size:0.6rem; color:rgba(255,255,255,0.7); margin:0 0 6px; font-weight:600;">🏆 Top 10 des séries en France aujourd'hui</p>
-        <div style="display:flex; gap:5px;">
-            <div style="flex:1; height:44px; border-radius:3px; background:#3a1e1e; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">1</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Squid Game</span>
-            </div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a4a; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">2</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Wednesday</span>
-            </div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a1e3a; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">3</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Adolescence</span>
-            </div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a2a; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">4</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">The Diplomat</span>
-            </div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a2a1e; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">5</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Dark</span>
-            </div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1e2a3a; position:relative; display:flex; align-items:flex-end; padding:3px 5px;">
-                <span style="position:absolute; top:3px; left:5px; font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.6);">6</span>
-                <span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Lupin</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Nouveautés -->
-    <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:9px 12px; margin-bottom:14px;">
-        <p style="font-size:0.6rem; color:rgba(255,255,255,0.7); margin:0 0 6px; font-weight:600;">✨ Nouveautés les plus regardées</p>
-        <div style="display:flex; gap:5px;">
-            <div style="flex:1; height:44px; border-radius:3px; background:#1e2a3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Black Mirror S7</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#3a1e1e; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">The Residence</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a1e3a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Adolescence</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a2a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Nobody Wants This</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#1a3a4a; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Zero Day</span></div>
-            <div style="flex:1; height:44px; border-radius:3px; background:#2a2a1e; display:flex; align-items:flex-end; padding:3px 5px;"><span style="font-size:0.38rem; color:rgba(255,255,255,0.5); font-weight:600;">Ransom Canyon</span></div>
-        </div>
-    </div>
-
-    <div class="fragment" style="text-align:center;">
-        <p style="font-size:0.75rem; color:#e50914; font-weight:700; text-transform:uppercase; letter-spacing:3px; margin:0;">
-            Comment Netflix génère tout ça ? &nbsp;↓
-        </p>
-    </div>
-
-</div>
-`;
-
-const netflixV2 = `
-<p style="font-size:0.62rem; text-transform:uppercase; letter-spacing:3px; color:#e50914; margin:0 0 5px; font-weight:700;">Derrière la magie — 1/2</p>
-<h2 style="margin:0 0 16px;">"Ma liste" et "Reprendre" — comment ça marche ?</h2>
-
-<div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:14px;">
-
-    <div style="flex:1; background:#fff5f5; border-radius:10px; padding:14px; border-top:3px solid #e50914;">
-        <p style="font-size:0.66rem; font-weight:700; color:#e50914; margin:0 0 4px;">❤️ Ma liste</p>
-        <p style="font-size:0.58rem; color:#888; margin:0 0 10px; line-height:1.5;">
-            Chaque fois que vous cliquez sur ❤️,<br>Netflix écrit <strong>une ligne</strong> dans cette table :
-        </p>
-        <table class="mockup-table" style="font-size:0.53em; margin-bottom:8px;">
+    <div style="flex:1;">
+        <p style="font-size:0.54rem; background:#1877f2; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">Facebook · utilisateurs</p>
+        <table class="mockup-table">
             <tr>
-                <th style="background:#e50914; color:white;">user_id</th>
-                <th style="background:#e50914; color:white;">serie_id</th>
-                <th>date_ajout</th>
+                <th style="background:#1877f2; color:white;">id</th>
+                <th>nom</th><th>email</th><th>ville</th>
             </tr>
-            <tr><td style="color:#e50914; font-weight:700;">U1 (vous)</td><td>S42 — The Diplomat</td><td>hier</td></tr>
-            <tr><td style="color:#e50914; font-weight:700;">U1 (vous)</td><td>S07 — Dark</td><td>lundi</td></tr>
-            <tr><td style="color:#888;">U2</td><td>S12 — Narcos</td><td>mardi</td></tr>
+            <tr>
+                <td style="background:#e8f0fe; color:#1877f2; font-weight:700;">1</td>
+                <td>Martin</td><td>j.martin@…</td><td>Paris</td>
+            </tr>
+            <tr>
+                <td style="background:#e8f0fe; color:#1877f2; font-weight:700;">2</td>
+                <td>Dupont</td><td>a.dupont@…</td><td>Lyon</td>
+            </tr>
+            <tr>
+                <td style="background:#e8f0fe; color:#1877f2; font-weight:700;">3</td>
+                <td>Nguyen</td><td>n.nguyen@…</td><td>Nantes</td>
+            </tr>
         </table>
-        <div style="background:#fde8e8; border-radius:5px; padding:7px 10px;">
-            <p style="font-size:0.56rem; color:#555; margin:0; line-height:1.5;">
-                Afficher "Ma liste" = lire toutes les lignes<br>où <code style="color:#e50914;">user_id = vous</code>. C'est tout.
-            </p>
-        </div>
+        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">3 milliards de lignes dans cette table.<br>Même structure, à l'échelle.</p>
     </div>
 
-    <div style="flex:1; background:#fffbeb; border-radius:10px; padding:14px; border-top:3px solid #d97706;">
-        <p style="font-size:0.66rem; font-weight:700; color:#d97706; margin:0 0 4px;">🔄 Reprendre la lecture</p>
-        <p style="font-size:0.58rem; color:#888; margin:0 0 10px; line-height:1.5;">
-            Chaque fois que vous mettez pause,<br>Netflix <strong>met à jour</strong> une valeur :
-        </p>
-        <table class="mockup-table" style="font-size:0.53em; margin-bottom:8px;">
+    <div style="flex:1;" class="fragment">
+        <p style="font-size:0.54rem; background:#e50914; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">Netflix · films</p>
+        <table class="mockup-table">
             <tr>
-                <th style="background:#d97706; color:white;">user_id</th>
-                <th style="background:#d97706; color:white;">serie_id</th>
-                <th>position</th>
+                <th style="background:#e50914; color:white;">id</th>
+                <th>titre</th><th>genre</th><th>annee</th>
             </tr>
-            <tr><td style="color:#d97706; font-weight:700;">U1 (vous)</td><td>S01 — Squid Game</td><td style="color:#d97706; font-weight:700;">▶ S02 E03 — 24min</td></tr>
-            <tr><td style="color:#d97706; font-weight:700;">U1 (vous)</td><td>S42 — The Diplomat</td><td>S01 E01 — 0min</td></tr>
-            <tr><td style="color:#888;">U2</td><td>S07 — Dark</td><td>S01 E05 — 38min</td></tr>
+            <tr>
+                <td style="background:#fde8e8; color:#e50914; font-weight:700;">F01</td>
+                <td>Inception</td><td>sci-fi</td><td>2010</td>
+            </tr>
+            <tr>
+                <td style="background:#fde8e8; color:#e50914; font-weight:700;">F02</td>
+                <td>Amélie</td><td>comédie</td><td>2001</td>
+            </tr>
+            <tr>
+                <td style="background:#fde8e8; color:#e50914; font-weight:700;">F03</td>
+                <td>Parasite</td><td>thriller</td><td>2019</td>
+            </tr>
         </table>
-        <div style="background:#fef3c7; border-radius:5px; padding:7px 10px;">
-            <p style="font-size:0.56rem; color:#555; margin:0; line-height:1.5;">
-                "Reprendre à S02 E03" = lire la colonne<br><code style="color:#d97706;">position</code> pour cet utilisateur.
-            </p>
-        </div>
+        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">Croisée avec la table "vues",<br>elle génère les recommandations.</p>
+    </div>
+
+    <div style="flex:1;" class="fragment">
+        <p style="font-size:0.54rem; background:#009fe3; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">DIRMOB · réclamations</p>
+        <table class="mockup-table">
+            <tr>
+                <th style="background:#1e40af; color:white;">id</th>
+                <th style="color:#a16207;">id_ligne</th>
+                <th>motif</th><th>statut</th>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
+                <td style="color:#a16207;">L1</td><td>retard</td><td>ouverte</td>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
+                <td style="color:#a16207;">L2</td><td>avance</td><td>cloture</td>
+            </tr>
+            <tr>
+                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
+                <td style="color:#a16207;">L1</td><td>retard</td><td>ouverte</td>
+            </tr>
+        </table>
+        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">Croisée avec la table "lignes_bus",<br>elle répond aux questions opérationnelles.</p>
     </div>
 
 </div>
 
-<div class="fragment" style="background:#111; border-radius:8px; padding:10px 18px; text-align:center;">
-    <p style="font-size:0.7rem; color:white; margin:0; line-height:1.6;">
-        Pas de magie. <strong style="color:#e50914;">Deux tables. Des lignes bien remplies. Des colonnes bien nommées.</strong>
+<div class="fragment" style="background:#f8fafc; border-radius:8px; padding:12px 20px; border-left:4px solid var(--blue-dirmob);">
+    <p style="font-size:0.76rem; color:#444; margin:0; line-height:1.65;">
+        <strong>La même logique partout :</strong> une information par cellule, une ligne par fait réel, une colonne par catégorie d'information.
     </p>
 </div>
 `;
-
-const netflixV3 = `
-<p style="font-size:0.62rem; text-transform:uppercase; letter-spacing:3px; color:#e50914; margin:0 0 5px; font-weight:700;">Derrière la magie — 2/2</p>
-<h2 style="margin:0 0 16px;">"Top 10" et "Nouveautés" — comment c'est calculé ?</h2>
-
-<div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:14px;">
-
-    <div style="flex:1; background:#eff6ff; border-radius:10px; padding:14px; border-top:3px solid #0284c7;">
-        <p style="font-size:0.66rem; font-weight:700; color:#0284c7; margin:0 0 4px;">🏆 Top 10 des séries en France</p>
-        <p style="font-size:0.58rem; color:#888; margin:0 0 10px; line-height:1.5;">
-            Netflix <strong>compte</strong> combien de fois<br>chaque série a été vue en France cette semaine :
-        </p>
-        <table class="mockup-table" style="font-size:0.53em; margin-bottom:8px;">
-            <tr>
-                <th>série</th>
-                <th>pays</th>
-                <th style="background:#0284c7; color:white;">vues (7 jours)</th>
-            </tr>
-            <tr><td>Squid Game S3</td><td>🇫🇷</td><td style="color:#0284c7; font-weight:700;">2 841 042</td></tr>
-            <tr><td>Wednesday S2</td><td>🇫🇷</td><td style="color:#0284c7; font-weight:700;">1 203 887</td></tr>
-            <tr><td>Adolescence</td><td>🇫🇷</td><td style="color:#0284c7; font-weight:700;">987 441</td></tr>
-        </table>
-        <div style="background:#dbeafe; border-radius:5px; padding:7px 10px;">
-            <p style="font-size:0.56rem; color:#555; margin:0; line-height:1.5;">
-                Un simple <strong>comptage par série</strong>,<br>trié du plus grand au plus petit.
-            </p>
-        </div>
-    </div>
-
-    <div style="flex:1; background:#f0fdf4; border-radius:10px; padding:14px; border-top:3px solid #16a34a;">
-        <p style="font-size:0.66rem; font-weight:700; color:#16a34a; margin:0 0 4px;">✨ Nouveautés les plus regardées</p>
-        <p style="font-size:0.58rem; color:#888; margin:0 0 10px; line-height:1.5;">
-            <strong>Même table</strong> — mais filtrée sur<br>les séries ajoutées il y a moins de 30 jours :
-        </p>
-        <table class="mockup-table" style="font-size:0.53em; margin-bottom:8px;">
-            <tr>
-                <th>série</th>
-                <th style="background:#16a34a; color:white;">ajoutée</th>
-                <th>vues</th>
-            </tr>
-            <tr><td>Adolescence</td><td style="color:#16a34a; font-weight:700;">il y a 3 j</td><td>987 441</td></tr>
-            <tr><td>The Residence</td><td style="color:#16a34a; font-weight:700;">il y a 8 j</td><td>654 200</td></tr>
-            <tr><td>Black Mirror S7</td><td style="color:#16a34a; font-weight:700;">il y a 15 j</td><td>430 880</td></tr>
-        </table>
-        <div style="background:#dcfce7; border-radius:5px; padding:7px 10px;">
-            <p style="font-size:0.56rem; color:#555; margin:0; line-height:1.5;">
-                Même comptage — avec un <strong>filtre</strong><br>sur la date d'ajout récente.
-            </p>
-        </div>
-    </div>
-
-</div>
-
-<div class="fragment" style="background:#111; border-radius:8px; padding:10px 18px; text-align:center;">
-    <p style="font-size:0.7rem; color:white; margin:0; line-height:1.6;">
-        4 rubriques. <strong style="color:#e50914;">2 tables seulement.</strong>
-        Des données bien organisées répondent à des dizaines de questions différentes.
-    </p>
-</div>
-`;
-
-const netflixV4 = `
-<p style="font-size:0.62rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 5px; font-weight:700;">Et nous, à la DIRMOB ?</p>
-<h2 style="margin:0 0 6px;">Mêmes questions. Même logique.</h2>
-<p style="font-size:0.7rem; color:#888; margin:0 0 16px;">Des tables bien structurées répondent à nos questions métier — automatiquement.</p>
-
-<div style="display:grid; grid-template-columns:1fr 50px 1fr; gap:10px; align-items:center;">
-
-    <div>
-        <p style="font-size:0.54rem; font-weight:700; color:#e50914; margin:0 0 8px; text-transform:uppercase; letter-spacing:2px; text-align:center;">Netflix</p>
-        <div style="display:flex; flex-direction:column; gap:7px;">
-            <div style="background:#fff5f5; border-radius:7px; padding:9px 12px; border-left:3px solid #e50914;">
-                <p style="font-size:0.62rem; color:#e50914; font-weight:700; margin:0 0 2px;">❤️ Ma liste</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Les séries que j'ai enregistrées</p>
-            </div>
-            <div style="background:#fffbeb; border-radius:7px; padding:9px 12px; border-left:3px solid #d97706;">
-                <p style="font-size:0.62rem; color:#d97706; font-weight:700; margin:0 0 2px;">🔄 Reprendre la lecture</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Où j'en suis dans chaque série</p>
-            </div>
-            <div style="background:#eff6ff; border-radius:7px; padding:9px 12px; border-left:3px solid #0284c7;">
-                <p style="font-size:0.62rem; color:#0284c7; font-weight:700; margin:0 0 2px;">🏆 Top 10 en France</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Ce que tout le monde regarde</p>
-            </div>
-            <div style="background:#f0fdf4; border-radius:7px; padding:9px 12px; border-left:3px solid #16a34a;">
-                <p style="font-size:0.62rem; color:#16a34a; font-weight:700; margin:0 0 2px;">✨ Nouveautés</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Les ajouts récents les plus vus</p>
-            </div>
-        </div>
-    </div>
-
-    <div style="text-align:center;">
-        <p style="font-size:1.6rem; color:#ccc; margin:0; line-height:1;">→</p>
-        <p style="font-size:0.44rem; color:#aaa; margin:5px 0 0; text-transform:uppercase; letter-spacing:1px; line-height:1.5;">même<br>logique</p>
-    </div>
-
-    <div>
-        <p style="font-size:0.54rem; font-weight:700; color:var(--green-dirmob); margin:0 0 8px; text-transform:uppercase; letter-spacing:2px; text-align:center;">DIRMOB</p>
-        <div style="display:flex; flex-direction:column; gap:7px;">
-            <div style="background:#f0fdf4; border-radius:7px; padding:9px 12px; border-left:3px solid #e50914;">
-                <p style="font-size:0.62rem; color:#333; font-weight:700; margin:0 0 2px;">Mes réclamations en cours</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Filtre sur agent = moi, statut = ouvert</p>
-            </div>
-            <div style="background:#f0fdf4; border-radius:7px; padding:9px 12px; border-left:3px solid #d97706;">
-                <p style="font-size:0.62rem; color:#333; font-weight:700; margin:0 0 2px;">Statut de la réclamation R042</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Lire la colonne "statut" de cette ligne</p>
-            </div>
-            <div style="background:#f0fdf4; border-radius:7px; padding:9px 12px; border-left:3px solid #0284c7;">
-                <p style="font-size:0.62rem; color:#333; font-weight:700; margin:0 0 2px;">Top 5 des motifs de réclamation</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Comptage par motif ce mois-ci</p>
-            </div>
-            <div style="background:#f0fdf4; border-radius:7px; padding:9px 12px; border-left:3px solid #16a34a;">
-                <p style="font-size:0.62rem; color:#333; font-weight:700; margin:0 0 2px;">Réclamations de cette semaine</p>
-                <p style="font-size:0.55rem; color:#777; margin:0;">Filtre sur date > lundi</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="fragment" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7); border-radius:8px; padding:10px 18px; border-left:4px solid var(--green-dirmob); text-align:center; margin-top:14px;">
-    <p style="font-size:0.72rem; color:#333; margin:0; line-height:1.6;">
-        Netflix a des milliers d'ingénieurs pour ça. <strong>Nous, on a Excel — et c'est pour ça qu'on est là.</strong>
-    </p>
-</div>
-`;
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 const definition = `
 <h2>Qu'est-ce qu'une base de données ?</h2>
@@ -451,18 +261,7 @@ export function Donnees() {
         data-background-color="#009fe3"
         dangerouslySetInnerHTML={{ __html: intro }}
       />
-
-      {/* Le cas Netflix — 4 slides verticales */}
-      <section>
-        <section
-          data-background-color="#0a0a0a"
-          dangerouslySetInnerHTML={{ __html: netflixV1 }}
-        />
-        <section dangerouslySetInnerHTML={{ __html: netflixV2 }} />
-        <section dangerouslySetInnerHTML={{ __html: netflixV3 }} />
-        <section dangerouslySetInnerHTML={{ __html: netflixV4 }} />
-      </section>
-
+      <section dangerouslySetInnerHTML={{ __html: autourDeNous }} />
       <section dangerouslySetInnerHTML={{ __html: definition }} />
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
     </>
