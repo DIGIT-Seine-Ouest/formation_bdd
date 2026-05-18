@@ -137,12 +137,13 @@ const netflixSchema = `
             <tr>
                 <th style="background:#dbeafe; color:#2563eb;">id_user →</th>
                 <th style="background:#fde8e8; color:#e50914;">id_serie →</th>
+                <th>episode</th>
                 <th>position</th>
                 <th>date</th>
             </tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>S02E03 · 24min</td><td>hier</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>S01E01 · 0min</td><td>lundi</td></tr>
-            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S02</td><td>S01E05 · 38min</td><td>mardi</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S01</td><td>S02E03</td><td>00:24:00</td><td>hier</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U1</td><td style="color:#e50914; font-weight:700;">S03</td><td>S01E01</td><td>00:00:00</td><td>lundi</td></tr>
+            <tr><td style="color:#2563eb; font-weight:700;">U2</td><td style="color:#e50914; font-weight:700;">S02</td><td>S01E05</td><td>00:38:00</td><td>mardi</td></tr>
         </table>
         <p style="font-size:0.5rem; color:#666; margin:6px 0 0; font-style:italic;">Qui a regardé quoi, et jusqu'où ?</p>
     </div>
@@ -260,8 +261,8 @@ const netflixMaListe = `
                     <th style="background:#16a34a; color:white;">genre</th>
                     <th style="background:#16a34a; color:white;">ajoutée</th>
                 </tr>
-                <tr><td style="color:white; font-weight:700;">Dark</td><td style="color:#86efac;">sci-fi</td><td style="color:#86efac;">il y a 2j</td></tr>
-                <tr><td style="color:white; font-weight:700;">Wednesday</td><td style="color:#86efac;">fantastique</td><td style="color:#86efac;">il y a 5j</td></tr>
+                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Dark</td><td style="background:#14532d; color:#86efac;">sci-fi</td><td style="background:#14532d; color:#86efac;">il y a 2j</td></tr>
+                <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Wednesday</td><td style="background:#14532d; color:#86efac;">fantastique</td><td style="background:#14532d; color:#86efac;">il y a 5j</td></tr>
             </table>
         </div>
 
@@ -356,17 +357,19 @@ const netflixReprendre = `
                 <tr>
                     <th style="background:#dbeafe; color:#2563eb;">id_user →</th>
                     <th style="background:#fde8e8; color:#e50914;">id_serie →</th>
+                    <th>episode</th>
                     <th style="background:#fef9c3; color:#d97706;">position</th>
                     <th>date</th>
                 </tr>
                 <tr style="background:#fef9c3; outline:2px solid #d97706; outline-offset:-1px;">
                     <td style="color:#2563eb; font-weight:700;">U1</td>
                     <td style="color:#e50914; font-weight:700;">S01</td>
-                    <td style="color:#d97706; font-weight:700;">S02E03 · 24min ✓</td>
+                    <td>S02E03</td>
+                    <td style="color:#d97706; font-weight:700;">00:24:00 ✓</td>
                     <td>hier</td>
                 </tr>
-                <tr style="opacity:0.4;"><td style="color:#2563eb;">U1</td><td style="color:#e50914;">S03</td><td>S01E01 · 0min</td><td>lundi</td></tr>
-                <tr style="opacity:0.4;"><td style="color:#2563eb;">U2</td><td style="color:#e50914;">S02</td><td>S01E05 · 38min</td><td>mardi</td></tr>
+                <tr style="opacity:0.4;"><td style="color:#2563eb;">U1</td><td style="color:#e50914;">S03</td><td>S01E01</td><td>00:00:00</td><td>lundi</td></tr>
+                <tr style="opacity:0.4;"><td style="color:#2563eb;">U2</td><td style="color:#e50914;">S02</td><td>S01E05</td><td>00:38:00</td><td>mardi</td></tr>
             </table>
         </div>
         <div class="fragment" style="background:linear-gradient(135deg,#111,#1a1a1a); border-radius:8px; padding:14px 16px; border:1px solid #e50914; text-align:center;">
