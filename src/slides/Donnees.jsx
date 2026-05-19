@@ -259,7 +259,7 @@ const netflixMaListe = `
                 <tr>
                     <th style="background:#16a34a; color:white;">titre</th>
                     <th style="background:#16a34a; color:white;">genre</th>
-                    <th style="background:#16a34a; color:white;">ajoutée</th>
+                    <th style="background:#16a34a; color:white;">date_ajout</th>
                 </tr>
                 <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Dark</td><td style="background:#14532d; color:#86efac;">sci-fi</td><td style="background:#14532d; color:#86efac;">2026-05-16</td></tr>
                 <tr><td style="background:#14532d; color:#bbf7d0; font-weight:700;">Wednesday</td><td style="background:#14532d; color:#86efac;">fantastique</td><td style="background:#14532d; color:#86efac;">2026-05-13</td></tr>
@@ -498,6 +498,9 @@ export function Donnees() {
         dangerouslySetInnerHTML={{ __html: intro }}
       />
 
+      <section dangerouslySetInnerHTML={{ __html: definition }} />
+      <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
+
       {/* autourDeNous + dissection Netflix en vertical */}
       <section>
         <section dangerouslySetInnerHTML={{ __html: autourDeNous }} />
@@ -510,9 +513,6 @@ export function Donnees() {
         <section dangerouslySetInnerHTML={{ __html: netflixTop10 }} />
         <section dangerouslySetInnerHTML={{ __html: netflixReprendre }} />
       </section>
-
-      <section dangerouslySetInnerHTML={{ __html: definition }} />
-      <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
     </>
   );
 }
