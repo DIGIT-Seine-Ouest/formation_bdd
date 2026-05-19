@@ -386,6 +386,137 @@ const netflixReprendre = `
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+const pourquoiBDD = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 6px; font-weight:700;">La récompense</p>
+<h2 style="margin-top:0;">Données propres → résultats immédiats</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Un Excel bien structuré devient une source de bilans automatiques — sans manipulation manuelle.</p>
+
+<div style="display:flex; gap:20px; align-items:flex-start;">
+
+    <div style="flex:1.2;">
+        <p style="font-size:0.54rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 8px;">📋 réclamations — table propre</p>
+        <table class="mockup-table" style="font-size:0.52em;">
+            <tr>
+                <th style="background:#1e40af; color:white;">id</th>
+                <th>date</th>
+                <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+                <th>motif</th>
+                <th>statut</th>
+            </tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>cloture</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R004</td><td>12/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L3</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700; opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td></tr>
+        </table>
+        <p style="font-size:0.54rem; color:#15803d; margin:7px 0 0; font-weight:600;">✔ 1 info par cellule · 1 ligne par réclamation · 0 couleur de statut</p>
+    </div>
+
+    <div style="display:flex; align-items:center; font-size:1.6rem; color:#009fe3; flex-shrink:0; padding-top:36px;">→</div>
+
+    <div style="flex:1.4; display:flex; flex-direction:column; gap:10px;">
+
+        <div class="fragment" style="background:#f0f9e8; border-radius:8px; padding:11px 14px; border-left:4px solid #95c11f;">
+            <p style="font-size:0.6rem; font-weight:700; color:#4a7c00; margin:0 0 7px;">📊 TCD en 2 clics — réclamations par prestataire</p>
+            <table class="mockup-table" style="font-size:0.5em;">
+                <tr><th>Prestataire</th><th style="background:#dcfce7; color:#15803d;">Nb réclamations</th></tr>
+                <tr><td>Keolis</td><td style="color:#15803d; font-weight:700;">3</td></tr>
+                <tr><td>RATP</td><td style="color:#15803d; font-weight:700;">1</td></tr>
+            </table>
+        </div>
+
+        <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:11px 14px; border-left:4px solid #2563eb;">
+            <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 7px;">🔍 Filtre instantané — réclamations ouvertes sur L1</p>
+            <table class="mockup-table" style="font-size:0.5em;">
+                <tr><th style="background:#1e40af; color:white;">id</th><th>date</th><th>motif</th><th>statut</th></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
+            </table>
+        </div>
+
+        <div class="fragment" style="background:#fff8e1; border-radius:8px; padding:11px 14px; border-left:4px solid #f59e0b;">
+            <p style="font-size:0.6rem; font-weight:700; color:#b45309; margin:0 0 6px;">⚡ COUNTIFS automatique — bilan mensuel</p>
+            <p style="font-size:0.62rem; color:#333; margin:0 0 5px; font-family:monospace; background:#fef3c7; padding:5px 8px; border-radius:4px;">=COUNTIFS(statut,"ouverte",mois,3)</p>
+            <p style="font-size:0.58rem; color:#555; margin:0;">→ Mis à jour automatiquement à chaque nouvelle saisie.</p>
+        </div>
+
+    </div>
+
+</div>
+`;
+
+const olapVsOltp = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Données réelles — Yego sur GPSO</p>
+<h2 style="margin-top:0;">OLTP → OLAP : le même scooter, deux lectures</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:13px;">Chaque événement terrain s'accumule et devient la matière première de l'analyse. C'est le même flux pour vos réclamations.</p>
+
+<div style="display:flex; gap:10px; align-items:stretch; margin-bottom:12px;">
+
+    <!-- OLTP : /events -->
+    <div style="flex:1.15; border-radius:8px; overflow:hidden; border:2px solid #2563eb;">
+        <div style="background:#2563eb; padding:7px 13px;">
+            <p style="font-size:0.46rem; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.6); font-weight:700; margin:0 0 1px;">OLTP · Écriture en temps réel</p>
+            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0;">MDS /events — chaque état du scooter</p>
+        </div>
+        <div style="background:#eff6ff; padding:9px 13px;">
+            <p style="font-size:0.59rem; color:#333; margin:0 0 8px; line-height:1.6;">Un scooter change d'état → <strong>une ligne écrite immédiatement</strong>. Réservation, départ de trajet, batterie faible, perte de signal…</p>
+            <table class="mockup-table" style="font-size:0.43em;">
+                <tr>
+                    <th style="background:#2563eb; color:white;">vehicle_id</th>
+                    <th>event_time</th>
+                    <th>vehicle_state</th>
+                    <th>event_types</th>
+                    <th>battery_pct</th>
+                </tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GX395LR</td><td>2025-10-29 00:00:02</td><td style="color:#15803d; font-weight:700;">on_trip</td><td style="font-size:0.9em;">[trip_start]</td><td>81%</td></tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GB386FP</td><td>2025-10-29 00:00:08</td><td style="color:#dc2626; font-weight:700;">non_operational</td><td style="font-size:0.9em;">[comms_lost]</td><td>0%</td></tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GA717YB</td><td>2025-10-29 00:00:10</td><td style="color:#d97706; font-weight:700;">reserved</td><td style="font-size:0.9em;">[reservation_start]</td><td>97%</td></tr>
+            </table>
+            <p style="font-size:0.51rem; color:#2563eb; font-weight:700; margin:6px 0 0;">Écriture continue · Chaque seconde · Données brutes terrain.</p>
+        </div>
+    </div>
+
+    <!-- Flèche + label -->
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; flex-shrink:0; padding:0 3px;">
+        <p style="font-size:0.44rem; color:#aaa; margin:0; text-align:center; text-transform:uppercase; letter-spacing:1px; line-height:1.5;">s'accumule<br>consolide</p>
+        <div style="font-size:1.5rem; color:#009fe3; line-height:1;">→</div>
+    </div>
+
+    <!-- OLAP : /trips -->
+    <div style="flex:1.25; border-radius:8px; overflow:hidden; border:2px solid #9333ea;">
+        <div style="background:#9333ea; padding:7px 13px;">
+            <p style="font-size:0.46rem; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.6); font-weight:700; margin:0 0 1px;">OLAP · Lecture et analyse</p>
+            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0;">MDS /trips — trajets consolidés</p>
+        </div>
+        <div style="background:#fdf4ff; padding:9px 13px;">
+            <p style="font-size:0.59rem; color:#333; margin:0 0 8px; line-height:1.6;">Les événements <code>trip_start</code> + <code>trip_end</code> sont <strong>consolidés en un trajet complet</strong>. GPSO interroge cet historique pour piloter.</p>
+            <table class="mockup-table" style="font-size:0.43em;">
+                <tr>
+                    <th style="background:#9333ea; color:white;">vehicle_id</th>
+                    <th>trip_duration</th>
+                    <th>trip_distance</th>
+                    <th>start_time</th>
+                    <th>end_time</th>
+                </tr>
+                <tr><td style="color:#9333ea; font-weight:700;">GA019TM</td><td>892 s</td><td>2 406 m</td><td>2025-11-04 17:45:07</td><td>2025-11-04 17:59:59</td></tr>
+                <tr><td style="color:#9333ea; font-weight:700;">GW268PE</td><td>488 s</td><td>1 556 m</td><td>2025-11-04 17:52:03</td><td>2025-11-04 18:00:11</td></tr>
+                <tr><td style="color:#9333ea; font-weight:700;">GX148JL</td><td>1 154 s</td><td>3 820 m</td><td>2025-11-04 17:41:10</td><td>2025-11-04 18:00:24</td></tr>
+            </table>
+            <p style="font-size:0.51rem; color:#9333ea; font-weight:700; margin:6px 0 0;">369 trajets extraits sur 30 jours — données réelles Yego/GPSO.</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#fef2f2; border-radius:8px; padding:10px 18px; border-left:4px solid #dc2626;">
+    <p style="font-size:0.62rem; font-weight:700; color:#dc2626; margin:0 0 6px;">Et si les /events ne respectaient pas le standard MDS ?</p>
+    <div style="display:flex; gap:20px;">
+        <p style="font-size:0.59rem; color:#333; margin:0; flex:1; line-height:1.65;"><strong>trip_id absent</strong> sur un event trip_start → impossible de reconstituer le trajet → les <code>/trips</code> sont incomplets → GPSO ne voit qu'une partie des 369 trajets. Les bilans sont faux.</p>
+        <p style="font-size:0.59rem; color:#333; margin:0; flex:1; line-height:1.65;"><strong>GPS malformé</strong> → pas d'Origine/Destination → impossible de vérifier les zones de stationnement autorisées → Yego ne peut être ni sanctionné, ni subventionné. La ville perd le contrôle.</p>
+    </div>
+</div>
+`;
+
 const definition = `
 <h2>Qu'est-ce qu'une base de données ?</h2>
 <div style="width:48px; height:3px; background:linear-gradient(90deg,#009fe3,#95c11f); border-radius:2px; margin:0 0 16px;"></div>
@@ -470,6 +601,35 @@ const vocabulaire = `
     </table>
 </div>
 
+<div class="fragment" style="background:#f0fdf4; border-radius:8px; padding:10px 16px; border-left:3px solid #15803d; margin-bottom:12px;">
+    <p style="font-size:0.52rem; font-weight:700; color:#15803d; margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">Le test de l'enregistrement</p>
+    <p style="font-size:0.66rem; color:#333; margin:0 0 8px; line-height:1.75;">
+        « La réclamation <strong>R001</strong>, reçue le <strong>05/03/2026</strong>,
+        concerne la <span style="background:#fef3c7; color:#a16207; font-weight:700; padding:1px 5px; border-radius:3px; font-family:monospace;">L1 →</span>
+        <span style="background:#dcfce7; color:#15803d; font-weight:700; padding:1px 5px; border-radius:3px;">ligne 389 · Keolis</span>,
+        signale un <strong>retard</strong> — statut : <strong>ouverte</strong>. »
+    </p>
+    <div style="display:flex; align-items:center; gap:0; margin-bottom:7px;">
+        <p style="font-size:0.5rem; color:#888; font-weight:600; margin:0 10px 0 0; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;">La jointure :</p>
+        <div style="background:#fef3c7; border:1px solid #d97706; border-radius:4px 0 0 4px; padding:4px 9px;">
+            <p style="font-size:0.48rem; color:#a16207; font-weight:700; margin:0; font-family:monospace;">réclamations.id_ligne = L1</p>
+        </div>
+        <div style="background:#d97706; padding:4px 7px; display:flex; align-items:center;">
+            <span style="color:white; font-weight:700; font-size:0.7rem;">→</span>
+        </div>
+        <div style="background:#dcfce7; border:1px solid #15803d; padding:4px 9px;">
+            <p style="font-size:0.48rem; color:#15803d; font-weight:700; margin:0; font-family:monospace;">lignes_bus</p>
+        </div>
+        <div style="background:#d97706; padding:4px 7px; display:flex; align-items:center;">
+            <span style="color:white; font-weight:700; font-size:0.7rem;">→</span>
+        </div>
+        <div style="background:#dcfce7; border:1px solid #15803d; border-radius:0 4px 4px 0; padding:4px 9px;">
+            <p style="font-size:0.48rem; color:#333; font-weight:600; margin:0;">id : <strong style="color:#15803d;">L1</strong> · numero : <strong>389</strong> · prestataire : <strong>Keolis</strong></p>
+        </div>
+    </div>
+    <p style="font-size:0.6rem; color:#15803d; font-weight:600; margin:0;">Si vous lisez une ligne en une phrase claire et sans ambiguïté, la table est bien construite.</p>
+</div>
+
 <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
     <div class="fragment" style="background:#dbe4ff; border-radius:7px; padding:10px 12px; border-left:3px solid #1e40af;">
         <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Identifiant (PK)</p>
@@ -481,7 +641,7 @@ const vocabulaire = `
     </div>
     <div class="fragment" style="background:#dcfce7; border-radius:7px; padding:10px 12px; border-left:3px solid #15803d;">
         <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Enregistrement</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Une ligne = un fait réel complet. Ici : une réclamation.</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Une ligne = un fait réel complet. <strong>Test :</strong> lisez-la en une phrase. Si c'est fluide et sans ambiguïté, la table est bien construite.</p>
     </div>
     <div class="fragment" style="background:#ede9fe; border-radius:7px; padding:10px 12px; border-left:3px solid #6b21a8;">
         <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Attribut</p>
@@ -499,6 +659,8 @@ export function Donnees() {
       />
 
       <section dangerouslySetInnerHTML={{ __html: definition }} />
+      <section dangerouslySetInnerHTML={{ __html: pourquoiBDD }} />
+      <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
 
       {/* autourDeNous + dissection Netflix en vertical */}
