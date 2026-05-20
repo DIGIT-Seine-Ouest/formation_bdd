@@ -154,8 +154,9 @@ const briefB = `
     <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:12px 18px;">
         <div style="font-size:1.6rem; flex-shrink:0;">📍</div>
         <p style="font-size:0.68rem; color:#333; margin:0; line-height:1.6;">
-            <strong>communes_desservies</strong> — peut-on mettre "Meudon/Issy/Boulogne" dans une cellule ?
-            Que perd-on si on fait ça ? Pourrait-on filtrer "toutes les lignes qui passent par Meudon" ?
+            <strong>Une ligne dessert plusieurs communes — et une commune est desservie par plusieurs lignes.</strong>
+            Comment stocker ça proprement ? Combien de tables faut-il ?
+            Que se passe-t-il si demain on ajoute un code postal à chaque commune ?
         </p>
     </div>
 
@@ -352,34 +353,92 @@ const debriefB = `
 
     <div class="fragment" style="display:flex; gap:14px; align-items:flex-start; background:#f8fafc; border-radius:8px; padding:12px 18px;">
         <div style="font-size:1.4rem; flex-shrink:0; padding-top:2px;">🗣</div>
-        <p style="font-size:0.68rem; color:#333; margin:0; line-height:1.7;">
-            <strong>Test de la phrase</strong> — lisez la ligne L389 à voix haute en une phrase.
-            <span style="color:#888; font-style:italic;">"La ligne L389, numéro 389, opérée par P004, dessert Boulogne/Issy/Meudon, service local, active."</span>
-        </p>
+        <div style="font-size:0.68rem; color:#333; margin:0; line-height:1.7;">
+            <strong>Test de la phrase</strong> — lisez une ligne de <code>passe_par</code> à voix haute.<br>
+            <span style="color:#2e7d32; font-style:italic;">"La ligne L389 passe par Meudon (C003)."</span> — 1 ligne, 1 fait. ✓<br>
+            <span style="color:#888; font-size:0.9em;">Trois communes = trois lignes dans <code>passe_par</code>. La relation many-to-many est normalisée.</span>
+        </div>
     </div>
 
 </div>
 
-<div class="fragment" style="border-top:2px dashed #95c11f; padding-top:14px;">
-    <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 8px;">→ Structure attendue + la chaîne complète</p>
-    <div class="offbeat-card card--green" style="padding:11px; margin-bottom:10px;">
-        <table class="mockup-table" style="font-size:0.44em;">
-            <tr>
-                <th style="background:#15803d; color:white;">id_ligne</th>
-                <th>numero_ligne</th>
-                <th style="background:#fef3c7; color:#a16207;">id_prestataire</th>
-                <th>communes_desservies</th>
-                <th>type_service</th>
-                <th>actif</th>
-            </tr>
-            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L389</td><td>389</td><td style="color:#a16207; font-weight:700;">P004</td><td>Boulogne/Issy/Meudon</td><td>local</td><td>1</td></tr>
-            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L169</td><td>169</td><td style="color:#a16207; font-weight:700;">P003</td><td>Clamart/Châtillon/Vanves</td><td>local</td><td>1</td></tr>
-            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L058</td><td>58</td><td style="color:#a16207; font-weight:700;">P002</td><td>Meudon/Issy/Boulogne</td><td>local</td><td>1</td></tr>
-        </table>
+<div class="fragment" style="border-top:2px dashed #95c11f; padding-top:12px;">
+    <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 10px;">→ Structure attendue : trois tables</p>
+
+    <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:10px;">
+
+        <!-- lignes_bus -->
+        <div style="flex:1.4;">
+            <p style="font-size:0.45rem; font-weight:700; color:#15803d; font-family:monospace; margin:0 0 3px;">lignes_bus</p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr>
+                    <th style="background:#15803d; color:white;">id_ligne</th>
+                    <th>numero</th>
+                    <th style="background:#fef3c7; color:#a16207;">id_prestataire</th>
+                    <th>type_service</th>
+                    <th>actif</th>
+                </tr>
+                <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L389</td><td>389</td><td style="color:#a16207; font-weight:700;">P004</td><td>local</td><td>1</td></tr>
+                <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L169</td><td>169</td><td style="color:#a16207; font-weight:700;">P003</td><td>local</td><td>1</td></tr>
+                <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L058</td><td>58</td><td style="color:#a16207; font-weight:700;">P002</td><td>local</td><td>1</td></tr>
+            </table>
+        </div>
+
+        <!-- FK arrow right -->
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:22px; flex-shrink:0; gap:2px;">
+            <span style="font-size:0.55rem; color:#a16207; font-family:monospace; font-weight:700;">FK id_ligne</span>
+            <span style="font-size:1rem; color:#a16207;">⟶</span>
+        </div>
+
+        <!-- passe_par (junction) -->
+        <div style="flex:0.9;">
+            <p style="font-size:0.45rem; font-weight:700; color:#a16207; font-family:monospace; margin:0 0 3px;">passe_par <span style="color:#888; font-weight:400; font-size:0.9em;">(table de liaison)</span></p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr>
+                    <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+                    <th style="background:#fef3c7; color:#a16207;">id_commune</th>
+                </tr>
+                <tr><td style="color:#a16207; font-weight:700;">L389</td><td style="color:#a16207; font-weight:700;">C003</td></tr>
+                <tr><td style="color:#a16207; font-weight:700;">L389</td><td style="color:#a16207; font-weight:700;">C002</td></tr>
+                <tr><td style="color:#a16207; font-weight:700;">L389</td><td style="color:#a16207; font-weight:700;">C001</td></tr>
+                <tr><td style="color:#a16207; font-weight:700;">L169</td><td style="color:#a16207; font-weight:700;">C004</td></tr>
+                <tr><td colspan="2" style="color:#888; font-style:italic; font-size:0.85em;">… 18 lignes au total</td></tr>
+            </table>
+        </div>
+
+        <!-- FK arrow right -->
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:22px; flex-shrink:0; gap:2px;">
+            <span style="font-size:0.55rem; color:#a16207; font-family:monospace; font-weight:700;">FK id_commune</span>
+            <span style="font-size:1rem; color:#a16207;">⟶</span>
+        </div>
+
+        <!-- ref_communes -->
+        <div style="flex:1;">
+            <p style="font-size:0.45rem; font-weight:700; color:#6b21a8; font-family:monospace; margin:0 0 3px;">ref_communes</p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr>
+                    <th style="background:#6b21a8; color:white;">id_commune</th>
+                    <th>nom_commune</th>
+                </tr>
+                <tr><td style="background:#f3e8ff; color:#6b21a8; font-weight:700;">C001</td><td>Boulogne-Billancourt</td></tr>
+                <tr><td style="background:#f3e8ff; color:#6b21a8; font-weight:700;">C002</td><td>Issy-les-Moulineaux</td></tr>
+                <tr><td style="background:#f3e8ff; color:#6b21a8; font-weight:700;">C003</td><td>Meudon</td></tr>
+                <tr><td style="background:#f3e8ff; color:#6b21a8; font-weight:700;">C004</td><td>Clamart</td></tr>
+                <tr><td colspan="2" style="color:#888; font-style:italic; font-size:0.85em;">… 8 communes</td></tr>
+            </table>
+            <div style="background:#dcfce7; border-radius:5px; padding:5px 8px; margin-top:5px; border-left:3px solid #15803d;">
+                <p style="font-size:0.4rem; font-family:monospace; color:#15803d; font-weight:700; margin:0;">=COUNTIF(passe_par!B:B, "C003")</p>
+                <p style="font-size:0.38rem; color:#555; margin:2px 0 0;">→ toutes les lignes passant par Meudon ✓</p>
+            </div>
+        </div>
+
     </div>
-    <div style="background:#1e293b; border-radius:7px; padding:10px 16px;">
-        <p style="font-size:0.6rem; color:white; margin:0; font-family:monospace; text-align:center; letter-spacing:0.5px;">
-            reclamations <span style="color:#f59e0b;">─FK id_ligne→</span> lignes_bus <span style="color:#f59e0b;">─FK id_prestataire→</span> prestataires
+
+    <div style="background:#1e293b; border-radius:7px; padding:9px 16px;">
+        <p style="font-size:0.55rem; color:white; margin:0; font-family:monospace; text-align:center; letter-spacing:0.3px; line-height:1.8;">
+            reclamations <span style="color:#f59e0b;">─FK id_ligne→</span> lignes_bus <span style="color:#a16207;">←FK─ passe_par ─FK→</span> ref_communes
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            lignes_bus <span style="color:#f59e0b;">─FK id_prestataire→</span> prestataires
         </p>
     </div>
 </div>
