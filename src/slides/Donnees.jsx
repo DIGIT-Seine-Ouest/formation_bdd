@@ -386,21 +386,74 @@ const netflixReprendre = `
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+const olapIntro = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Deux rôles, une logique</p>
+<h2 style="margin-top:0;">OLTP → OLAP</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Toute donnée terrain passe par ces deux étapes — souvent sans qu'on s'en rende compte.</p>
+
+<div style="display:flex; gap:0; align-items:stretch; margin:0 0 16px;">
+
+    <div style="flex:1; background:#eff6ff; border-radius:8px 0 0 8px; padding:18px 20px; border:2px solid #2563eb; border-right:none;">
+        <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#2563eb; font-weight:700; margin:0 0 6px;">OLTP</p>
+        <p style="font-size:0.88rem; font-weight:700; color:#1e40af; margin:0 0 12px; font-family:'IBM Plex Serif',serif;">Écriture terrain</p>
+        <div style="display:flex; flex-direction:column; gap:7px;">
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #2563eb;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">1 événement = 1 ligne</p>
+            </div>
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #2563eb;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">Temps réel, continu</p>
+            </div>
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #2563eb;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">Objectif : ne rien perdre</p>
+            </div>
+        </div>
+        <p style="font-size:0.54rem; color:#555; margin:12px 0 0; font-style:italic; line-height:1.7;">Réclamation reçue, scooter qui démarre,<br>ticket vendu, colis expédié…</p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f8fafc; padding:0 20px; gap:4px; flex-shrink:0; border-top:2px solid #e2e8f0; border-bottom:2px solid #e2e8f0;">
+        <p style="font-size:0.44rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center; line-height:1.9;">filtre<br>agrégation</p>
+        <div style="font-size:2rem; color:var(--blue-dirmob); line-height:1;">→</div>
+    </div>
+
+    <div style="flex:1; background:#fdf4ff; border-radius:0 8px 8px 0; padding:18px 20px; border:2px solid #9333ea; border-left:none;">
+        <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#9333ea; font-weight:700; margin:0 0 6px;">OLAP</p>
+        <p style="font-size:0.88rem; font-weight:700; color:#7c3aed; margin:0 0 12px; font-family:'IBM Plex Serif',serif;">Lecture & analyse</p>
+        <div style="display:flex; flex-direction:column; gap:7px;">
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #9333ea;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">Vue consolidée, agrégée</p>
+            </div>
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #9333ea;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">Combien ? Quand ? Par qui ?</p>
+            </div>
+            <div style="background:white; border-radius:5px; padding:7px 11px; border-left:3px solid #9333ea;">
+                <p style="font-size:0.62rem; color:#333; margin:0;">Objectif : comprendre et piloter</p>
+            </div>
+        </div>
+        <p style="font-size:0.54rem; color:#555; margin:12px 0 0; font-style:italic; line-height:1.7;">Bilan mensuel, TCD, indicateurs,<br><strong style="color:#7c3aed;">tableau de suivi</strong>…</p>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#fefce8; border-radius:8px; padding:13px 20px; border-left:4px solid #ca8a04;">
+    <p style="font-size:0.76rem; color:#333; margin:0; line-height:1.75;">
+        <strong style="color:#92400e;">Votre tableau de suivi = OLAP.</strong>
+        Il se génère automatiquement si la table source (OLTP) est propre et bien structurée.
+        Le problème actuel : vous faites les deux dans le même fichier Excel.
+    </p>
+</div>
+`;
+
 const olapVsOltp = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Données réelles — Yego sur GPSO</p>
-<h2 style="margin-top:0;">OLTP → OLAP : le même scooter, deux lectures</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:13px;">Chaque événement terrain s'accumule et devient la matière première de l'analyse. C'est le même flux pour vos réclamations.</p>
+<h2>Deux tables. Même système Yego.</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Ces données sont réelles — collectées sur les scooters GPSO. Observez bien les deux tables.</p>
 
-<div style="display:flex; gap:10px; align-items:stretch; margin-bottom:12px;">
+<div style="display:flex; gap:14px; align-items:stretch; margin-bottom:18px;">
 
-    <!-- OLTP : /events -->
     <div style="flex:1.15; border-radius:8px; overflow:hidden; border:2px solid #2563eb;">
         <div style="background:#2563eb; padding:7px 13px;">
-            <p style="font-size:0.46rem; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.6); font-weight:700; margin:0 0 1px;">OLTP · Écriture en temps réel</p>
-            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0;">MDS /events — chaque état du scooter</p>
+            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0; font-family:monospace;">MDS /events</p>
         </div>
         <div style="background:#eff6ff; padding:9px 13px;">
-            <p style="font-size:0.59rem; color:#333; margin:0 0 8px; line-height:1.6;">Un scooter change d'état → <strong>une ligne écrite immédiatement</strong>. Réservation, départ de trajet, batterie faible, perte de signal…</p>
             <table class="mockup-table" style="font-size:0.43em;">
                 <tr>
                     <th style="background:#2563eb; color:white;">vehicle_id</th>
@@ -409,28 +462,18 @@ const olapVsOltp = `
                     <th>event_types</th>
                     <th>battery_pct</th>
                 </tr>
-                <tr><td style="color:#2563eb; font-weight:700;">GX395LR</td><td>2025-10-29 00:00:02</td><td style="color:#15803d; font-weight:700;">on_trip</td><td style="font-size:0.9em;">[trip_start]</td><td>81%</td></tr>
-                <tr><td style="color:#2563eb; font-weight:700;">GB386FP</td><td>2025-10-29 00:00:08</td><td style="color:#dc2626; font-weight:700;">non_operational</td><td style="font-size:0.9em;">[comms_lost]</td><td>0%</td></tr>
-                <tr><td style="color:#2563eb; font-weight:700;">GA717YB</td><td>2025-10-29 00:00:10</td><td style="color:#d97706; font-weight:700;">reserved</td><td style="font-size:0.9em;">[reservation_start]</td><td>97%</td></tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GX395LR</td><td>2025-10-29 00:00:02</td><td style="color:#15803d; font-weight:700;">on_trip</td><td>[trip_start]</td><td>81%</td></tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GB386FP</td><td>2025-10-29 00:00:08</td><td style="color:#dc2626; font-weight:700;">non_operational</td><td>[comms_lost]</td><td>0%</td></tr>
+                <tr><td style="color:#2563eb; font-weight:700;">GA717YB</td><td>2025-10-29 00:00:10</td><td style="color:#d97706; font-weight:700;">reserved</td><td>[reservation_start]</td><td>97%</td></tr>
             </table>
-            <p style="font-size:0.51rem; color:#2563eb; font-weight:700; margin:6px 0 0;">Écriture continue · Chaque seconde · Données brutes terrain.</p>
         </div>
     </div>
 
-    <!-- Flèche + label -->
-    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; flex-shrink:0; padding:0 3px;">
-        <p style="font-size:0.44rem; color:#aaa; margin:0; text-align:center; text-transform:uppercase; letter-spacing:1px; line-height:1.5;">s'accumule<br>consolide</p>
-        <div style="font-size:1.5rem; color:#009fe3; line-height:1;">→</div>
-    </div>
-
-    <!-- OLAP : /trips -->
     <div style="flex:1.25; border-radius:8px; overflow:hidden; border:2px solid #9333ea;">
         <div style="background:#9333ea; padding:7px 13px;">
-            <p style="font-size:0.46rem; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.6); font-weight:700; margin:0 0 1px;">OLAP · Lecture et analyse</p>
-            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0;">MDS /trips — trajets consolidés</p>
+            <p style="font-size:0.68rem; font-weight:700; color:white; margin:0; font-family:monospace;">MDS /trips</p>
         </div>
         <div style="background:#fdf4ff; padding:9px 13px;">
-            <p style="font-size:0.59rem; color:#333; margin:0 0 8px; line-height:1.6;">Les événements <code>trip_start</code> + <code>trip_end</code> sont <strong>consolidés en un trajet complet</strong>. GPSO interroge cet historique pour piloter.</p>
             <table class="mockup-table" style="font-size:0.43em;">
                 <tr>
                     <th style="background:#9333ea; color:white;">vehicle_id</th>
@@ -443,18 +486,130 @@ const olapVsOltp = `
                 <tr><td style="color:#9333ea; font-weight:700;">GW268PE</td><td>488 s</td><td>1 556 m</td><td>2025-11-04 17:52:03</td><td>2025-11-04 18:00:11</td></tr>
                 <tr><td style="color:#9333ea; font-weight:700;">GX148JL</td><td>1 154 s</td><td>3 820 m</td><td>2025-11-04 17:41:10</td><td>2025-11-04 18:00:24</td></tr>
             </table>
-            <p style="font-size:0.51rem; color:#9333ea; font-weight:700; margin:6px 0 0;">369 trajets extraits sur 30 jours — données réelles Yego/GPSO.</p>
         </div>
     </div>
 
 </div>
 
-<div class="fragment" style="background:#fef2f2; border-radius:8px; padding:10px 18px; border-left:4px solid #dc2626;">
-    <p style="font-size:0.62rem; font-weight:700; color:#dc2626; margin:0 0 6px;">Et si les /events ne respectaient pas le standard MDS ?</p>
-    <div style="display:flex; gap:20px;">
-        <p style="font-size:0.59rem; color:#333; margin:0; flex:1; line-height:1.65;"><strong>trip_id absent</strong> sur un event trip_start → impossible de reconstituer le trajet → les <code>/trips</code> sont incomplets → GPSO ne voit qu'une partie des 369 trajets. Les bilans sont faux.</p>
-        <p style="font-size:0.59rem; color:#333; margin:0; flex:1; line-height:1.65;"><strong>GPS malformé</strong> → pas d'Origine/Destination → impossible de vérifier les zones de stationnement autorisées → Yego ne peut être ni sanctionné, ni subventionné. La ville perd le contrôle.</p>
+<div style="background:#f8fafc; border-radius:8px; padding:13px 22px; border-left:4px solid #64748b;">
+    <p style="font-size:0.82rem; color:#333; margin:0; line-height:1.7;">
+        Une de ces tables <strong>enregistre</strong>, l'autre <strong>analyse</strong>. Laquelle est laquelle — et pourquoi ?
+    </p>
+</div>
+
+<div class="fragment" style="display:flex; gap:10px; margin-top:12px;">
+    <div style="flex:1; background:#eff6ff; border-radius:8px; padding:11px 14px; border-left:4px solid #2563eb;">
+        <p style="font-size:0.58rem; font-weight:700; color:#2563eb; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">OLTP — /events</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.6;">Écriture terrain en temps réel. Chaque état du scooter génère une ligne brute instantanément.</p>
     </div>
+    <div style="flex:1; background:#fdf4ff; border-radius:8px; padding:11px 14px; border-left:4px solid #9333ea;">
+        <p style="font-size:0.58rem; font-weight:700; color:#9333ea; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">OLAP — /trips</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.6;">Lecture et analyse. Les événements sont consolidés en trajets complets pour le pilotage GPSO.</p>
+    </div>
+</div>
+`;
+
+const olapRetro = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#9333ea; margin:0 0 6px; font-weight:700;">Rétro-ingénierie</p>
+<h2 style="margin-top:0;">De l'événement au trajet : filtre + agrégation</h2>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:14px;">3 événements bruts pour GA019TM → 1 ligne consolidée dans /trips.</p>
+
+<div style="display:flex; gap:14px; align-items:flex-start; max-width:960px; margin:0 auto;">
+
+    <!-- OLTP : events -->
+    <div style="flex:1.3;">
+        <div style="background:#2563eb; border-radius:8px 8px 0 0; padding:7px 13px;">
+            <p style="font-size:0.52rem; font-weight:700; color:white; font-family:monospace; margin:0;">OLTP · /events · GA019TM</p>
+        </div>
+        <div style="background:#eff6ff; padding:10px 12px; border:2px solid #2563eb; border-top:none; border-radius:0 0 8px 8px;">
+            <table class="mockup-table" style="font-size:0.46em;">
+                <tr>
+                    <th style="background:#2563eb; color:white;">vehicle_id</th>
+                    <th>event_time</th>
+                    <th>vehicle_state</th>
+                    <th>event_types</th>
+                    <th>battery_pct</th>
+                </tr>
+                <tr style="background:#dbeafe; outline:2px solid #2563eb; outline-offset:-1px;">
+                    <td style="color:#2563eb; font-weight:700;">GA019TM</td>
+                    <td style="font-weight:700;">17:45:07</td>
+                    <td>on_trip</td>
+                    <td style="font-weight:700; color:#2563eb;">[trip_start] ✦</td>
+                    <td>74%</td>
+                </tr>
+                <tr style="opacity:0.45;">
+                    <td style="color:#2563eb; opacity:0.7;">GA019TM</td>
+                    <td>17:52:14</td>
+                    <td>on_trip</td>
+                    <td>[location_update]</td>
+                    <td>71%</td>
+                </tr>
+                <tr style="background:#dbeafe; outline:2px solid #2563eb; outline-offset:-1px;">
+                    <td style="color:#2563eb; font-weight:700;">GA019TM</td>
+                    <td style="font-weight:700;">17:59:59</td>
+                    <td>available</td>
+                    <td style="font-weight:700; color:#2563eb;">[trip_end] ✦</td>
+                    <td>68%</td>
+                </tr>
+            </table>
+            <p style="font-size:0.5rem; color:#2563eb; font-weight:700; margin:6px 0 0;">✦ On retient trip_start + trip_end</p>
+        </div>
+    </div>
+
+    <!-- Étapes de transformation -->
+    <div style="flex:0.85; display:flex; flex-direction:column; gap:7px; padding-top:38px;">
+
+        <div class="fragment" style="background:#f8fafc; border-radius:7px; padding:10px 13px; border:1px solid #cbd5e1; text-align:center;">
+            <p style="font-size:0.5rem; color:#555; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">① Filtre</p>
+            <p style="font-size:0.44rem; color:#888; margin:0; font-family:monospace; line-height:1.7;">WHERE event_types<br>IN (trip_start, trip_end)</p>
+        </div>
+
+        <div class="fragment" style="text-align:center; color:var(--blue-dirmob); font-size:1.1rem; line-height:1;">↓</div>
+
+        <div class="fragment" style="background:#f8fafc; border-radius:7px; padding:10px 13px; border:1px solid #cbd5e1; text-align:center;">
+            <p style="font-size:0.5rem; color:#555; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">② Calcul</p>
+            <p style="font-size:0.44rem; color:#888; margin:0; font-family:monospace; line-height:1.8;">17:59:59 − 17:45:07<br>= <strong style="color:#333; font-size:1.15em;">892 s</strong></p>
+        </div>
+
+        <div class="fragment" style="text-align:center; color:var(--blue-dirmob); font-size:1.1rem; line-height:1;">↓</div>
+
+        <div class="fragment" style="background:#f8fafc; border-radius:7px; padding:10px 13px; border:1px solid #cbd5e1; text-align:center;">
+            <p style="font-size:0.5rem; color:#555; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">③ Agrégation</p>
+            <p style="font-size:0.44rem; color:#888; margin:0; font-family:monospace; line-height:1.7;">3 événements<br>→ <strong style="color:#333;">1 trajet</strong></p>
+        </div>
+
+        <div class="fragment" style="text-align:center; color:var(--blue-dirmob); font-size:1.3rem; line-height:1; padding-top:4px;">→</div>
+
+    </div>
+
+    <!-- OLAP : résultat -->
+    <div class="fragment" style="flex:1.3;">
+        <div style="background:#9333ea; border-radius:8px 8px 0 0; padding:7px 13px;">
+            <p style="font-size:0.52rem; font-weight:700; color:white; font-family:monospace; margin:0;">OLAP · /trips · résultat</p>
+        </div>
+        <div style="background:#fdf4ff; padding:10px 12px; border:2px solid #9333ea; border-top:none; border-radius:0 0 8px 8px;">
+            <table class="mockup-table" style="font-size:0.46em;">
+                <tr>
+                    <th style="background:#9333ea; color:white;">vehicle_id</th>
+                    <th>trip_duration</th>
+                    <th>trip_distance</th>
+                    <th>start_time</th>
+                    <th>end_time</th>
+                </tr>
+                <tr style="background:#f3e8ff; outline:2px solid #9333ea; outline-offset:-1px;">
+                    <td style="color:#9333ea; font-weight:700;">GA019TM</td>
+                    <td style="color:#9333ea; font-weight:700;">892 s</td>
+                    <td style="color:#9333ea; font-weight:700;">2 406 m</td>
+                    <td style="font-weight:700;">17:45:07</td>
+                    <td style="font-weight:700;">17:59:59</td>
+                </tr>
+                <tr style="opacity:0.3;"><td>GW268PE</td><td>488 s</td><td>1 556 m</td><td>17:52:03</td><td>18:00:11</td></tr>
+                <tr style="opacity:0.3;"><td>GX148JL</td><td>1 154 s</td><td>3 820 m</td><td>17:41:10</td><td>18:00:24</td></tr>
+            </table>
+            <p style="font-size:0.5rem; color:#9333ea; font-weight:700; margin:6px 0 0;">3 événements → 1 ligne. Prêt pour l'analyse.</p>
+        </div>
+    </div>
+
 </div>
 `;
 
@@ -658,7 +813,12 @@ export function Donnees() {
       />
 
       <section dangerouslySetInnerHTML={{ __html: definition }} />
-      <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
+      {/* OLTP / OLAP — intro + Yego + rétro-ingénierie */}
+      <section>
+        <section dangerouslySetInnerHTML={{ __html: olapIntro }} />
+        <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
+        <section dangerouslySetInnerHTML={{ __html: olapRetro }} />
+      </section>
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
 
       {/* autourDeNous + dissection Netflix en vertical */}
