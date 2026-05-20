@@ -6,277 +6,157 @@ const intro = `
 </div>
 `;
 
-const deuxRealites = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 14px; font-weight:700;">Les réclamations DIRMOB — le même fichier</p>
-<div class="row">
-    <div style="flex:1;">
-        <div class="label--bad">Version actuelle — fait pour l'œil</div>
-        <div class="offbeat-card card--red" style="padding:12px;">
-            <table class="mockup-table">
-                <tr>
-                    <th style="background:#ffe082;">Date</th>
-                    <th style="background:#ffe082;">Nom/Email</th>
-                    <th style="background:#ffe082;">Ligne/Prestataire</th>
-                    <th style="background:#ffe082;">Problème</th>
-                </tr>
-                <tr style="background:#ffcdd2;">
-                    <td>05/03</td><td>Martin j.martin@...</td><td>389 - Keolis</td><td>retard 10 min</td>
-                </tr>
-                <tr style="background:#c8e6c9;">
-                    <td>07/03</td><td>a.dupont@...</td><td>160 - RATP</td><td>avance</td>
-                </tr>
-                <tr style="background:#ffcdd2;">
-                    <td>10/03</td><td>n.nguyen@...</td><td>389 - Keolis</td><td>retard 10 min</td>
-                </tr>
-            </table>
-            <p style="font-size:0.58rem; color:#b91c1c; margin:6px 0 0; line-height:1.5;">
-                ✖ Couleurs portent le statut<br>
-                ✖ Nom + email collés dans une cellule<br>
-                ✖ Ligne + prestataire collés
-            </p>
-        </div>
-    </div>
-    <div style="display:flex; align-items:center; font-size:1.4rem; color:#ccc; padding:0 6px;">→</div>
-    <div style="flex:1;">
-        <div class="label--good">Version cible — fait pour la machine</div>
-        <div class="offbeat-card card--green" style="padding:12px;">
-            <p style="font-size:0.58rem; color:#1e3a5f; background:#dbe4ff; margin:0 0 6px; padding:4px 8px; border-radius:4px; font-weight:700; font-family:monospace;">reclamations</p>
-            <table class="mockup-table">
-                <tr>
-                    <th style="background:#1e40af; color:white;">id</th>
-                    <th>date</th>
-                    <th style="background:#fffbeb; color:#a16207;">reclamant_id</th>
-                    <th style="background:#fffbeb; color:#a16207;">id_ligne</th>
-                    <th>motif</th><th>statut</th>
-                </tr>
-                <tr>
-                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
-                    <td>05/03/2026</td>
-                    <td style="color:#a16207; font-weight:700;">1</td>
-                    <td style="color:#a16207; font-weight:700;">L1</td>
-                    <td>retard</td><td>non_traite</td>
-                </tr>
-                <tr>
-                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
-                    <td>07/03/2026</td>
-                    <td style="color:#a16207; font-weight:700;">2</td>
-                    <td style="color:#a16207; font-weight:700;">L2</td>
-                    <td>avance</td><td>traite</td>
-                </tr>
-                <tr>
-                    <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
-                    <td>10/03/2026</td>
-                    <td style="color:#a16207; font-weight:700;">1</td>
-                    <td style="color:#a16207; font-weight:700;">L1</td>
-                    <td>retard</td><td>non_traite</td>
-                </tr>
-            </table>
-            <p style="font-size:0.58rem; color:#15803d; margin:6px 0 0; line-height:1.5;">
-                ✔ Filtrable, comptable, joinable<br>
-                ✔ Repris par n'importe qui, n'importe quand
-            </p>
-        </div>
-    </div>
-</div>
-`;
+const definitions = `
+<h2 style="margin-top:0;">Deux outils, deux buts</h2>
 
-const sourceTableaux = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 14px; font-weight:700;">Renverser le regard</p>
-<h2 style="margin-top:0;">La donnée, source de vos tableaux de bord</h2>
+<div class="row" style="margin-top:12px; align-items:stretch; gap:0;">
 
-<div style="display:flex; align-items:stretch; gap:0; margin-bottom:18px;">
-
-    <div style="flex:1; background:#f0f8ff; border-radius:10px 0 0 10px; padding:18px 20px; border:2px solid #009fe3; border-right:none;">
-        <p style="font-size:0.58rem; text-transform:uppercase; letter-spacing:2px; color:#009fe3; font-weight:700; margin:0 0 10px;">Base de données</p>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">📋 réclamations</div>
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">🚌 lignes_bus</div>
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-family:monospace; font-size:0.6rem; color:#1e40af; font-weight:600; border-left:3px solid #1e40af;">🏢 prestataires</div>
+    <div style="flex:1; background:#f0f8ff; border-radius:10px 0 0 10px; padding:20px 22px; border:2px solid #009fe3; border-right:none;">
+        <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#009fe3; font-weight:700; margin:0 0 10px;">Base de données (OLTP)</p>
+        <p style="font-size:0.58rem; font-weight:700; color:#1e40af; margin:0 0 10px; line-height:1.5;">But : capturer et stocker</p>
+        <p style="font-size:0.62rem; color:#333; line-height:1.7; margin:0 0 14px;">
+            Les données font référence à toutes les informations capturées et stockées sur un seul individu, lieu, élément ou objet — appelé <strong>entité</strong> — ainsi que les <strong>attributs</strong> de cette entité.
+            Elles sont organisées dans une base de données pour être facilement <strong>accessibles, gérées et mises à jour</strong>.
+        </p>
+        <div style="background:white; border-radius:6px; padding:8px 12px; border-left:3px solid #009fe3;">
+            <p style="font-size:0.56rem; color:#009fe3; margin:0; font-weight:600;">1 ligne = 1 fait · enregistré au fil de l'eau</p>
         </div>
     </div>
 
-    <div style="background:#009fe3; padding:14px 18px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:5px; min-width:84px;">
-        <div style="font-size:1.5rem; color:white; line-height:1;">⊗</div>
-        <p style="font-size:0.5rem; font-weight:700; color:white; text-transform:uppercase; letter-spacing:1.5px; margin:0; text-align:center;">jointure</p>
-        <div style="font-size:1.2rem; color:rgba(255,255,255,0.7);">→</div>
+    <div style="background:#009fe3; padding:16px 14px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px; min-width:96px; flex-shrink:0;">
+        <p style="font-size:0.46rem; font-weight:700; color:white; text-transform:uppercase; letter-spacing:1.5px; margin:0; text-align:center;">Transformation</p>
+        <div style="display:flex; flex-direction:column; gap:4px; align-items:center;">
+            <span style="font-size:0.5rem; background:rgba(255,255,255,0.2); color:white; padding:2px 8px; border-radius:10px;">TCD</span>
+            <span style="font-size:0.5rem; background:rgba(255,255,255,0.2); color:white; padding:2px 8px; border-radius:10px;">Agrégation</span>
+            <span style="font-size:0.5rem; background:rgba(255,255,255,0.2); color:white; padding:2px 8px; border-radius:10px;">Filtre</span>
+        </div>
+        <div style="font-size:1.3rem; color:rgba(255,255,255,0.8); margin-top:4px;">→</div>
     </div>
 
-    <div style="flex:1.3; background:#f0f9e8; border-radius:0 10px 10px 0; padding:18px 20px; border:2px solid #95c11f; border-left:none;">
-        <p style="font-size:0.58rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 10px;">Tableaux de bord</p>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">📊 Réclamations par prestataire</div>
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">📈 Évolution mensuelle par ligne</div>
-            <div style="background:white; border-radius:5px; padding:7px 10px; font-size:0.62rem; color:#2e7d32; font-weight:500; border-left:3px solid #95c11f;">🗂️ Bilan filtrable en 2 clics</div>
+    <div style="flex:1; background:#f0f9e8; border-radius:0 10px 10px 0; padding:20px 22px; border:2px solid #95c11f; border-left:none;">
+        <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 10px;">Tableau de suivi (OLAP)</p>
+        <p style="font-size:0.58rem; font-weight:700; color:#2e7d32; margin:0 0 10px; line-height:1.5;">But : suivre et analyser</p>
+        <p style="font-size:0.62rem; color:#333; line-height:1.7; margin:0 0 14px;">
+            À un moment donné, on a besoin de <strong>lire</strong> les données accumulées, de les <strong>agréger</strong> et de les <strong>filtrer</strong> pour en extraire des chiffres clés — et prendre des décisions.
+        </p>
+        <div style="background:white; border-radius:6px; padding:8px 12px; border-left:3px solid #95c11f;">
+            <p style="font-size:0.56rem; color:#2e7d32; margin:0; font-weight:600;">1 vue = 1 question posée à la base</p>
         </div>
     </div>
 
 </div>
 
-<div style="background:#fff8e1; border-radius:8px; padding:14px 20px; border-left:4px solid #f59e0b; margin-bottom:12px;">
-    <p style="font-size:0.78rem; color:#444; margin:0; line-height:1.65;">
-        Ce que vous appelez <strong>"tableau de suivi"</strong> est une <em>vue générée</em> depuis des données bien structurées.<br>
-        La base de données est la <strong>source</strong> — le tableau coloré est l'<strong>affichage</strong>.
-    </p>
-</div>
-
-<div class="fragment" style="background:#fde8e8; border-radius:8px; padding:11px 18px; border-left:3px solid var(--red-alert);">
-    <p style="font-size:0.7rem; color:#555; margin:0; line-height:1.6;">
-        <strong>Si les données sont mal structurées</strong> — tableaux colorés, cellules fourre-tout, onglets par ligne — les bilans sont faux, incomplets ou impossibles à produire automatiquement.
+<div class="fragment" style="background:#fff8e1; border-radius:8px; padding:10px 18px; border-left:4px solid #f59e0b; margin-top:14px;">
+    <p style="font-size:0.72rem; color:#444; margin:0; line-height:1.6;">
+        Le tableau de suivi n'<em>est pas</em> la base de données — c'est ce qu'on <strong>construit depuis elle</strong>, au moment où on en a besoin.
     </p>
 </div>
 `;
 
-const anatomie = `
-<h2>Anatomie d'une table — le vocabulaire</h2>
-<p style="font-size:0.72rem; color:#888; margin-top:-16px; margin-bottom:12px;">
-    Une base de données = un ensemble de tables reliées · À la DIRMOB : réclamations, lignes de bus, prestataires…
+const exemples1 = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">OLTP vs OLAP — des exemples concrets</p>
+<h2 style="margin-top:0;">Base de données vs tableau de suivi (1/2)</h2>
+
+<div class="row" style="margin-top:10px; align-items:stretch; gap:16px;">
+
+    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
+        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🏃 Strava — course à pied</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
+        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
+            <tr><th>date</th><th>km</th><th>durée</th><th>allure</th></tr>
+            <tr><td>03/01</td><td>8,2</td><td>42:15</td><td>5'09"/km</td></tr>
+            <tr><td>05/01</td><td>12,0</td><td>1:01:30</td><td>5'07"/km</td></tr>
+            <tr><td>08/01</td><td>5,5</td><td>28:00</td><td>5'05"/km</td></tr>
+        </table>
+
+        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
+        <table class="mockup-table" style="font-size:0.48em;">
+            <tr><th>Mois</th><th style="background:#dcfce7; color:#15803d;">Total km</th><th>Sorties</th><th>Meilleure allure</th></tr>
+            <tr><td>Janvier</td><td style="color:#15803d; font-weight:700;">25,7 km</td><td>3</td><td>5'05"/km</td></tr>
+        </table>
+    </div>
+
+    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
+        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🧸 Magasin de jouets</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
+        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
+            <tr><th>date</th><th>article</th><th>qté</th><th>prix unit.</th></tr>
+            <tr><td>01/12</td><td>Lego City</td><td>2</td><td>39,90 €</td></tr>
+            <tr><td>01/12</td><td>Poupée</td><td>1</td><td>24,50 €</td></tr>
+            <tr><td>02/12</td><td>Lego City</td><td>3</td><td>39,90 €</td></tr>
+        </table>
+
+        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
+        <table class="mockup-table" style="font-size:0.48em;">
+            <tr><th>Article</th><th style="background:#dcfce7; color:#15803d;">Ventes déc.</th><th>CA déc.</th></tr>
+            <tr><td>Lego City</td><td style="color:#15803d; font-weight:700;">5</td><td>199,50 €</td></tr>
+            <tr><td>Poupée</td><td style="color:#15803d; font-weight:700;">1</td><td>24,50 €</td></tr>
+        </table>
+    </div>
+
+</div>
+`;
+
+const exemples2 = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">OLTP vs OLAP — des exemples concrets</p>
+<h2 style="margin-top:0;">Base de données vs tableau de suivi (2/2)</h2>
+
+<div class="row" style="margin-top:10px; align-items:stretch; gap:16px; margin-bottom:14px;">
+
+    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
+        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🛒 Liste de courses</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
+        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
+            <tr><th>date</th><th>article</th><th>catégorie</th><th>prix</th></tr>
+            <tr><td>05/01</td><td>lait</td><td>produits laitiers</td><td>1,20 €</td></tr>
+            <tr><td>07/01</td><td>pain</td><td>boulangerie</td><td>2,50 €</td></tr>
+            <tr><td>12/01</td><td>lait</td><td>produits laitiers</td><td>1,20 €</td></tr>
+        </table>
+
+        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
+        <table class="mockup-table" style="font-size:0.48em;">
+            <tr><th>Catégorie</th><th style="background:#dcfce7; color:#15803d;">Total jan.</th><th>Nb achats</th></tr>
+            <tr><td>Produits laitiers</td><td style="color:#15803d; font-weight:700;">2,40 €</td><td>2</td></tr>
+            <tr><td>Boulangerie</td><td style="color:#15803d; font-weight:700;">2,50 €</td><td>1</td></tr>
+        </table>
+    </div>
+
+    <div class="offbeat-card" style="flex:1; padding:14px 16px; border-left:3px solid #009fe3;">
+        <p style="font-size:0.64rem; font-weight:700; color:#009fe3; margin:0 0 10px;">🚌 DIRMOB — réclamations</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
+        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
+            <tr><th>date</th><th>ligne</th><th>motif</th><th>statut</th></tr>
+            <tr><td>05/03</td><td>389</td><td>retard</td><td>non_traite</td></tr>
+            <tr><td>07/03</td><td>160</td><td>avance</td><td>traite</td></tr>
+            <tr><td>10/03</td><td>389</td><td>retard</td><td>non_traite</td></tr>
+        </table>
+
+        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
+
+        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
+        <table class="mockup-table" style="font-size:0.48em;">
+            <tr><th>Motif</th><th style="background:#dcfce7; color:#15803d;">Mars</th><th>Non traités</th></tr>
+            <tr><td>retard</td><td style="color:#15803d; font-weight:700;">2</td><td>2</td></tr>
+            <tr><td>avance</td><td style="color:#15803d; font-weight:700;">1</td><td>0</td></tr>
+        </table>
+    </div>
+
+</div>
+<div class="separator"></div>
+<p class="fragment" style="font-size:0.78rem; color:#333; margin:0; line-height:1.7; text-align:center;">
+    Dans chaque cas : la <strong>base de données (OLTP)</strong> enregistre les faits bruts · le <strong>tableau de suivi (OLAP)</strong> en extrait le sens.<br>
+    <span style="font-size:0.66rem; color:#888; font-style:italic;">Le TCD est le <em>résultat</em> d'une requête sur la base — pas la base elle-même.</span>
 </p>
-<div style="margin-bottom:14px;">
-    <p style="font-size:0.6rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:4px 12px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">Table : reclamations</p>
-    <table class="mockup-table" style="font-size:0.58em;">
-        <tr>
-            <th style="background:#1e40af; color:white;">id <span style="display:block; font-size:0.7em; font-weight:400; opacity:0.8;">PK</span></th>
-            <th>date</th>
-            <th style="background:#fef3c7; color:#a16207;">reclamant_id <span style="display:block; font-size:0.7em; font-weight:400;">FK</span></th>
-            <th style="background:#fef3c7; color:#a16207;">id_ligne <span style="display:block; font-size:0.7em; font-weight:400;">FK</span></th>
-            <th>motif</th><th>statut</th>
-        </tr>
-        <tr style="background:#dcfce7;">
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
-            <td>05/03/2026</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">1</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
-            <td style="background:#ede9fe; color:#6b21a8; font-weight:700;">retard</td>
-            <td>non_traite</td>
-        </tr>
-        <tr>
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
-            <td>07/03/2026</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">2</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td>
-            <td>avance</td><td>traite</td>
-        </tr>
-        <tr>
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
-            <td>10/03/2026</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">1</td>
-            <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
-            <td>panne</td><td>non_traite</td>
-        </tr>
-    </table>
-</div>
-<div style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px;">
-    <div class="fragment" style="background:#dbe4ff; border-radius:6px; padding:8px 10px; border-left:3px solid #1e40af;">
-        <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 2px;">IDENTIFIANT (PK)</p>
-        <p style="font-size:0.58rem; color:#333; margin:0;">Désigne la ligne sans ambiguïté</p>
-    </div>
-    <div class="fragment" style="background:#fef3c7; border-radius:6px; padding:8px 10px; border-left:3px solid #a16207;">
-        <p style="font-size:0.6rem; font-weight:700; color:#a16207; margin:0 0 2px;">RELATION (FK)</p>
-        <p style="font-size:0.58rem; color:#333; margin:0;">Pointe vers une autre table</p>
-    </div>
-    <div class="fragment" style="background:#dcfce7; border-radius:6px; padding:8px 10px; border-left:3px solid #15803d;">
-        <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 2px;">ENREGISTREMENT</p>
-        <p style="font-size:0.58rem; color:#333; margin:0;">Une réclamation complète (ligne)</p>
-    </div>
-    <div class="fragment" style="background:#f0f0f0; border-radius:6px; padding:8px 10px; border-left:3px solid #555;">
-        <p style="font-size:0.6rem; font-weight:700; color:#555; margin:0 0 2px;">CHAMP</p>
-        <p style="font-size:0.58rem; color:#333; margin:0;">Catégorie d'information (colonne)</p>
-    </div>
-    <div class="fragment" style="background:#ede9fe; border-radius:6px; padding:8px 10px; border-left:3px solid #6b21a8;">
-        <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 2px;">ATTRIBUT</p>
-        <p style="font-size:0.58rem; color:#333; margin:0;">Valeur à l'intersection ligne/colonne</p>
-    </div>
-</div>
-`;
-
-const jointure = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Le mécanisme clé</p>
-<h2 style="margin-top:0;">La jointure — relier pour mieux analyser</h2>
-<p style="font-size:0.72rem; color:#888; margin-top:-14px; margin-bottom:12px;">Les clés étrangères (FK) permettent de croiser les tables sans dupliquer de données</p>
-
-<div class="row" style="margin-bottom:12px; align-items:flex-start; gap:8px;">
-
-    <div style="flex:1;">
-        <p style="font-size:0.54rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">réclamations</p>
-        <table class="mockup-table">
-            <tr>
-                <th style="background:#1e40af; color:white;">id</th>
-                <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
-                <th>motif</th>
-            </tr>
-            <tr>
-                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
-                <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
-                <td>retard</td>
-            </tr>
-            <tr>
-                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
-                <td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td>
-                <td>avance</td>
-            </tr>
-            <tr>
-                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
-                <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
-                <td>retard</td>
-            </tr>
-        </table>
-    </div>
-
-    <div style="display:flex; align-items:center; justify-content:center; padding:0 6px; flex-direction:column; gap:5px; padding-top:24px;">
-        <div style="width:36px; height:36px; background:#009fe3; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-            <span style="color:white; font-size:0.9rem; font-weight:700; line-height:1;">⊗</span>
-        </div>
-        <p style="font-size:0.5rem; color:#009fe3; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center;">JOIN<br>id_ligne</p>
-    </div>
-
-    <div style="flex:1;">
-        <p style="font-size:0.54rem; color:#155724; background:#dcfce7; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">lignes_bus</p>
-        <table class="mockup-table">
-            <tr>
-                <th style="background:#15803d; color:white;">id_ligne</th>
-                <th>numero</th><th>prestataire</th>
-            </tr>
-            <tr>
-                <td style="background:#dcfce7; color:#15803d; font-weight:700;">L1</td>
-                <td>389</td><td>Keolis</td>
-            </tr>
-            <tr>
-                <td style="background:#dcfce7; color:#15803d; font-weight:700;">L2</td>
-                <td>160</td><td>RATP</td>
-            </tr>
-        </table>
-    </div>
-
-</div>
-
-<div class="fragment" style="border-top:2px dashed #009fe3; padding-top:12px;">
-    <p style="font-size:0.56rem; text-transform:uppercase; letter-spacing:2px; color:#95c11f; font-weight:700; margin:0 0 6px;">↓ Résultat — vue enrichie, prête pour le TCD</p>
-    <table class="mockup-table" style="font-size:0.47em;">
-        <tr>
-            <th style="background:#1e40af; color:white;">id</th>
-            <th>motif</th><th>ligne n°</th>
-            <th style="background:#dcfce7; color:#15803d;">prestataire</th>
-        </tr>
-        <tr>
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
-            <td>retard</td><td>389</td>
-            <td style="background:#dcfce7; color:#15803d; font-weight:700;">Keolis</td>
-        </tr>
-        <tr>
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
-            <td>avance</td><td>160</td>
-            <td style="background:#dcfce7; color:#15803d; font-weight:700;">RATP</td>
-        </tr>
-        <tr>
-            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
-            <td>retard</td><td>389</td>
-            <td style="background:#dcfce7; color:#15803d; font-weight:700;">Keolis</td>
-        </tr>
-    </table>
-    <p style="font-size:0.62rem; color:#95c11f; margin:7px 0 0; font-weight:700;">
-        → 2 retards Keolis ligne 389 — calculable en 1 COUNTIFS ou 1 TCD, sans manipulation manuelle
-    </p>
-</div>
 `;
 
 export function Module1() {
@@ -286,10 +166,9 @@ export function Module1() {
         data-background-color="#009fe3"
         dangerouslySetInnerHTML={{ __html: intro }}
       />
-      <section dangerouslySetInnerHTML={{ __html: deuxRealites }} />
-      <section dangerouslySetInnerHTML={{ __html: sourceTableaux }} />
-      <section dangerouslySetInnerHTML={{ __html: anatomie }} />
-      <section dangerouslySetInnerHTML={{ __html: jointure }} />
+      <section dangerouslySetInnerHTML={{ __html: definitions }} />
+      <section dangerouslySetInnerHTML={{ __html: exemples1 }} />
+      <section dangerouslySetInnerHTML={{ __html: exemples2 }} />
     </>
   );
 }
