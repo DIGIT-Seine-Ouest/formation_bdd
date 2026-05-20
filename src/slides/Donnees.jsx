@@ -51,9 +51,9 @@ const autourDeNous = `
         <p style="font-size:0.54rem; background:#009fe3; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">DIRMOB · réclamations</p>
         <table class="mockup-table">
             <tr><th style="background:#1e40af; color:white;">id</th><th style="color:#a16207;">id_ligne</th><th>motif</th><th>statut</th></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td style="color:#a16207;">L1</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td style="color:#a16207;">L2</td><td>avance</td><td>cloture</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td style="color:#a16207;">L1</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td style="color:#a16207;">L1</td><td>retard</td><td>non_traite</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td style="color:#a16207;">L2</td><td>avance</td><td>traite</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td style="color:#a16207;">L1</td><td>retard</td><td>non_traite</td></tr>
         </table>
         <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">Même logique que Netflix —<br>on y reviendra.</p>
     </div>
@@ -748,20 +748,38 @@ const vocabulaire = `
             <td>05/03/2026</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
             <td style="background:#ede9fe; color:#6b21a8; font-weight:700;">retard</td>
-            <td>ouverte</td>
+            <td>non_traite</td>
         </tr>
-        <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>cloture</td></tr>
-        <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
+        <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>traite</td></tr>
+        <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>non_traite</td></tr>
     </table>
 </div>
 
-<div class="fragment" style="background:#f0fdf4; border-radius:8px; padding:10px 16px; border-left:3px solid #15803d; margin-bottom:12px;">
+<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px;">
+    <div class="fragment" style="background:#dbe4ff; border-radius:7px; padding:10px 12px; border-left:3px solid #1e40af;">
+        <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Identifiant (PK)</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Désigne la ligne sans ambiguïté. Unique, stable, non signifiant.</p>
+    </div>
+    <div class="fragment" style="background:#fef3c7; border-radius:7px; padding:10px 12px; border-left:3px solid #a16207;">
+        <p style="font-size:0.6rem; font-weight:700; color:#a16207; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Clé étrangère (FK)</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Pointe vers une autre table. C'est le lien entre les données.</p>
+    </div>
+    <div class="fragment" style="background:#dcfce7; border-radius:7px; padding:10px 12px; border-left:3px solid #15803d;">
+        <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Enregistrement</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Une ligne = un fait réel complet. Lisez-la en une phrase — si c'est fluide, la table est bien construite.</p>
+    </div>
+    <div class="fragment" style="background:#ede9fe; border-radius:7px; padding:10px 12px; border-left:3px solid #6b21a8;">
+        <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Attribut</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">La valeur à l'intersection d'un champ et d'un enregistrement.</p>
+    </div>
+</div>
+
+<div class="fragment" style="background:#f0fdf4; border-radius:8px; padding:10px 16px; border-left:3px solid #15803d;">
     <p style="font-size:0.52rem; font-weight:700; color:#15803d; margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">Le test de l'enregistrement</p>
     <p style="font-size:0.66rem; color:#333; margin:0 0 8px; line-height:1.75;">
-        « La réclamation <strong>R001</strong>, reçue le <strong>05/03/2026</strong>,
-        concerne la <span style="background:#fef3c7; color:#a16207; font-weight:700; padding:1px 5px; border-radius:3px; font-family:monospace;">L1 →</span>
-        <span style="background:#dcfce7; color:#15803d; font-weight:700; padding:1px 5px; border-radius:3px;">ligne 389 · Keolis</span>,
-        signale un <strong>retard</strong> — statut : <strong>ouverte</strong>. »
+        « La réclamation <strong>R001</strong>, reçue le <strong>05/03/2026</strong>
+        sur la <span style="background:#dcfce7; color:#15803d; font-weight:700; padding:1px 5px; border-radius:3px;">ligne 389 gérée par Keolis</span>,
+        signale un <strong>retard</strong> — elle <strong>n'a pas encore été traitée</strong>. »
     </p>
     <div style="display:flex; align-items:center; gap:0; margin-bottom:7px;">
         <p style="font-size:0.5rem; color:#888; font-weight:600; margin:0 10px 0 0; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;">La jointure :</p>
@@ -783,24 +801,223 @@ const vocabulaire = `
     </div>
     <p style="font-size:0.6rem; color:#15803d; font-weight:600; margin:0;">Si vous lisez une ligne en une phrase claire et sans ambiguïté, la table est bien construite.</p>
 </div>
+`;
 
-<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
-    <div class="fragment" style="background:#dbe4ff; border-radius:7px; padding:10px 12px; border-left:3px solid #1e40af;">
-        <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Identifiant (PK)</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Désigne la ligne sans ambiguïté. Unique, stable, non signifiant.</p>
+const relationnel = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Modèle relationnel</p>
+<h2 style="margin-top:0;">La base de données : un commun numérique</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Chaque information est saisie une seule fois. Ce qui appartient à une autre table, on ne le ressaisit pas — on le récupère.</p>
+
+<div class="row" style="gap:16px; align-items:flex-start;">
+
+    <div style="flex:1;">
+        <div class="label--bad">Tout dans une seule table</div>
+        <div class="offbeat-card card--red" style="padding:12px;">
+            <table class="mockup-table" style="font-size:0.43em;">
+                <tr>
+                    <th>id</th><th>date</th><th>motif</th>
+                    <th style="background:#ffcdd2; color:#b71c1c;">numero_ligne</th>
+                    <th style="background:#ffcdd2; color:#b71c1c;">prestataire</th>
+                    <th style="background:#ffcdd2; color:#b71c1c;">depot</th>
+                </tr>
+                <tr><td>R001</td><td>05/03</td><td>retard</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
+                <tr><td>R002</td><td>07/03</td><td>avance</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
+                <tr><td>R003</td><td>10/03</td><td>retard</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
+            </table>
+            <p style="font-size:0.56rem; color:var(--red-alert); margin:7px 0 0; line-height:1.6;">Double-saisie : prestataire et dépôt ressaisis à chaque nouvelle réclamation. Une correction = à propager manuellement partout.</p>
+        </div>
     </div>
-    <div class="fragment" style="background:#fef3c7; border-radius:7px; padding:10px 12px; border-left:3px solid #a16207;">
-        <p style="font-size:0.6rem; font-weight:700; color:#a16207; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Clé étrangère (FK)</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Pointe vers une autre table. C'est le lien entre les données.</p>
+
+    <div class="fragment" style="flex:1;">
+        <div class="label--good">Deux entités séparées, liées par un identifiant</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <div class="offbeat-card card--green" style="padding:10px 12px;">
+                <p style="font-size:0.44rem; color:#555; font-family:monospace; margin:0 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">reclamations</p>
+                <table class="mockup-table" style="font-size:0.43em;">
+                    <tr>
+                        <th style="background:#1e40af; color:white;">id</th>
+                        <th>date</th><th>motif</th>
+                        <th style="background:#fef3c7; color:#a16207;">id_ligne →</th>
+                    </tr>
+                    <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03</td><td>retard</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_389</td></tr>
+                    <tr><td style="color:#1e40af; font-weight:700;">R002</td><td>07/03</td><td>avance</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_389</td></tr>
+                    <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03</td><td>retard</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_160</td></tr>
+                </table>
+            </div>
+            <div class="offbeat-card" style="padding:10px 12px;">
+                <p style="font-size:0.44rem; color:#555; font-family:monospace; margin:0 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">lignes_bus</p>
+                <table class="mockup-table" style="font-size:0.43em;">
+                    <tr>
+                        <th style="background:#a16207; color:white;">id</th>
+                        <th>numero</th><th>prestataire</th><th>depot</th>
+                    </tr>
+                    <tr><td style="color:#a16207; font-weight:700;">ligne_389</td><td>389</td><td>Keolis</td><td>Bordeaux</td></tr>
+                    <tr><td style="color:#a16207; font-weight:700;">ligne_160</td><td>160</td><td>RATP</td><td>Paris</td></tr>
+                </table>
+            </div>
+        </div>
+        <p style="font-size:0.56rem; color:#2e7d32; margin:7px 0 0; line-height:1.6;">L'info vit dans lignes_bus. On ne la ressaisit pas — on la récupère par jointure quand on a besoin d'une vue.</p>
     </div>
-    <div class="fragment" style="background:#dcfce7; border-radius:7px; padding:10px 12px; border-left:3px solid #15803d;">
-        <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Enregistrement</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Une ligne = un fait réel complet. <strong>Test :</strong> lisez-la en une phrase. Si c'est fluide et sans ambiguïté, la table est bien construite.</p>
+
+</div>
+
+<div class="fragment" style="background:#fefce8; border-radius:8px; padding:13px 20px; border-left:4px solid #ca8a04; margin-top:14px;">
+    <p style="font-size:0.76rem; color:#333; margin:0; line-height:1.8;">
+        <strong style="color:#92400e;">La BDD est un commun numérique.</strong>
+        Ce qui appartient à la table de l'autre, on ne le ressaisit pas — on le récupère par <strong>jointure</strong>, à la demande.
+        C'est ainsi qu'on produit une vue OLAP sans double-saisie.
+    </p>
+</div>
+`;
+
+const relationHub = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Commun numérique</p>
+<h2 style="margin-top:0;">Une réclamation peut concerner n'importe quelle entité</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:14px;">À la DIRMOB, les réclamations ne portent pas que sur les bus. Chaque équipe gère sa table — les réclamations s'y branchent.</p>
+
+<div style="display:flex; gap:14px; align-items:center; margin-bottom:14px;">
+
+    <!-- Entités gérées par chaque équipe -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:7px;">
+
+        <div style="background:#fff8e1; border-radius:7px; padding:9px 13px; border-left:3px solid #f59e0b;">
+            <p style="font-size:0.5rem; font-weight:700; color:#b45309; font-family:monospace; margin:0 0 2px;">lignes_bus</p>
+            <p style="font-size:0.44rem; color:#777; margin:0;">ligne_389 · ligne_160 · prestataire · depot</p>
+            <p style="font-size:0.38rem; color:#aaa; margin:3px 0 0; font-style:italic;">géré par l'équipe transport</p>
+        </div>
+
+        <div class="fragment" style="background:#e8f5e9; border-radius:7px; padding:9px 13px; border-left:3px solid #16a34a;">
+            <p style="font-size:0.5rem; font-weight:700; color:#15803d; font-family:monospace; margin:0 0 2px;">parkings</p>
+            <p style="font-size:0.44rem; color:#777; margin:0;">parking_P42 · adresse · capacite · tarif</p>
+            <p style="font-size:0.38rem; color:#aaa; margin:3px 0 0; font-style:italic;">géré par l'équipe stationnement</p>
+        </div>
+
+        <div class="fragment" style="background:#f0fdf4; border-radius:7px; padding:9px 13px; border-left:3px solid #22c55e;">
+            <p style="font-size:0.5rem; font-weight:700; color:#15803d; font-family:monospace; margin:0 0 2px;">pistes_cyclables</p>
+            <p style="font-size:0.44rem; color:#777; margin:0;">piste_PC07 · longueur · etat · commune</p>
+            <p style="font-size:0.38rem; color:#aaa; margin:3px 0 0; font-style:italic;">géré par l'équipe mobilité douce</p>
+        </div>
+
     </div>
-    <div class="fragment" style="background:#ede9fe; border-radius:7px; padding:10px 12px; border-left:3px solid #6b21a8;">
-        <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Attribut</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">La valeur à l'intersection d'un champ et d'un enregistrement.</p>
+
+    <!-- Flèche -->
+    <div style="font-size:1.6rem; color:#a16207; flex-shrink:0; text-align:center;">←</div>
+
+    <!-- Reclamations : entité centrale qui se branche -->
+    <div style="flex:1.1; flex-shrink:0;">
+        <div style="background:#eff6ff; border:2px solid #2563eb; border-radius:10px; padding:14px 16px;">
+            <p style="font-size:0.44rem; text-transform:uppercase; letter-spacing:2px; color:#2563eb; font-weight:700; margin:0 0 4px;">Entité centrale</p>
+            <p style="font-size:1rem; font-weight:700; color:#1e40af; font-family:'IBM Plex Serif',serif; margin:0 0 10px;">reclamations</p>
+            <table class="mockup-table" style="font-size:0.38em;">
+                <tr>
+                    <th style="background:#1e40af; color:white;">id</th>
+                    <th>motif</th>
+                    <th style="background:#fef3c7; color:#a16207;">id_sujet →</th>
+                    <th style="background:#fef3c7; color:#a16207;">type</th>
+                </tr>
+                <tr>
+                    <td style="color:#1e40af; font-weight:700;">R001</td>
+                    <td>retard</td>
+                    <td style="color:#b45309; font-weight:700;">ligne_389</td>
+                    <td style="color:#b45309;">bus</td>
+                </tr>
+                <tr class="fragment">
+                    <td style="color:#1e40af; font-weight:700;">R002</td>
+                    <td>complet</td>
+                    <td style="color:#15803d; font-weight:700;">parking_P42</td>
+                    <td style="color:#15803d;">parking</td>
+                </tr>
+                <tr class="fragment">
+                    <td style="color:#1e40af; font-weight:700;">R003</td>
+                    <td>obstacle</td>
+                    <td style="color:#15803d; font-weight:700;">piste_PC07</td>
+                    <td style="color:#15803d;">velo</td>
+                </tr>
+            </table>
+            <p style="font-size:0.42rem; color:#2563eb; margin:8px 0 0; font-style:italic;">Pointe vers l'entité concernée — sans ressaisir ses données.</p>
+        </div>
     </div>
+
+</div>
+
+<div class="fragment" style="background:#fefce8; border-radius:8px; padding:12px 20px; border-left:4px solid #ca8a04;">
+    <p style="font-size:0.74rem; color:#333; margin:0; line-height:1.8;">
+        <strong style="color:#92400e;">Chaque équipe maintient sa table, une seule fois.</strong><br>
+        <span style="font-size:0.68rem; color:#555;">Les réclamations se branchent dessus par jointure — sans ressaisir. C'est ça le commun numérique : discuter de la structure ensemble, pour que tout le monde puisse s'en servir.</span>
+    </p>
+</div>
+`;
+
+const relationSchema = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Schéma relationnel</p>
+<h2 style="margin-top:0;">Le lien entre les entités</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:14px;">La clé étrangère <code>id_ligne</code> dans <em>reclamations</em> pointe vers la clé primaire <code>id</code> dans <em>lignes_bus</em>.</p>
+
+<div style="display:flex; gap:0; align-items:center; justify-content:center; margin:0 0 18px;">
+
+    <div class="offbeat-card" style="flex:0 0 auto; width:210px; padding:12px 16px;">
+        <p style="font-size:0.42rem; color:#aaa; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Entité</p>
+        <p style="font-size:0.88rem; font-weight:700; color:var(--blue-dirmob); margin:0 0 8px; font-family:'IBM Plex Serif',serif;">RECLAMATION</p>
+        <div class="separator" style="margin:4px 0 7px;"></div>
+        <p style="font-size:0.48rem; font-family:monospace; color:#333; margin:0; line-height:2.1;">
+            <span style="background:#dbe4ff; padding:1px 7px; border-radius:3px; color:#1e40af; font-weight:700;">id</span><br>
+            date<br>
+            motif<br>
+            statut<br>
+            <span style="background:#fef3c7; padding:1px 7px; border-radius:3px; color:#a16207; font-weight:700;">id_ligne →</span>
+        </p>
+        <p style="font-size:0.38rem; color:#999; margin:7px 0 0; font-style:italic;">N réclamations pour 1 ligne</p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; padding:0 14px; gap:5px; flex-shrink:0;">
+        <p style="font-size:0.44rem; color:#a16207; font-weight:700; margin:0; font-family:monospace; background:#fef3c7; padding:3px 10px; border-radius:3px;">id_ligne = id</p>
+        <div style="font-size:1.8rem; color:#a16207; line-height:1;">⟷</div>
+        <p style="font-size:0.4rem; color:#aaa; margin:0; text-align:center; line-height:1.7; text-transform:uppercase; letter-spacing:1px;">clé<br>étrangère</p>
+    </div>
+
+    <div class="offbeat-card card--grey" style="flex:0 0 auto; width:210px; padding:12px 16px;">
+        <p style="font-size:0.42rem; color:#aaa; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Entité</p>
+        <p style="font-size:0.88rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 8px; font-family:'IBM Plex Serif',serif;">LIGNE_BUS</p>
+        <div class="separator" style="margin:4px 0 7px;"></div>
+        <p style="font-size:0.48rem; font-family:monospace; color:#333; margin:0; line-height:2.1;">
+            <span style="background:#fef3c7; padding:1px 7px; border-radius:3px; color:#a16207; font-weight:700;">id</span><br>
+            numero<br>
+            prestataire<br>
+            depot
+        </p>
+        <p style="font-size:0.38rem; color:#999; margin:7px 0 0; font-style:italic;">1 ligne = source de vérité</p>
+    </div>
+
+</div>
+
+<div class="fragment">
+    <div class="separator"></div>
+    <p style="font-size:0.62rem; color:#555; margin:10px 0 8px; font-weight:600;">La jointure assemble les deux entités à la demande — sans duplication dans les tables sources :</p>
+    <table class="mockup-table" style="font-size:0.5em;">
+        <tr>
+            <th style="background:#1e40af; color:white;">id</th>
+            <th>date</th><th>motif</th>
+            <th style="background:#fef3c7; color:#a16207;">numero_ligne</th>
+            <th style="background:#fef3c7; color:#a16207;">prestataire</th>
+            <th style="background:#fef3c7; color:#a16207;">depot</th>
+            <th>statut</th>
+        </tr>
+        <tr>
+            <td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td>
+            <td style="color:#a16207; font-weight:700;">389</td><td style="color:#a16207; font-weight:700;">Keolis</td><td style="color:#a16207; font-weight:700;">Bordeaux</td>
+            <td>non_traite</td>
+        </tr>
+        <tr>
+            <td style="color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td>avance</td>
+            <td style="color:#a16207; font-weight:700;">389</td><td style="color:#a16207; font-weight:700;">Keolis</td><td style="color:#a16207; font-weight:700;">Bordeaux</td>
+            <td>traite</td>
+        </tr>
+        <tr>
+            <td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td>
+            <td style="color:#a16207; font-weight:700;">160</td><td style="color:#a16207; font-weight:700;">RATP</td><td style="color:#a16207; font-weight:700;">Paris</td>
+            <td>non_traite</td>
+        </tr>
+    </table>
 </div>
 `;
 
@@ -819,6 +1036,14 @@ export function Donnees() {
         <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
         <section dangerouslySetInnerHTML={{ __html: olapRetro }} />
       </section>
+
+      {/* Modèle relationnel */}
+      <section>
+        <section dangerouslySetInnerHTML={{ __html: relationnel }} />
+        <section dangerouslySetInnerHTML={{ __html: relationSchema }} />
+        <section dangerouslySetInnerHTML={{ __html: relationHub }} />
+      </section>
+
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
 
       {/* autourDeNous + dissection Netflix en vertical */}

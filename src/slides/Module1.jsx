@@ -54,21 +54,21 @@ const deuxRealites = `
                     <td>05/03/2026</td>
                     <td style="color:#a16207; font-weight:700;">1</td>
                     <td style="color:#a16207; font-weight:700;">L1</td>
-                    <td>retard</td><td>ouverte</td>
+                    <td>retard</td><td>non_traite</td>
                 </tr>
                 <tr>
                     <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
                     <td>07/03/2026</td>
                     <td style="color:#a16207; font-weight:700;">2</td>
                     <td style="color:#a16207; font-weight:700;">L2</td>
-                    <td>avance</td><td>cloture</td>
+                    <td>avance</td><td>traite</td>
                 </tr>
                 <tr>
                     <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
                     <td>10/03/2026</td>
                     <td style="color:#a16207; font-weight:700;">1</td>
                     <td style="color:#a16207; font-weight:700;">L1</td>
-                    <td>retard</td><td>ouverte</td>
+                    <td>retard</td><td>non_traite</td>
                 </tr>
             </table>
             <p style="font-size:0.58rem; color:#15803d; margin:6px 0 0; line-height:1.5;">
@@ -147,21 +147,21 @@ const anatomie = `
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">1</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
             <td style="background:#ede9fe; color:#6b21a8; font-weight:700;">retard</td>
-            <td>ouverte</td>
+            <td>non_traite</td>
         </tr>
         <tr>
             <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
             <td>07/03/2026</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">2</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td>
-            <td>avance</td><td>cloture</td>
+            <td>avance</td><td>traite</td>
         </tr>
         <tr>
             <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
             <td>10/03/2026</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">1</td>
             <td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td>
-            <td>panne</td><td>ouverte</td>
+            <td>panne</td><td>non_traite</td>
         </tr>
     </table>
 </div>

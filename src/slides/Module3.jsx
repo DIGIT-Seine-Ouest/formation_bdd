@@ -90,12 +90,12 @@ const couleur = `
         <div class="offbeat-card card--green" style="padding:12px;">
             <table class="mockup-table">
                 <tr><th>id</th><th>motif</th><th>statut</th></tr>
-                <tr><td>R001</td><td>retard</td><td>ouverte</td></tr>
-                <tr><td>R002</td><td>avance</td><td>cloture</td></tr>
+                <tr><td>R001</td><td>retard</td><td>non_traite</td></tr>
+                <tr><td>R002</td><td>avance</td><td>traite</td></tr>
                 <tr><td>R003</td><td>retard</td><td>en_cours</td></tr>
             </table>
             <p style="font-size:0.58rem; color:#2e7d32; margin:6px 0 0;">
-                → COUNTIF(statut, "ouverte") = 2 — comptable, filtrable, exportable
+                → COUNTIF(statut, "non_traite") = 2 — comptable, filtrable, exportable
             </p>
         </div>
     </div>
@@ -152,10 +152,10 @@ const impact = `
                 <th>motif</th>
                 <th>statut</th>
             </tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>cloture</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R004</td><td>12/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L3</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>non_traite</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>traite</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>non_traite</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R004</td><td>12/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L3</td><td>retard</td><td>non_traite</td></tr>
             <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700; opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td></tr>
         </table>
         <p style="font-size:0.54rem; color:#15803d; margin:7px 0 0; font-weight:600;">✔ 1 info par cellule · 1 ligne par réclamation · 0 couleur de statut</p>
@@ -175,17 +175,17 @@ const impact = `
         </div>
 
         <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:11px 14px; border-left:4px solid #2563eb;">
-            <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 7px;">🔍 Filtre instantané — réclamations ouvertes sur L1</p>
+            <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 7px;">🔍 Filtre instantané — réclamations non traitées sur L1</p>
             <table class="mockup-table" style="font-size:0.5em;">
                 <tr><th style="background:#1e40af; color:white;">id</th><th>date</th><th>motif</th><th>statut</th></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">non_traite</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">non_traite</td></tr>
             </table>
         </div>
 
         <div class="fragment" style="background:#fff8e1; border-radius:8px; padding:11px 14px; border-left:4px solid #f59e0b;">
             <p style="font-size:0.6rem; font-weight:700; color:#b45309; margin:0 0 6px;">⚡ COUNTIFS automatique — bilan mensuel</p>
-            <p style="font-size:0.62rem; color:#333; margin:0 0 5px; font-family:monospace; background:#fef3c7; padding:5px 8px; border-radius:4px;">=COUNTIFS(statut,"ouverte",mois,3)</p>
+            <p style="font-size:0.62rem; color:#333; margin:0 0 5px; font-family:monospace; background:#fef3c7; padding:5px 8px; border-radius:4px;">=COUNTIFS(statut,"non_traite",mois,3)</p>
             <p style="font-size:0.58rem; color:#555; margin:0;">→ Mis à jour automatiquement à chaque nouvelle saisie.</p>
         </div>
 

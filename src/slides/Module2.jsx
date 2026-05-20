@@ -66,7 +66,7 @@ const atomicite = `
 </div>
 <div class="fragment" style="background:#dbe4ff; border-radius:8px; padding:13px 18px; border-left:4px solid #1e40af;">
     <p style="margin:0; font-size:0.78rem; color:#1e3a5f;">
-        <strong>Test de la phrase :</strong> "La réclamation <em>R001</em> a été déposée le <em>05/03/2026</em> par le réclamant <em>1</em>, concerne la ligne <em>L1</em>, motif <em>retard</em>, statut <em>ouverte</em>."<br>
+        <strong>Test de la phrase :</strong> "La réclamation <em>R001</em> a été déposée le <em>05/03/2026</em> par le réclamant <em>1</em>, concerne la ligne <em>L1</em>, motif <em>retard</em>, statut <em>non_traite</em>."<br>
         <span style="font-size:0.9em; color:#15803d;">→ Phrase cohérente : chaque mot a sa place. C'est le signe d'une ligne robuste.</span>
     </p>
 </div>
@@ -99,7 +99,7 @@ const types = `
     <div class="type-card fragment" style="border-left-color:var(--green-dirmob);">
         <div class="type-name" style="color:var(--green-dirmob);">Énumération</div>
         <div class="type-desc">Liste fermée de valeurs autorisées</div>
-        <div class="type-example">statut : "ouverte" | "en_cours" | "cloture"</div>
+        <div class="type-example">statut : "non_traite" | "en_cours" | "traite"</div>
     </div>
     <div class="type-card fragment" style="border-left-color:#aaa;">
         <div class="type-name" style="color:#888;">NULL</div>
@@ -148,15 +148,15 @@ const identifiant = `
                 </tr>
                 <tr>
                     <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td>
-                    <td style="color:#a16207;">1</td><td style="color:#a16207;">L1</td><td>ouverte</td>
+                    <td style="color:#a16207;">1</td><td style="color:#a16207;">L1</td><td>non_traite</td>
                 </tr>
                 <tr>
                     <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td>
-                    <td style="color:#a16207;">2</td><td style="color:#a16207;">L2</td><td>cloture</td>
+                    <td style="color:#a16207;">2</td><td style="color:#a16207;">L2</td><td>traite</td>
                 </tr>
                 <tr>
                     <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td>
-                    <td style="color:#a16207;">1</td><td style="color:#a16207;">L1</td><td>ouverte</td>
+                    <td style="color:#a16207;">1</td><td style="color:#a16207;">L1</td><td>non_traite</td>
                 </tr>
             </table>
             <p style="font-size:0.58rem; color:var(--blue-dirmob); margin:7px 0 0; font-weight:700;">
