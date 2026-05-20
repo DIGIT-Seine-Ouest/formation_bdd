@@ -386,65 +386,6 @@ const netflixReprendre = `
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-const pourquoiBDD = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 6px; font-weight:700;">La récompense</p>
-<h2 style="margin-top:0;">Données propres → résultats immédiats</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Un Excel bien structuré devient une source de bilans automatiques — sans manipulation manuelle.</p>
-
-<div style="display:flex; gap:20px; align-items:flex-start;">
-
-    <div style="flex:1.2;">
-        <p style="font-size:0.54rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 8px;">📋 réclamations — table propre</p>
-        <table class="mockup-table" style="font-size:0.52em;">
-            <tr>
-                <th style="background:#1e40af; color:white;">id</th>
-                <th>date</th>
-                <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
-                <th>motif</th>
-                <th>statut</th>
-            </tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>cloture</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R004</td><td>12/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L3</td><td>retard</td><td>ouverte</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700; opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td></tr>
-        </table>
-        <p style="font-size:0.54rem; color:#15803d; margin:7px 0 0; font-weight:600;">✔ 1 info par cellule · 1 ligne par réclamation · 0 couleur de statut</p>
-    </div>
-
-    <div style="display:flex; align-items:center; font-size:1.6rem; color:#009fe3; flex-shrink:0; padding-top:36px;">→</div>
-
-    <div style="flex:1.4; display:flex; flex-direction:column; gap:10px;">
-
-        <div class="fragment" style="background:#f0f9e8; border-radius:8px; padding:11px 14px; border-left:4px solid #95c11f;">
-            <p style="font-size:0.6rem; font-weight:700; color:#4a7c00; margin:0 0 7px;">📊 TCD en 2 clics — réclamations par prestataire</p>
-            <table class="mockup-table" style="font-size:0.5em;">
-                <tr><th>Prestataire</th><th style="background:#dcfce7; color:#15803d;">Nb réclamations</th></tr>
-                <tr><td>Keolis</td><td style="color:#15803d; font-weight:700;">3</td></tr>
-                <tr><td>RATP</td><td style="color:#15803d; font-weight:700;">1</td></tr>
-            </table>
-        </div>
-
-        <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:11px 14px; border-left:4px solid #2563eb;">
-            <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 7px;">🔍 Filtre instantané — réclamations ouvertes sur L1</p>
-            <table class="mockup-table" style="font-size:0.5em;">
-                <tr><th style="background:#1e40af; color:white;">id</th><th>date</th><th>motif</th><th>statut</th></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
-                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
-            </table>
-        </div>
-
-        <div class="fragment" style="background:#fff8e1; border-radius:8px; padding:11px 14px; border-left:4px solid #f59e0b;">
-            <p style="font-size:0.6rem; font-weight:700; color:#b45309; margin:0 0 6px;">⚡ COUNTIFS automatique — bilan mensuel</p>
-            <p style="font-size:0.62rem; color:#333; margin:0 0 5px; font-family:monospace; background:#fef3c7; padding:5px 8px; border-radius:4px;">=COUNTIFS(statut,"ouverte",mois,3)</p>
-            <p style="font-size:0.58rem; color:#555; margin:0;">→ Mis à jour automatiquement à chaque nouvelle saisie.</p>
-        </div>
-
-    </div>
-
-</div>
-`;
-
 const olapVsOltp = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Données réelles — Yego sur GPSO</p>
 <h2 style="margin-top:0;">OLTP → OLAP : le même scooter, deux lectures</h2>
@@ -519,57 +460,115 @@ const olapVsOltp = `
 
 const definition = `
 <h2>Qu'est-ce qu'une base de données ?</h2>
-<div style="width:48px; height:3px; background:linear-gradient(90deg,#009fe3,#95c11f); border-radius:2px; margin:0 0 16px;"></div>
+<div style="width:48px; height:3px; background:linear-gradient(90deg,#009fe3,#95c11f); border-radius:2px; margin:0 0 10px;"></div>
 
-<div class="citation" style="margin-bottom:18px;">
-    <p>Un ensemble de <strong>tables liées entre elles</strong>, organisées autour d'un même sujet ou d'une même activité.</p>
+<div class="citation" style="margin-bottom:12px; padding:14px 18px !important;">
+    <p style="font-size:0.72rem !important; line-height:1.6 !important;">Les données font référence à toutes les informations capturées et stockées sur un seul individu, lieu, élément ou objet — appelé <strong>entité</strong> — ainsi que les <strong>attributs</strong> de cette entité. Elles sont organisées dans une base de données pour être facilement <strong>accessibles</strong>, <strong>gérées</strong> et <strong>mises à jour</strong>.</p>
 </div>
 
-<div class="fragment" style="display:flex; align-items:center; gap:0; margin-bottom:14px;">
+<!-- Schéma 1 : liste de courses -->
+<div class="row" style="gap:8px; align-items:center; margin-bottom:10px;">
 
-    <div style="flex:1; background:#f8fafc; border-radius:8px; padding:13px 14px; border:2px solid #1e40af;">
-        <p style="font-size:0.54rem; color:#1e40af; font-weight:700; font-family:monospace; margin:0 0 7px;">réclamations</p>
-        <table class="mockup-table" style="font-size:0.47em;">
-            <tr><th style="background:#1e40af; color:white;">id</th><th style="background:#fef3c7; color:#a16207;">id_ligne</th><th>motif</th></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td></tr>
-        </table>
+    <div style="flex:0.8;">
+        <p style="font-size:0.43rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">Voici des données</p>
+        <div style="background:#fffef5; border:1px solid #e2dcc8; border-radius:6px; padding:9px 14px; font-family:'IBM Plex Serif',serif; font-size:0.63rem; line-height:2.3; color:#333;">
+            ☐ &nbsp;Pain<br>
+            ☑ &nbsp;<span style="text-decoration:line-through; opacity:0.45;">Lait</span><br>
+            ☐ &nbsp;Oeufs<br>
+            ☑ &nbsp;<span style="text-decoration:line-through; opacity:0.45;">Fromage</span>
+        </div>
+        <p style="font-size:0.42rem; color:#aaa; margin:5px 0 0; font-style:italic; text-align:center;">liste de courses</p>
     </div>
 
-    <div style="padding:0 12px; text-align:center; flex-shrink:0;">
-        <div style="font-size:1.3rem; color:#a16207;">⇌</div>
-        <p style="font-size:0.48rem; color:#a16207; font-weight:700; margin:2px 0 0; text-transform:uppercase; letter-spacing:1px;">id_ligne</p>
+    <div style="font-size:1.2rem; color:var(--blue-dirmob); flex-shrink:0; text-align:center;">→</div>
+
+    <div class="offbeat-card" style="flex:1; padding:10px 12px;">
+        <p style="font-size:0.42rem; color:#aaa; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">(Entité) Quoi ?</p>
+        <p style="font-size:0.92rem; font-weight:700; color:var(--blue-dirmob); margin:0 0 7px; font-family:'IBM Plex Serif',serif;">ARTICLE</p>
+        <div class="separator" style="margin:5px 0;"></div>
+        <p style="font-size:0.48rem; font-weight:700; color:#666; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">Attributs</p>
+        <p style="font-size:0.52rem; color:#333; margin:0; font-family:monospace; line-height:2;">
+            <span style="background:#dbe4ff; padding:1px 7px; border-radius:3px; color:#1e40af; font-weight:700;">id</span>&nbsp;
+            <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">nom</span>&nbsp;
+            <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">quantite</span>&nbsp;
+            <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">achete</span>
+        </p>
     </div>
 
-    <div style="flex:1; background:#f8fafc; border-radius:8px; padding:13px 14px; border:2px solid #15803d;">
-        <p style="font-size:0.54rem; color:#15803d; font-weight:700; font-family:monospace; margin:0 0 7px;">lignes_bus</p>
-        <table class="mockup-table" style="font-size:0.47em;">
-            <tr><th style="background:#15803d; color:white;">id</th><th>numero</th><th style="background:#fef3c7; color:#a16207;">id_presta</th></tr>
-            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L1</td><td>389</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">P1</td></tr>
-            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">L2</td><td>160</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">P2</td></tr>
-        </table>
-    </div>
+    <div style="font-size:1.2rem; color:var(--blue-dirmob); flex-shrink:0; text-align:center;">→</div>
 
-    <div style="padding:0 12px; text-align:center; flex-shrink:0;">
-        <div style="font-size:1.3rem; color:#555;">⇌</div>
-        <p style="font-size:0.48rem; color:#555; font-weight:700; margin:2px 0 0; text-transform:uppercase; letter-spacing:1px;">id_presta</p>
-    </div>
-
-    <div style="flex:1; background:#f8fafc; border-radius:8px; padding:13px 14px; border:2px solid #555;">
-        <p style="font-size:0.54rem; color:#555; font-weight:700; font-family:monospace; margin:0 0 7px;">prestataires</p>
-        <table class="mockup-table" style="font-size:0.47em;">
-            <tr><th style="background:#555; color:white;">id</th><th>nom</th><th>debut_contrat</th><th>fin_contrat</th></tr>
-            <tr><td style="font-weight:700; color:#555;">P1</td><td>Keolis</td><td>2023-01-01</td><td>2027-12-31</td></tr>
-            <tr><td style="font-weight:700; color:#555;">P2</td><td>RATP</td><td>2021-03-01</td><td>2025-02-28</td></tr>
+    <div style="flex:1.25;">
+        <p style="font-size:0.43rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 5px; font-family:monospace;">TABLE : articles</p>
+        <table class="mockup-table" style="font-size:0.46em;">
+            <tr>
+                <th style="background:#1e40af; color:white; font-family:monospace;">id</th>
+                <th style="font-family:monospace;">nom</th>
+                <th style="font-family:monospace;">quantite</th>
+                <th style="font-family:monospace;">achete</th>
+            </tr>
+            <tr><td style="color:#1e40af; font-weight:700;">1</td><td>pain</td><td>1</td><td style="color:var(--red-alert);">non</td></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">2</td><td>lait</td><td>2</td><td style="color:var(--green-dirmob); font-weight:700;">oui</td></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">3</td><td>oeufs</td><td>6</td><td style="color:var(--red-alert);">non</td></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">4</td><td>fromage</td><td>1</td><td style="color:var(--green-dirmob); font-weight:700;">oui</td></tr>
         </table>
     </div>
 
 </div>
 
-<div class="fragment" style="background:#f0f9e8; border-radius:8px; padding:11px 18px; border-left:3px solid #95c11f;">
-    <p style="font-size:0.72rem; color:#444; margin:0; line-height:1.65;">
-        <strong>Base relationnelle :</strong> les tables sont liées par des identifiants communs — on peut croiser les données sans les dupliquer.
-    </p>
+<!-- Schéma 2 : restaurants (fragment) -->
+<div class="fragment">
+    <div class="separator"></div>
+    <div class="row" style="gap:8px; align-items:center;">
+
+        <div style="flex:0.8;">
+            <p style="font-size:0.43rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">Voici des données</p>
+            <div style="background:#fff8f0; border:1px solid #e2d0b8; border-radius:6px; padding:9px 14px; font-size:0.6rem; line-height:2.3; color:#333;">
+                🍽️&nbsp; Brasserie du Parc<br>
+                🍽️&nbsp; Le Bistrot<br>
+                🍽️&nbsp; Pizza Roma
+            </div>
+            <p style="font-size:0.42rem; color:#aaa; margin:5px 0 0; font-style:italic; text-align:center;">restaurants locaux</p>
+        </div>
+
+        <div style="font-size:1.2rem; color:var(--blue-dirmob); flex-shrink:0; text-align:center;">→</div>
+
+        <div class="offbeat-card card--green" style="flex:1; padding:10px 12px;">
+            <p style="font-size:0.42rem; color:#aaa; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">(Entité) Quoi ?</p>
+            <p style="font-size:0.92rem; font-weight:700; color:var(--green-dirmob); margin:0 0 7px; font-family:'IBM Plex Serif',serif;">RESTAURANT</p>
+            <div class="separator" style="margin:5px 0;"></div>
+            <p style="font-size:0.48rem; font-weight:700; color:#666; margin:0 0 4px; text-transform:uppercase; letter-spacing:1px;">Attributs</p>
+            <p style="font-size:0.52rem; color:#333; margin:0; font-family:monospace; line-height:2;">
+                <span style="background:#dbe4ff; padding:1px 7px; border-radius:3px; color:#1e40af; font-weight:700;">id</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">nom</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">adresse</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">ville</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">ouverture</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">fermeture</span>&nbsp;
+                <span style="background:var(--light-grey); padding:1px 7px; border-radius:3px;">note</span>
+            </p>
+        </div>
+
+        <div style="font-size:1.2rem; color:var(--blue-dirmob); flex-shrink:0; text-align:center;">→</div>
+
+        <div style="flex:1.35;">
+            <p style="font-size:0.43rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 5px; font-family:monospace;">TABLE : restaurants</p>
+            <table class="mockup-table" style="font-size:0.39em;">
+                <tr>
+                    <th style="background:#1e40af; color:white; font-family:monospace;">id</th>
+                    <th style="background:var(--green-dirmob); color:white; font-family:monospace;">nom</th>
+                    <th style="font-family:monospace;">adresse</th>
+                    <th style="font-family:monospace;">ville</th>
+                    <th style="font-family:monospace;">ouverture</th>
+                    <th style="font-family:monospace;">fermeture</th>
+                    <th style="font-family:monospace;">note</th>
+                </tr>
+                <tr><td style="color:#1e40af; font-weight:700;">1</td><td>Brasserie du Parc</td><td>12 r. de la Paix</td><td>Paris</td><td>08:00</td><td>22:00</td><td>4.5</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">2</td><td>Le Bistrot</td><td>5 av. Victor Hugo</td><td>Lyon</td><td>12:00</td><td>23:00</td><td>4.2</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">3</td><td>Pizza Roma</td><td>3 r. Gambetta</td><td>Paris</td><td>11:30</td><td>22:30</td><td>4.7</td></tr>
+            </table>
+        </div>
+
+    </div>
 </div>
 `;
 
@@ -659,7 +658,6 @@ export function Donnees() {
       />
 
       <section dangerouslySetInnerHTML={{ __html: definition }} />
-      <section dangerouslySetInnerHTML={{ __html: pourquoiBDD }} />
       <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
 

@@ -135,6 +135,65 @@ const listes = `
 </div>
 `;
 
+const impact = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 6px; font-weight:700;">La récompense</p>
+<h2 style="margin-top:0;">Données propres → résultats immédiats</h2>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Un Excel bien structuré devient une source de bilans automatiques — sans manipulation manuelle.</p>
+
+<div style="display:flex; gap:20px; align-items:flex-start;">
+
+    <div style="flex:1.2;">
+        <p style="font-size:0.54rem; color:#1e3a5f; background:#dbe4ff; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 8px;">📋 réclamations — table propre</p>
+        <table class="mockup-table" style="font-size:0.52em;">
+            <tr>
+                <th style="background:#1e40af; color:white;">id</th>
+                <th>date</th>
+                <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+                <th>motif</th>
+                <th>statut</th>
+            </tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td>07/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L2</td><td>avance</td><td>cloture</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L1</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R004</td><td>12/03/2026</td><td style="background:#fef3c7; color:#a16207; font-weight:700;">L3</td><td>retard</td><td>ouverte</td></tr>
+            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700; opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td><td style="opacity:0.35;">…</td></tr>
+        </table>
+        <p style="font-size:0.54rem; color:#15803d; margin:7px 0 0; font-weight:600;">✔ 1 info par cellule · 1 ligne par réclamation · 0 couleur de statut</p>
+    </div>
+
+    <div style="display:flex; align-items:center; font-size:1.6rem; color:#009fe3; flex-shrink:0; padding-top:36px;">→</div>
+
+    <div style="flex:1.4; display:flex; flex-direction:column; gap:10px;">
+
+        <div class="fragment" style="background:#f0f9e8; border-radius:8px; padding:11px 14px; border-left:4px solid #95c11f;">
+            <p style="font-size:0.6rem; font-weight:700; color:#4a7c00; margin:0 0 7px;">📊 TCD en 2 clics — réclamations par prestataire</p>
+            <table class="mockup-table" style="font-size:0.5em;">
+                <tr><th>Prestataire</th><th style="background:#dcfce7; color:#15803d;">Nb réclamations</th></tr>
+                <tr><td>Keolis</td><td style="color:#15803d; font-weight:700;">3</td></tr>
+                <tr><td>RATP</td><td style="color:#15803d; font-weight:700;">1</td></tr>
+            </table>
+        </div>
+
+        <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:11px 14px; border-left:4px solid #2563eb;">
+            <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 7px;">🔍 Filtre instantané — réclamations ouvertes sur L1</p>
+            <table class="mockup-table" style="font-size:0.5em;">
+                <tr><th style="background:#1e40af; color:white;">id</th><th>date</th><th>motif</th><th>statut</th></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
+                <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03/2026</td><td>retard</td><td style="color:#15803d; font-weight:700;">ouverte</td></tr>
+            </table>
+        </div>
+
+        <div class="fragment" style="background:#fff8e1; border-radius:8px; padding:11px 14px; border-left:4px solid #f59e0b;">
+            <p style="font-size:0.6rem; font-weight:700; color:#b45309; margin:0 0 6px;">⚡ COUNTIFS automatique — bilan mensuel</p>
+            <p style="font-size:0.62rem; color:#333; margin:0 0 5px; font-family:monospace; background:#fef3c7; padding:5px 8px; border-radius:4px;">=COUNTIFS(statut,"ouverte",mois,3)</p>
+            <p style="font-size:0.58rem; color:#555; margin:0;">→ Mis à jour automatiquement à chaque nouvelle saisie.</p>
+        </div>
+
+    </div>
+
+</div>
+`;
+
 export function Module3() {
   return (
     <>
@@ -146,6 +205,7 @@ export function Module3() {
       <section dangerouslySetInnerHTML={{ __html: eclatement }} />
       <section dangerouslySetInnerHTML={{ __html: couleur }} />
       <section dangerouslySetInnerHTML={{ __html: listes }} />
+      <section dangerouslySetInnerHTML={{ __html: impact }} />
     </>
   );
 }
