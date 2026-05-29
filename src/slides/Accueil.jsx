@@ -52,6 +52,270 @@ const titre = `
 </div>
 `;
 
+const histoire = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#f59e0b; margin:0 0 6px; font-weight:700;">Pour commencer — une histoire</p>
+<h2 style="margin:0 0 4px; line-height:1.2;">Les Gringos partent aux Bahamas 🏝️</h2>
+<p style="font-size:0.72rem; color:#555; margin:0 0 14px; line-height:1.6;">L'hôtel permet de facturer les dépenses sur la chambre. Michel dit aux enfants : <strong>"Notez ce que vous mettez sur la chambre, je vérifierai à la fin."</strong></p>
+
+<div style="margin-bottom:14px; border-radius:8px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,0.10);">
+    <div style="background:#0f4c75; padding:7px 14px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1rem;">📂</span>
+        <p style="font-size:0.52rem; color:rgba(255,255,255,0.75); margin:0; font-family:monospace;">notes_depenses.xlsx — chacun remplit comme il veut</p>
+    </div>
+    <table style="width:100%; border-collapse:collapse; font-size:0.54em;">
+        <tr>
+            <th style="background:#7c3aed; color:white; padding:8px 14px; text-align:left;">Claire</th>
+            <th style="background:#dc2626; color:white; padding:8px 14px; text-align:left;">Junior</th>
+            <th style="background:#0284c7; color:white; padding:8px 14px; text-align:left;">Michael Jr</th>
+            <th style="background:#d97706; color:white; padding:8px 14px; text-align:left;">Jay</th>
+        </tr>
+        <tr>
+            <td style="padding:7px 14px; background:#faf5ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">bijou souvenir 12€</td>
+            <td style="padding:7px 14px; background:#fff5f5; border-bottom:1px solid #e5e7eb; font-family:monospace;">HBO 9,99$</td>
+            <td style="padding:7px 14px; background:#eff6ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">glace + soda 4€</td>
+            <td style="padding:7px 14px; background:#fffbeb; border-bottom:1px solid #e5e7eb; font-family:monospace;">Spa Bahamas — 45€</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 14px; background:#faf5ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">t-shirt Bahamas 20</td>
+            <td style="padding:7px 14px; background:#fff5f5; border-bottom:1px solid #e5e7eb; font-family:monospace;">Canal+ Sport €14</td>
+            <td style="padding:7px 14px; background:#eff6ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">carte postale 2,50€</td>
+            <td style="padding:7px 14px; background:#fffbeb; border-bottom:1px solid #e5e7eb; font-family:monospace;">2 cocktails 18</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 14px; background:#faf5ff; font-family:monospace;">collier 15,00€</td>
+            <td style="padding:7px 14px; background:#fff5f5; font-family:monospace;">Netflix 1 sem. 8€</td>
+            <td style="padding:7px 14px; background:#eff6ff; font-family:monospace;">jeux arcade ~10€</td>
+            <td style="padding:7px 14px; background:#fffbeb; font-family:monospace;">repas plage 35€</td>
+        </tr>
+    </table>
+</div>
+
+<div style="display:flex; gap:10px;">
+    <div class="fragment" style="flex:1; background:#1e293b; border-radius:8px; padding:11px 18px; display:flex; align-items:center; gap:14px;">
+        <div style="font-size:1.6rem; flex-shrink:0;">✈️</div>
+        <p style="font-size:0.72rem; color:white; margin:0; line-height:1.6;">
+            Retour à la maison. La facture arrive.<br>
+            <strong style="color:#fcd34d;">"Combien Junior a mis en chaînes payantes ?"</strong>
+        </p>
+    </div>
+    <div class="fragment" style="flex:1; background:#fee2e2; border-radius:8px; padding:11px 18px; border-left:4px solid #dc2626;">
+        <p style="font-size:0.58rem; font-weight:700; color:#dc2626; margin:0 0 5px; font-family:monospace;">=SUMIF(range, "chaîne payante", montants) → 0</p>
+        <p style="font-size:0.56rem; color:#7f1d1d; margin:0; line-height:1.7;">
+            <code>"HBO 9,99$"</code> · <code>"Canal+ Sport €14"</code> · <code>"Netflix 1 sem. 8€"</code><br>
+            Trois écritures. Zéro correspondance.
+        </p>
+    </div>
+</div>
+`;
+
+const bonneStructure = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#f59e0b; margin:0 0 6px; font-weight:700;">Les Gringos — la structure qui répond</p>
+<h2 style="margin:0 0 8px; line-height:1.2;">L'hôtel a déjà un catalogue. Michel n'a qu'à s'en servir.</h2>
+
+<div style="display:flex; gap:0; align-items:flex-start; margin-bottom:10px;">
+
+    <!-- depenses_chambre -->
+    <div style="flex:1.9;">
+        <p style="font-size:0.44rem; font-weight:700; color:#15803d; font-family:monospace; margin:0 0 3px;">depenses_chambre &nbsp;<span style="color:#888; font-weight:400; font-style:italic;">— 1 ligne = 1 dépense</span></p>
+        <table class="mockup-table" style="font-size:0.44em; width:100%;">
+            <tr>
+                <th style="background:#15803d; color:white;">id</th>
+                <th>membre</th>
+                <th style="background:#fef3c7; color:#a16207;">id_service ↗</th>
+                <th>montant</th>
+                <th>note</th>
+            </tr>
+            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">1</td><td>Claire</td><td style="background:#fef9c3; color:#92400e; font-weight:700;">S001</td><td>12,00</td><td>bijou</td></tr>
+            <tr style="background:#fff0f0;">
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">2</td>
+                <td style="font-weight:700; color:#dc2626;">Junior</td>
+                <td style="background:#fef3c7; color:#a16207; font-weight:700; outline:2px solid #d97706; outline-offset:-1px;">S002</td>
+                <td style="font-weight:700; color:#dc2626;">9,99</td><td>HBO</td>
+            </tr>
+            <tr style="background:#fff0f0;">
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">3</td>
+                <td style="font-weight:700; color:#dc2626;">Junior</td>
+                <td style="background:#fef3c7; color:#a16207; font-weight:700; outline:2px solid #d97706; outline-offset:-1px;">S002</td>
+                <td style="font-weight:700; color:#dc2626;">14,00</td><td>Canal+ Sport</td>
+            </tr>
+            <tr style="background:#fff0f0;">
+                <td style="background:#dcfce7; color:#15803d; font-weight:700;">4</td>
+                <td style="font-weight:700; color:#dc2626;">Junior</td>
+                <td style="background:#fef3c7; color:#a16207; font-weight:700; outline:2px solid #d97706; outline-offset:-1px;">S002</td>
+                <td style="font-weight:700; color:#dc2626;">8,00</td><td>Netflix 1 sem.</td>
+            </tr>
+            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">5</td><td>Claire</td><td style="background:#fef9c3; color:#92400e; font-weight:700;">S001</td><td>20,00</td><td>t-shirt</td></tr>
+            <tr><td style="background:#dcfce7; color:#15803d; font-weight:700;">6</td><td>Jay</td><td style="background:#fef9c3; color:#92400e; font-weight:700;">S004</td><td>45,00</td><td>spa</td></tr>
+        </table>
+    </div>
+
+    <!-- FK arrow -->
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px 10px 0; flex-shrink:0; gap:1px;">
+        <span style="font-size:0.38rem; color:#a16207; font-family:monospace; font-weight:700;">FK</span>
+        <span style="font-size:1.1rem; color:#a16207; line-height:1;">→</span>
+    </div>
+
+    <!-- catalogue_hotel -->
+    <div style="flex:0.92;">
+        <p style="font-size:0.44rem; font-weight:700; color:#7c3aed; font-family:monospace; margin:0 0 3px;">catalogue_hotel &nbsp;<span style="color:#888; font-weight:400; font-style:italic;">— fourni par l'hôtel</span></p>
+        <table class="mockup-table" style="font-size:0.44em; width:100%;">
+            <tr><th style="background:#7c3aed; color:white;">id</th><th>service</th></tr>
+            <tr><td style="background:#f3e8ff; color:#7c3aed; font-weight:700;">S001</td><td>souvenir</td></tr>
+            <tr style="outline:2px solid #d97706; outline-offset:-1px;">
+                <td style="background:#fef3c7; color:#a16207; font-weight:700;">S002</td>
+                <td style="font-weight:700; color:#a16207;">chaîne_payante</td>
+            </tr>
+            <tr><td style="background:#f3e8ff; color:#7c3aed; font-weight:700;">S003</td><td>restauration</td></tr>
+            <tr><td style="background:#f3e8ff; color:#7c3aed; font-weight:700;">S004</td><td>spa</td></tr>
+        </table>
+        <p style="font-size:0.4rem; color:#888; margin:5px 0 0; line-height:1.7; font-style:italic;">Liste fermée par l'hôtel.<br><code style="background:#fef3c7; padding:0 3px; border-radius:2px;">"HBO 9,99$"</code> → <strong>S002</strong><br>= chaîne_payante</p>
+    </div>
+
+</div>
+
+<!-- Vue après jointure -->
+<div class="fragment">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <div style="height:1px; flex:1; background:#e2e8f0;"></div>
+        <p style="font-size:0.5rem; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin:0; white-space:nowrap;">Vue après jointure — Michel peut enfin voir</p>
+        <div style="height:1px; flex:1; background:#e2e8f0;"></div>
+    </div>
+    <div style="display:flex; gap:12px; align-items:flex-start;">
+        <table class="mockup-table" style="font-size:0.5em; flex:1;">
+            <tr>
+                <th>membre</th>
+                <th style="background:#f3e8ff; color:#7c3aed;">service</th>
+                <th style="background:#dcfce7; color:#15803d;">total dépensé</th>
+            </tr>
+            <tr style="background:#fff0f0; outline:2px solid #dc2626; outline-offset:-1px;">
+                <td style="font-weight:700; color:#dc2626;">Junior</td>
+                <td style="color:#a16207; font-weight:700;">chaîne_payante</td>
+                <td style="color:#dc2626; font-weight:700; font-size:1.1em;">31,99 € 😱</td>
+            </tr>
+            <tr><td>Claire</td><td style="color:#7c3aed;">souvenir</td><td style="color:#15803d; font-weight:700;">32,00 €</td></tr>
+            <tr><td>Jay</td><td style="color:#7c3aed;">spa</td><td style="color:#15803d; font-weight:700;">45,00 €</td></tr>
+            <tr><td>Michael Jr</td><td style="color:#7c3aed;">restauration</td><td style="color:#15803d; font-weight:700;">16,50 €</td></tr>
+        </table>
+        <div class="fragment" style="flex:1; background:#1e293b; border-radius:8px; padding:12px 16px; display:flex; flex-direction:column; gap:8px;">
+            <p style="font-size:0.52rem; font-family:monospace; color:#fcd34d; font-weight:700; margin:0;">=SUMIFS(montant, membre,"Junior", id_service,"S002")</p>
+            <p style="font-size:0.7rem; color:white; font-weight:700; margin:0;">→ 31,99 € ⚠</p>
+            <p style="font-size:0.54rem; color:rgba(255,255,255,0.6); margin:0; line-height:1.6;">Michel n'avait pas prévu la question.<br>La structure, elle, avait déjà la réponse.</p>
+        </div>
+    </div>
+</div>
+`;
+
+const resolution = `
+<div style="max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+
+    <div style="text-align:center;">
+        <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#64748b; margin:0 0 8px; font-weight:700;">Ce que l'histoire des Gringos nous dit</p>
+        <h2 style="margin:0; line-height:1.2;">Excel est permissif.<br>Une base de données parle un langage commun.</h2>
+    </div>
+
+    <div style="display:flex; gap:14px; align-items:stretch;">
+
+        <div style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #dc2626;">
+            <div style="background:#dc2626; padding:8px 16px;">
+                <p style="font-size:0.6rem; font-weight:700; color:white; margin:0;">❌ Excel — chacun sa saisie</p>
+            </div>
+            <div style="background:#fff5f5; padding:14px 16px; display:flex; flex-direction:column; gap:8px;">
+                <p style="font-size:0.62rem; color:#7f1d1d; margin:0; line-height:1.7;">
+                    <code>"HBO 9,99$"</code><br>
+                    <code>"Canal+ Sport €14"</code><br>
+                    <code>"Netflix 1 sem. 8€"</code>
+                </p>
+                <p style="font-size:0.6rem; font-family:monospace; color:#dc2626; font-weight:700; margin:0; background:#fee2e2; border-radius:5px; padding:6px 10px;">=SUMIF(…) → <strong>0</strong></p>
+                <p style="font-size:0.56rem; color:#991b1b; margin:0; font-style:italic;">Trois écritures différentes.<br>Excel ne sait pas que c'est la même chose.</p>
+            </div>
+        </div>
+
+        <div style="display:flex; align-items:center; flex-shrink:0; font-size:1.6rem; color:#009fe3;">→</div>
+
+        <div class="fragment" style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #15803d;">
+            <div style="background:#15803d; padding:8px 16px;">
+                <p style="font-size:0.6rem; font-weight:700; color:white; margin:0;">✔ Base de données — un langage commun</p>
+            </div>
+            <div style="background:#f0fdf4; padding:14px 16px; display:flex; flex-direction:column; gap:8px;">
+                <p style="font-size:0.62rem; color:#14532d; margin:0; line-height:1.7;">
+                    <code style="background:#dcfce7; padding:0 4px; border-radius:3px;">chaîne_payante</code><br>
+                    <code style="background:#dcfce7; padding:0 4px; border-radius:3px;">chaîne_payante</code><br>
+                    <code style="background:#dcfce7; padding:0 4px; border-radius:3px;">chaîne_payante</code>
+                </p>
+                <p style="font-size:0.6rem; font-family:monospace; color:#15803d; font-weight:700; margin:0; background:#dcfce7; border-radius:5px; padding:6px 10px;">=SUMIF(…) → <strong>31,99 €</strong></p>
+                <p style="font-size:0.56rem; color:#166534; margin:0; font-style:italic;">Une liste fermée, une valeur partagée.<br>Le bilan tombe en 30 secondes.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fragment" style="background:#1e293b; border-radius:10px; padding:16px 24px; text-align:center;">
+        <p style="font-size:0.9rem; color:white; font-weight:700; margin:0 0 6px; font-family:'IBM Plex Serif',serif; line-height:1.4;">
+            Parler un langage commun — c'est ça, une base de données.
+        </p>
+        <p style="font-size:0.66rem; color:rgba(255,255,255,0.6); margin:0;">
+            Et c'est ce que nous allons construire ensemble aujourd'hui.
+        </p>
+    </div>
+
+</div>
+`;
+
+const solution = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 6px; font-weight:700;">Les Gringos — et vous</p>
+<h2 style="margin:0 0 12px; line-height:1.2;">Parler la même langue</h2>
+
+<div style="display:flex; gap:16px; align-items:stretch; margin-bottom:18px;">
+
+    <div style="flex:1; background:#fff8f0; border-radius:10px; padding:16px 20px; border:2px solid #f59e0b;">
+        <p style="font-size:0.52rem; font-weight:700; color:#f59e0b; text-transform:uppercase; letter-spacing:2px; margin:0 0 10px;">🏝️ Les Gringos</p>
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+            <div style="flex:1; background:#fee2e2; border-radius:6px; padding:8px 10px; text-align:center;">
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0 0 2px; font-weight:700;">"HBO 9,99$"</p>
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0 0 2px; font-weight:700;">"Canal+ Sport €14"</p>
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0; font-weight:700;">"Netflix 1 sem. 8€"</p>
+            </div>
+            <div style="display:flex; align-items:center; color:var(--blue-dirmob); font-size:1.2rem; flex-shrink:0;">→</div>
+            <div style="flex:1; background:#dcfce7; border-radius:6px; padding:8px 10px; text-align:center;">
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0 0 2px; font-weight:700;">divertissement</p>
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0 0 2px; font-weight:700;">divertissement</p>
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0; font-weight:700;">divertissement</p>
+            </div>
+        </div>
+        <p style="font-size:0.52rem; color:#555; margin:0; line-height:1.6; font-style:italic;">Liste fermée dans <code>catalogue_hotel</code>.<br>SUMIF fonctionne. Junior est identifié.</p>
+    </div>
+
+    <div class="fragment" style="flex:1; background:#f0f8ff; border-radius:10px; padding:16px 20px; border:2px solid var(--blue-dirmob);">
+        <p style="font-size:0.52rem; font-weight:700; color:var(--blue-dirmob); text-transform:uppercase; letter-spacing:2px; margin:0 0 10px;">🚌 Vos réclamations DIRMOB</p>
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+            <div style="flex:1; background:#fee2e2; border-radius:6px; padding:8px 10px; text-align:center;">
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0 0 2px; font-weight:700;">"retard 10 min"</p>
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0 0 2px; font-weight:700;">"Retard de 10mn"</p>
+                <p style="font-size:0.48rem; color:#dc2626; font-family:monospace; margin:0; font-weight:700;">"En retard (~10min)"</p>
+            </div>
+            <div style="display:flex; align-items:center; color:var(--blue-dirmob); font-size:1.2rem; flex-shrink:0;">→</div>
+            <div style="flex:1; background:#dcfce7; border-radius:6px; padding:8px 10px; text-align:center;">
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0 0 2px; font-weight:700;">retard</p>
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0 0 2px; font-weight:700;">retard</p>
+                <p style="font-size:0.48rem; color:#15803d; font-family:monospace; margin:0; font-weight:700;">retard</p>
+            </div>
+        </div>
+        <p style="font-size:0.52rem; color:#555; margin:0; line-height:1.6; font-style:italic;">Une liste fermée dans <code>ref_motifs</code>.<br>COUNTIF fonctionne. La directrice a son bilan.</p>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:linear-gradient(135deg, #009fe3 0%, #0369a1 50%, #95c11f 100%); border-radius:10px; padding:18px 28px; text-align:center;">
+    <p style="font-size:1rem; color:white; font-weight:700; margin:0 0 6px; font-family:'IBM Plex Serif',serif;">
+        Ce n'est pas de la technique.
+    </p>
+    <p style="font-size:0.78rem; color:rgba(255,255,255,0.85); margin:0; line-height:1.6;">
+        C'est décider ensemble d'appeler les choses par le même nom.<br>
+        <strong style="color:white;">C'est ça, une base robuste.</strong>
+    </p>
+</div>
+`;
+
 const enjeu = `
 <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">L'enjeu</p>
 <h2 style="margin:0 0 3px; font-size:1.3rem; line-height:1.25;">Excel est permissif. Une base robuste, elle, répond.</h2>
@@ -382,8 +646,9 @@ export function Accueil() {
         dangerouslySetInnerHTML={{ __html: titre }}
       />
       <section>
-        <section dangerouslySetInnerHTML={{ __html: enjeu }} />
-        <section dangerouslySetInnerHTML={{ __html: workflow }} />
+        <section dangerouslySetInnerHTML={{ __html: histoire }} />
+        <section dangerouslySetInnerHTML={{ __html: bonneStructure }} />
+        <section dangerouslySetInnerHTML={{ __html: resolution }} />
       </section>
       <section dangerouslySetInnerHTML={{ __html: programme }} />
     </>

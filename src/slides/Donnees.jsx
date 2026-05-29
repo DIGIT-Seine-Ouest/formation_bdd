@@ -1021,6 +1021,137 @@ const relationSchema = `
 </div>
 `;
 
+
+const dataLineage = `
+<p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 2px; font-weight:700;">Commun numérique — au-delà de votre service</p>
+<h2 style="margin:0 0 6px; line-height:1.1;">Vos données Vélib voyagent loin — elles doivent être propres</h2>
+
+<svg viewBox="0 0 1060 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+  <defs>
+    <marker id="dl-grey" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#94a3b8"/>
+    </marker>
+    <marker id="dl-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#0f766e"/>
+    </marker>
+    <marker id="dl-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#15803d"/>
+    </marker>
+    <marker id="dl-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#7c3aed"/>
+    </marker>
+    <linearGradient id="dl-src" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#009fe3"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ═══════════════ ARROWS ═══════════════ -->
+
+  <!-- Source → Arcopole (interne, tirets) -->
+  <path d="M 175 205 C 212 205,212 83,229 83"
+        fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8,4"
+        marker-end="url(#dl-grey)"/>
+
+  <!-- Source → data.seineouest -->
+  <path d="M 175 295 L 229 295"
+        fill="none" stroke="#0f766e" stroke-width="3"
+        marker-end="url(#dl-teal)"/>
+
+  <!-- data.seineouest → 7 villes -->
+  <path d="M 470 295 L 529 295"
+        fill="none" stroke="#0f766e" stroke-width="3"
+        marker-end="url(#dl-teal)"/>
+
+  <!-- 7 villes → Sites internet -->
+  <path d="M 710 268 C 748 268,748 120,779 120"
+        fill="none" stroke="#15803d" stroke-width="3"
+        marker-end="url(#dl-green)"/>
+
+  <!-- 7 villes → Apps mobiles -->
+  <path d="M 710 295 C 748 295,748 255,779 255"
+        fill="none" stroke="#15803d" stroke-width="3"
+        marker-end="url(#dl-green)"/>
+
+  <!-- 7 villes → Tableaux de bord -->
+  <path d="M 710 322 C 748 322,748 403,779 403"
+        fill="none" stroke="#7c3aed" stroke-width="3"
+        marker-end="url(#dl-purple)"/>
+
+  <!-- ═══════════════ NODES ═══════════════ -->
+
+  <!-- SOURCE -->
+  <rect x="10" y="130" width="165" height="230" rx="12" fill="url(#dl-src)" style="filter:drop-shadow(0 6px 16px rgba(0,159,227,0.4))"/>
+  <text x="92" y="180" text-anchor="middle" font-size="32" font-family="system-ui">🗂️</text>
+  <text x="92" y="208" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">Agents DIRMOB</text>
+  <line x1="28" y1="219" x2="157" y2="219" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+  <text x="92" y="240" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">station_id · nom</text>
+  <text x="92" y="257" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">vélos_dispo · statut</text>
+  <text x="92" y="274" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">commune · coords</text>
+  <text x="92" y="291" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">incident · horodatage</text>
+  <text x="92" y="316" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">propre et à jour</text>
+  <text x="92" y="330" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">→ Base Vélib SOET</text>
+
+  <!-- LÉGENDE -->
+  <rect x="230" y="148" width="216" height="88" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="244" y="168" fill="#475569" font-size="12" font-weight="600" font-family="Roboto,system-ui">Légende</text>
+  <line x1="244" y1="191" x2="287" y2="191" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7,3"/>
+  <polygon points="281,187.5 288,191 281,194.5" fill="#94a3b8"/>
+  <text x="298" y="196" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">Usage interne</text>
+  <line x1="244" y1="220" x2="287" y2="220" stroke="#0f766e" stroke-width="2.5"/>
+  <polygon points="281,216.5 288,220 281,223.5" fill="#0f766e"/>
+  <text x="298" y="225" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">Open Data public</text>
+
+  <!-- ARCOPOLE PRO -->
+  <rect x="230" y="22" width="245" height="118" rx="10" fill="#1e3a5f"/>
+  <rect x="241" y="31" width="82" height="22" rx="11" fill="rgba(255,255,255,0.14)"/>
+  <text x="282" y="46" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11" font-family="system-ui">🔒 Interne</text>
+  <text x="352" y="82" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🏢 Arcopole Pro</text>
+  <text x="352" y="104" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="12" font-family="Roboto,system-ui">Services techniques</text>
+  <text x="352" y="124" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="12" font-family="Roboto,system-ui">Directions territoriales</text>
+
+  <!-- DATA.SEINEOUEST.FR -->
+  <rect x="230" y="250" width="245" height="92" rx="10" fill="#0f766e"/>
+  <rect x="241" y="259" width="74" height="22" rx="11" fill="rgba(255,255,255,0.14)"/>
+  <text x="278" y="274" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11" font-family="system-ui">🌍 Public</text>
+  <text x="352" y="305" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🌐 data.seineouest.fr</text>
+  <text x="352" y="327" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="12" font-family="Roboto,system-ui">Open Data Seine-Ouest</text>
+
+  <!-- 7 VILLES -->
+  <rect x="530" y="228" width="180" height="140" rx="10" fill="#0d6657"/>
+  <text x="620" y="274" text-anchor="middle" font-size="28" font-family="system-ui">🏙️</text>
+  <text x="620" y="302" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">7 villes</text>
+  <text x="620" y="322" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="12" font-family="Roboto,system-ui">membres SOET</text>
+  <text x="620" y="342" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Portail open data local</text>
+  <text x="620" y="358" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">+ intégration sites villes</text>
+
+  <!-- SITES INTERNET -->
+  <rect x="780" y="65" width="272" height="112" rx="10" fill="#15803d"/>
+  <text x="916" y="105" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🌍 Sites internet</text>
+  <text x="916" y="126" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12" font-family="Roboto,system-ui">Portails municipaux</text>
+  <text x="916" y="146" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="11" font-style="italic" font-family="Roboto,system-ui">Carte des stations vélib</text>
+  <text x="916" y="164" text-anchor="middle" fill="rgba(255,255,255,0.62)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Disponibilité en temps réel</text>
+
+  <!-- APPLICATIONS MOBILES -->
+  <rect x="780" y="210" width="272" height="96" rx="10" fill="#15803d"/>
+  <text x="916" y="250" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">📱 Applications mobiles</text>
+  <text x="916" y="271" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12" font-family="Roboto,system-ui">Transport · Services publics</text>
+  <text x="916" y="291" text-anchor="middle" fill="rgba(255,255,255,0.68)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">"Vélos dispo près de chez moi"</text>
+
+  <!-- TABLEAUX DE BORD ÉLUS -->
+  <rect x="780" y="340" width="272" height="132" rx="10" fill="#7c3aed" style="filter:drop-shadow(0 6px 16px rgba(124,58,237,0.35))"/>
+  <text x="916" y="381" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">📊 Tableaux de bord</text>
+  <text x="916" y="402" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="12.5" font-family="Roboto,system-ui">Élus · Décisions politiques</text>
+  <text x="916" y="422" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11.5" font-family="Roboto,system-ui">Budget · Nouvelles stations</text>
+  <text x="916" y="441" text-anchor="middle" fill="rgba(255,255,255,0.68)" font-size="11" font-style="italic" font-family="Roboto,system-ui">Maillage du territoire</text>
+  <text x="916" y="459" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">Investissements · Politiques mobilité</text>
+
+  <!-- FOOTER -->
+  <line x1="10" y1="481" x2="1050" y2="481" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="530" y="496" text-anchor="middle" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">💡  Donnée mal saisie → carte erronée · appli défaillante · élu qui décide sur de mauvaises bases</text>
+</svg>
+`;
+
 export function Donnees() {
   return (
     <>
@@ -1042,6 +1173,7 @@ export function Donnees() {
         <section dangerouslySetInnerHTML={{ __html: relationnel }} />
         <section dangerouslySetInnerHTML={{ __html: relationSchema }} />
         <section dangerouslySetInnerHTML={{ __html: relationHub }} />
+        <section dangerouslySetInnerHTML={{ __html: dataLineage }} />
       </section>
 
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
