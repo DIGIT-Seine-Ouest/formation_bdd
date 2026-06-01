@@ -1,6 +1,6 @@
 const intro = `
 <div style="text-align:left; max-width:680px; margin:0 auto; color:white;">
-    <p class="section-intro-label" style="color:white;">Module 1 · 15 min</p>
+    <p class="section-intro-label" style="color:white;">Partie 2</p>
     <p class="section-intro-title">Tableau de suivi<br>vs<br>Base de données</p>
     <p class="section-intro-sub">La différence fondamentale — et pourquoi elle change tout.</p>
 </div>

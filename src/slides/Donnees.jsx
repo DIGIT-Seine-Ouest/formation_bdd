@@ -710,7 +710,7 @@ const definition = `
             <table class="mockup-table" style="font-size:0.39em;">
                 <tr>
                     <th style="background:#1e40af; color:white; font-family:monospace;">id</th>
-                    <th style="background:var(--green-dirmob); color:white; font-family:monospace;">nom</th>
+                    <th style="font-family:monospace;">nom</th>
                     <th style="font-family:monospace;">adresse</th>
                     <th style="font-family:monospace;">ville</th>
                     <th style="font-family:monospace;">ouverture</th>
@@ -760,10 +760,6 @@ const vocabulaire = `
         <p style="font-size:0.6rem; font-weight:700; color:#1e40af; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Identifiant (PK)</p>
         <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Désigne la ligne sans ambiguïté. Unique, stable, non signifiant.</p>
     </div>
-    <div class="fragment" style="background:#fef3c7; border-radius:7px; padding:10px 12px; border-left:3px solid #a16207;">
-        <p style="font-size:0.6rem; font-weight:700; color:#a16207; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Clé étrangère (FK)</p>
-        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Pointe vers une autre table. C'est le lien entre les données.</p>
-    </div>
     <div class="fragment" style="background:#dcfce7; border-radius:7px; padding:10px 12px; border-left:3px solid #15803d;">
         <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Enregistrement</p>
         <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Une ligne = un fait réel complet. Lisez-la en une phrase — si c'est fluide, la table est bien construite.</p>
@@ -771,6 +767,10 @@ const vocabulaire = `
     <div class="fragment" style="background:#ede9fe; border-radius:7px; padding:10px 12px; border-left:3px solid #6b21a8;">
         <p style="font-size:0.6rem; font-weight:700; color:#6b21a8; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Attribut</p>
         <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">La valeur à l'intersection d'un champ et d'un enregistrement.</p>
+    </div>
+    <div class="fragment" style="background:#fef3c7; border-radius:7px; padding:10px 12px; border-left:3px solid #a16207;">
+        <p style="font-size:0.6rem; font-weight:700; color:#a16207; margin:0 0 3px; text-transform:uppercase; letter-spacing:1px;">Clé étrangère (FK)</p>
+        <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.5;">Pointe vers une autre table. C'est le lien entre les données.</p>
     </div>
 </div>
 
@@ -1024,20 +1024,20 @@ const relationSchema = `
 
 const dataLineage = `
 <p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 2px; font-weight:700;">Commun numérique — au-delà de votre service</p>
-<h2 style="margin:0 0 6px; line-height:1.1;">Vos données Vélib voyagent loin — elles doivent être propres</h2>
+<h2 style="margin:0 0 6px; line-height:1.1;">Vos données voyagent loin — elles doivent être propres</h2>
 
-<svg viewBox="0 0 1060 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+<svg viewBox="0 0 1060 430" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
   <defs>
-    <marker id="dl-grey" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#94a3b8"/>
-    </marker>
-    <marker id="dl-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <marker id="dl-pub" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0,10 3.5,0 7" fill="#0f766e"/>
     </marker>
-    <marker id="dl-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <marker id="dl-pub2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0,10 3.5,0 7" fill="#15803d"/>
     </marker>
-    <marker id="dl-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <marker id="dl-int" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#1e3a5f"/>
+    </marker>
+    <marker id="dl-tdb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0,10 3.5,0 7" fill="#7c3aed"/>
     </marker>
     <linearGradient id="dl-src" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -1046,110 +1046,218 @@ const dataLineage = `
     </linearGradient>
   </defs>
 
-  <!-- ═══════════════ ARROWS ═══════════════ -->
+  <!-- ═══════ SWIM LANE BACKGROUNDS ═══════ -->
+  <rect x="0" y="0" width="1060" height="205" rx="0" fill="#f0fdf4" opacity="0.7"/>
+  <rect x="0" y="211" width="1060" height="219" rx="0" fill="#eff6ff" opacity="0.7"/>
 
-  <!-- Source → Arcopole (interne, tirets) -->
-  <path d="M 175 205 C 212 205,212 83,229 83"
-        fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8,4"
-        marker-end="url(#dl-grey)"/>
+  <!-- Lane labels -->
+  <text x="182" y="16" fill="#15803d" font-size="10" font-weight="700" font-family="Roboto,system-ui" letter-spacing="1.5">🌍  OPEN DATA · PUBLIC</text>
+  <text x="182" y="227" fill="#1e3a5f" font-size="10" font-weight="700" font-family="Roboto,system-ui" letter-spacing="1.5">🔒  USAGE INTERNE</text>
 
-  <!-- Source → data.seineouest -->
-  <path d="M 175 295 L 229 295"
-        fill="none" stroke="#0f766e" stroke-width="3"
-        marker-end="url(#dl-teal)"/>
+  <!-- Divider -->
+  <line x1="182" y1="207" x2="1052" y2="207" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
 
-  <!-- data.seineouest → 7 villes -->
-  <path d="M 470 295 L 529 295"
-        fill="none" stroke="#0f766e" stroke-width="3"
-        marker-end="url(#dl-teal)"/>
+  <!-- ═══════ ARROWS ═══════ -->
 
+  <!-- Source → data.seineouest.fr -->
+  <path d="M 169 80 L 244 80" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#dl-pub)"/>
+  <!-- data.SO → 7 villes -->
+  <path d="M 459 80 L 540 80" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#dl-pub)"/>
   <!-- 7 villes → Sites internet -->
-  <path d="M 710 268 C 748 268,748 120,779 120"
-        fill="none" stroke="#15803d" stroke-width="3"
-        marker-end="url(#dl-green)"/>
-
+  <path d="M 715 65 L 800 65" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#dl-pub2)"/>
   <!-- 7 villes → Apps mobiles -->
-  <path d="M 710 295 C 748 295,748 255,779 255"
-        fill="none" stroke="#15803d" stroke-width="3"
-        marker-end="url(#dl-green)"/>
+  <path d="M 715 105 C 755 105,755 148,800 148" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#dl-pub2)"/>
 
-  <!-- 7 villes → Tableaux de bord -->
-  <path d="M 710 322 C 748 322,748 403,779 403"
-        fill="none" stroke="#7c3aed" stroke-width="3"
-        marker-end="url(#dl-purple)"/>
+  <!-- Source → Arcopole (dashed interne) -->
+  <path d="M 169 312 L 244 312" fill="none" stroke="#1e3a5f" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#dl-int)"/>
+  <!-- Arcopole → Tableaux de bord -->
+  <path d="M 459 312 L 540 312" fill="none" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#dl-tdb)"/>
 
-  <!-- ═══════════════ NODES ═══════════════ -->
+  <!-- ═══════ SOURCE NODE ═══════ -->
+  <rect x="14" y="22" width="155" height="386" rx="12" fill="url(#dl-src)" style="filter:drop-shadow(0 4px 14px rgba(0,159,227,0.35))"/>
+  <text x="91" y="130" text-anchor="middle" font-size="34" font-family="system-ui">📋</text>
+  <text x="91" y="164" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">Données terrain</text>
+  <text x="91" y="182" text-anchor="middle" fill="rgba(255,255,255,0.62)" font-size="9.5" font-style="italic" font-family="Roboto,system-ui">saisies au fil de l'eau</text>
+  <line x1="28" y1="196" x2="157" y2="196" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+  <text x="91" y="220" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-weight="600" font-family="Roboto,system-ui">propre et à jour</text>
 
-  <!-- SOURCE -->
-  <rect x="10" y="130" width="165" height="230" rx="12" fill="url(#dl-src)" style="filter:drop-shadow(0 6px 16px rgba(0,159,227,0.4))"/>
-  <text x="92" y="180" text-anchor="middle" font-size="32" font-family="system-ui">🗂️</text>
-  <text x="92" y="208" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">Agents DIRMOB</text>
-  <line x1="28" y1="219" x2="157" y2="219" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
-  <text x="92" y="240" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">station_id · nom</text>
-  <text x="92" y="257" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">vélos_dispo · statut</text>
-  <text x="92" y="274" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">commune · coords</text>
-  <text x="92" y="291" text-anchor="middle" fill="rgba(255,255,255,0.92)" font-size="11.5" font-family="monospace">incident · horodatage</text>
-  <text x="92" y="316" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">propre et à jour</text>
-  <text x="92" y="330" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">→ Base Vélib SOET</text>
+  <!-- ═══════ PUBLIC NODES ═══════ -->
 
-  <!-- LÉGENDE -->
-  <rect x="230" y="148" width="216" height="88" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-  <text x="244" y="168" fill="#475569" font-size="12" font-weight="600" font-family="Roboto,system-ui">Légende</text>
-  <line x1="244" y1="191" x2="287" y2="191" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7,3"/>
-  <polygon points="281,187.5 288,191 281,194.5" fill="#94a3b8"/>
-  <text x="298" y="196" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">Usage interne</text>
-  <line x1="244" y1="220" x2="287" y2="220" stroke="#0f766e" stroke-width="2.5"/>
-  <polygon points="281,216.5 288,220 281,223.5" fill="#0f766e"/>
-  <text x="298" y="225" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">Open Data public</text>
+  <!-- data.seineouest.fr -->
+  <rect x="244" y="40" width="215" height="80" rx="10" fill="#0f766e"/>
+  <rect x="253" y="47" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+  <text x="286" y="60" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
+  <text x="351" y="88" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">🌐 data.seineouest.fr</text>
+  <text x="351" y="107" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="11" font-family="Roboto,system-ui">Open Data Seine-Ouest</text>
 
-  <!-- ARCOPOLE PRO -->
-  <rect x="230" y="22" width="245" height="118" rx="10" fill="#1e3a5f"/>
-  <rect x="241" y="31" width="82" height="22" rx="11" fill="rgba(255,255,255,0.14)"/>
-  <text x="282" y="46" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11" font-family="system-ui">🔒 Interne</text>
-  <text x="352" y="82" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🏢 Arcopole Pro</text>
-  <text x="352" y="104" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="12" font-family="Roboto,system-ui">Services techniques</text>
-  <text x="352" y="124" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="12" font-family="Roboto,system-ui">Directions territoriales</text>
+  <!-- 7 villes -->
+  <rect x="540" y="30" width="175" height="110" rx="10" fill="#0d6657"/>
+  <text x="627" y="72" text-anchor="middle" font-size="24" font-family="system-ui">🏙️</text>
+  <text x="627" y="105" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">Villes</text>
 
-  <!-- DATA.SEINEOUEST.FR -->
-  <rect x="230" y="250" width="245" height="92" rx="10" fill="#0f766e"/>
-  <rect x="241" y="259" width="74" height="22" rx="11" fill="rgba(255,255,255,0.14)"/>
-  <text x="278" y="274" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11" font-family="system-ui">🌍 Public</text>
-  <text x="352" y="305" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🌐 data.seineouest.fr</text>
-  <text x="352" y="327" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="12" font-family="Roboto,system-ui">Open Data Seine-Ouest</text>
+  <!-- Sites internet -->
+  <rect x="800" y="26" width="246" height="78" rx="10" fill="#15803d"/>
+  <rect x="809" y="33" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+  <text x="842" y="46" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
+  <text x="923" y="70" text-anchor="middle" fill="white" font-size="13" font-weight="700" font-family="Roboto,system-ui">🌍 Sites internet</text>
+  <text x="923" y="89" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Portails municipaux</text>
 
-  <!-- 7 VILLES -->
-  <rect x="530" y="228" width="180" height="140" rx="10" fill="#0d6657"/>
-  <text x="620" y="274" text-anchor="middle" font-size="28" font-family="system-ui">🏙️</text>
-  <text x="620" y="302" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">7 villes</text>
-  <text x="620" y="322" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="12" font-family="Roboto,system-ui">membres SOET</text>
-  <text x="620" y="342" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Portail open data local</text>
-  <text x="620" y="358" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">+ intégration sites villes</text>
+  <!-- Apps mobiles -->
+  <rect x="800" y="118" width="246" height="78" rx="10" fill="#15803d"/>
+  <rect x="809" y="125" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+  <text x="842" y="138" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
+  <text x="923" y="162" text-anchor="middle" fill="white" font-size="13" font-weight="700" font-family="Roboto,system-ui">📱 Applications mobiles</text>
+  <text x="923" y="181" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Transport · Services publics</text>
 
-  <!-- SITES INTERNET -->
-  <rect x="780" y="65" width="272" height="112" rx="10" fill="#15803d"/>
-  <text x="916" y="105" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">🌍 Sites internet</text>
-  <text x="916" y="126" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12" font-family="Roboto,system-ui">Portails municipaux</text>
-  <text x="916" y="146" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="11" font-style="italic" font-family="Roboto,system-ui">Carte des stations vélib</text>
-  <text x="916" y="164" text-anchor="middle" fill="rgba(255,255,255,0.62)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Disponibilité en temps réel</text>
+  <!-- ═══════ INTERNAL NODES ═══════ -->
 
-  <!-- APPLICATIONS MOBILES -->
-  <rect x="780" y="210" width="272" height="96" rx="10" fill="#15803d"/>
-  <text x="916" y="250" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">📱 Applications mobiles</text>
-  <text x="916" y="271" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12" font-family="Roboto,system-ui">Transport · Services publics</text>
-  <text x="916" y="291" text-anchor="middle" fill="rgba(255,255,255,0.68)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">"Vélos dispo près de chez moi"</text>
+  <!-- Arcopole Pro -->
+  <rect x="244" y="256" width="215" height="112" rx="10" fill="#1e3a5f"/>
+  <rect x="253" y="263" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+  <text x="286" y="276" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🔒 Interne</text>
+  <text x="351" y="308" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">🏢 Arcopole Pro</text>
+  <text x="351" y="324" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">consultation et saisie</text>
+  <text x="351" y="341" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Services techniques</text>
+  <text x="351" y="357" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Directions territoriales</text>
 
-  <!-- TABLEAUX DE BORD ÉLUS -->
-  <rect x="780" y="340" width="272" height="132" rx="10" fill="#7c3aed" style="filter:drop-shadow(0 6px 16px rgba(124,58,237,0.35))"/>
-  <text x="916" y="381" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Roboto,system-ui">📊 Tableaux de bord</text>
-  <text x="916" y="402" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="12.5" font-family="Roboto,system-ui">Élus · Décisions politiques</text>
-  <text x="916" y="422" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11.5" font-family="Roboto,system-ui">Budget · Nouvelles stations</text>
-  <text x="916" y="441" text-anchor="middle" fill="rgba(255,255,255,0.68)" font-size="11" font-style="italic" font-family="Roboto,system-ui">Maillage du territoire</text>
-  <text x="916" y="459" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">Investissements · Politiques mobilité</text>
+  <!-- Tableaux de bord -->
+  <rect x="540" y="248" width="506" height="124" rx="10" fill="#7c3aed" style="filter:drop-shadow(0 4px 12px rgba(124,58,237,0.3))"/>
+  <rect x="550" y="256" width="60" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+  <text x="580" y="269" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🔒 Privé</text>
+  <text x="793" y="305" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">📊 Tableaux de bord</text>
+  <text x="793" y="324" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11.5" font-family="Roboto,system-ui">Décisions politiques · Budget · Nouvelles stations</text>
+  <text x="793" y="343" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Maillage du territoire · Investissements · Politiques mobilité</text>
 
   <!-- FOOTER -->
-  <line x1="10" y1="481" x2="1050" y2="481" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="530" y="496" text-anchor="middle" fill="#64748b" font-size="11.5" font-family="Roboto,system-ui">💡  Donnée mal saisie → carte erronée · appli défaillante · élu qui décide sur de mauvaises bases</text>
+  <line x1="10" y1="412" x2="1050" y2="412" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="530" y="426" text-anchor="middle" fill="#64748b" font-size="11" font-family="Roboto,system-ui">💡  Donnée mal saisie → carte erronée · appli défaillante · élu qui décide sur de mauvaises bases</text>
 </svg>
+`;
+
+const donneesEnJeu = `
+<p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 3px; font-weight:700;">Les données que vous gérez — usages réels</p>
+<h2 style="margin:0 0 10px; line-height:1.1;">Votre mise à jour compte — d'autres équipes en dépendent</h2>
+
+<div style="display:flex; gap:16px; align-items:flex-start;">
+
+    <!-- TABLE -->
+    <div style="flex:1.7;">
+        <p style="font-size:0.44rem; color:#999; margin:0 0 5px; font-family:monospace; letter-spacing:0.5px;">MAJ depuis le 01/01/2025 au 22/05/2026 · SOET SIG</p>
+        <table class="mockup-table" style="font-size:0.52em; width:100%;">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Couche SIG</th>
+                    <th style="text-align:center; width:50px;">MAJ</th>
+                    <th style="background:#1e3a5f; color:white; text-align:center; width:52px;">DTE</th>
+                    <th style="background:#1e3a5f; color:white; text-align:center; width:52px;">DTO</th>
+                    <th style="background:#1e3a5f; color:white; text-align:center; width:52px;">DTN</th>
+                    <th style="background:#009fe3; color:white; text-align:center; width:64px;">DirMob</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Aires trottinettes</td>
+                    <td style="text-align:center; color:#94a3b8;">9</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">100%</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#f0f9ff;">—</td>
+                </tr>
+                <tr style="background:#fefce8;">
+                    <td style="font-weight:700; color:#92400e;">⚠ Arrêts minutes</td>
+                    <td style="text-align:center; color:#94a3b8;">81</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">33%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">66%</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#fef9c3;">—</td>
+                </tr>
+                <tr style="background:#eff6ff;">
+                    <td style="font-weight:700; color:#0369a1; border-left:3px solid #009fe3;">Autopartage</td>
+                    <td style="text-align:center; color:#94a3b8;">74</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#009fe3; font-weight:700; background:#dbeafe;">100%</td>
+                </tr>
+                <tr>
+                    <td>Circulation apaisée</td>
+                    <td style="text-align:center; color:#94a3b8;">24</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">50%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">50%</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#f0f9ff;">—</td>
+                </tr>
+                <tr style="background:#eff6ff;">
+                    <td style="font-weight:700; color:#0369a1; border-left:3px solid #009fe3;">IRVE</td>
+                    <td style="text-align:center; color:#94a3b8;">106</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#009fe3; font-weight:700; background:#dbeafe;">100%</td>
+                </tr>
+                <tr>
+                    <td>Places LOM</td>
+                    <td style="text-align:center; color:#94a3b8;">150</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">17%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">17%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">66%</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#f0f9ff;">—</td>
+                </tr>
+                <tr>
+                    <td>Places taxis</td>
+                    <td style="text-align:center; color:#94a3b8;">11</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">100%</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#f0f9ff;">—</td>
+                </tr>
+                <tr>
+                    <td>Stationnement 2R</td>
+                    <td style="text-align:center; color:#94a3b8;">195</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">33%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">33%</td>
+                    <td style="text-align:center; color:#334155; font-weight:700;">33%</td>
+                    <td style="text-align:center; color:#cbd5e1; background:#f0f9ff;">—</td>
+                </tr>
+                <tr style="background:#eff6ff;">
+                    <td style="font-weight:700; color:#0369a1; border-left:3px solid #009fe3;">Stations Vélib'</td>
+                    <td style="text-align:center; color:#94a3b8;">7</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#cbd5e1;">—</td>
+                    <td style="text-align:center; color:#009fe3; font-weight:700; background:#dbeafe;">100%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CALLOUTS -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+
+        <div style="background:#fefce8; border-left:4px solid #d97706; border-radius:0 8px 8px 0; padding:12px 15px;">
+            <p style="font-size:0.58rem; font-weight:700; color:#92400e; margin:0 0 6px;">⚠ Arrêts minutes → Commission Communale d'Accessibilité</p>
+            <p style="font-size:0.5rem; color:#78350f; margin:0; line-height:1.65;">
+                Ces données sont utilisées par les <strong>Directions Territoriales</strong> dans les <strong>Commissions Communales d'Accessibilité (CCA)</strong> — elles orientent les décisions pour les personnes à mobilité réduite.
+                DTE et DTO les alimentent : si une mise à jour est manquante, c'est la Commission qui travaille sur des données fausses.
+            </p>
+        </div>
+
+        <div style="background:#eff6ff; border-left:4px solid #009fe3; border-radius:0 8px 8px 0; padding:12px 15px;">
+            <p style="font-size:0.58rem; font-weight:700; color:#0369a1; margin:0 0 6px;">🔵 Vélib · IRVE · Autopartage — DirMob seul mainteneur</p>
+            <p style="font-size:0.5rem; color:#1e3a5f; margin:0; line-height:1.65;">
+                Ces trois couches n'ont qu'un seul responsable : <strong>vous</strong>.
+                Elles alimentent l'Open Data Seine-Ouest, les sites des 7 villes, les applications mobiles, et les tableaux de bord des élus.
+                Une donnée non mise à jour, c'est toute la chaîne qui part sur une base fausse.
+            </p>
+        </div>
+
+        <div style="background:#1e293b; border-radius:8px; padding:11px 15px;">
+            <p style="font-size:0.58rem; color:white; font-weight:700; margin:0 0 3px;">💡 Mettre à jour, c'est servir une chaîne.</p>
+            <p style="font-size:0.46rem; color:rgba(255,255,255,0.62); margin:0; line-height:1.6;">Votre saisie se retrouve dans les bilans des élus et sur les apps de milliers d'usagers. D'autres reposent sur vous.</p>
+        </div>
+
+    </div>
+</div>
 `;
 
 export function Donnees() {
@@ -1161,12 +1269,8 @@ export function Donnees() {
       />
 
       <section dangerouslySetInnerHTML={{ __html: definition }} />
-      {/* OLTP / OLAP — intro + Yego + rétro-ingénierie */}
-      <section>
-        <section dangerouslySetInnerHTML={{ __html: olapIntro }} />
-        <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
-        <section dangerouslySetInnerHTML={{ __html: olapRetro }} />
-      </section>
+
+      <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
 
       {/* Modèle relationnel */}
       <section>
@@ -1174,9 +1278,15 @@ export function Donnees() {
         <section dangerouslySetInnerHTML={{ __html: relationSchema }} />
         <section dangerouslySetInnerHTML={{ __html: relationHub }} />
         <section dangerouslySetInnerHTML={{ __html: dataLineage }} />
+        <section dangerouslySetInnerHTML={{ __html: donneesEnJeu }} />
       </section>
 
-      <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
+      {/* OLTP / OLAP — intro + Yego + rétro-ingénierie */}
+      <section>
+        <section dangerouslySetInnerHTML={{ __html: olapIntro }} />
+        <section dangerouslySetInnerHTML={{ __html: olapVsOltp }} />
+        <section dangerouslySetInnerHTML={{ __html: olapRetro }} />
+      </section>
 
       {/* autourDeNous + dissection Netflix en vertical */}
       <section>

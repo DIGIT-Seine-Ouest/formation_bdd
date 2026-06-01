@@ -1,6 +1,6 @@
 const intro = `
 <div style="text-align:left; max-width:680px; margin:0 auto; color:white;">
-    <p class="section-intro-label" style="color:white;">Module 3 · 5 min</p>
+    <p class="section-intro-label" style="color:white;">Partie 3 · 5 min</p>
     <p class="section-intro-title">3 symptômes,<br>1 seul problème<br>de fond</p>
     <p class="section-intro-sub">Ces trois frictions sont présentes dans votre fichier fil rouge.</p>
 </div>

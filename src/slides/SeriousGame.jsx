@@ -18,12 +18,12 @@ const deroulement = `
         <p style="font-size:0.7rem; font-weight:700; color:#1e40af; margin:0 0 8px;">Construction des tables</p>
         <div style="display:flex; gap:8px; margin-bottom:8px;">
             <div style="flex:1; background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #009fe3;">
-                <p style="font-size:0.54rem; font-weight:700; color:#009fe3; margin:0 0 3px;">Équipe A</p>
-                <p style="font-size:0.52rem; color:#333; margin:0;">Table <strong>prestataires</strong></p>
+                <p style="font-size:0.54rem; font-weight:700; color:#009fe3; margin:0 0 3px;">📇 Équipe A · Référentiels</p>
+                <p style="font-size:0.52rem; color:#333; margin:0;"><strong>prestataires</strong> + <strong>ref_motifs</strong></p>
             </div>
             <div style="flex:1; background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #95c11f;">
-                <p style="font-size:0.54rem; font-weight:700; color:#2e7d32; margin:0 0 3px;">Équipe B</p>
-                <p style="font-size:0.52rem; color:#333; margin:0;">Table <strong>lignes_bus</strong></p>
+                <p style="font-size:0.54rem; font-weight:700; color:#2e7d32; margin:0 0 3px;">🚍 Équipe B · Réseau bus</p>
+                <p style="font-size:0.52rem; color:#333; margin:0;"><strong>lignes_bus</strong> + <strong>communes</strong></p>
             </div>
         </div>
         <p style="font-size:0.52rem; color:#555; margin:0; font-style:italic;">Les deux équipes travaillent en parallèle — et doivent se parler.</p>
@@ -51,9 +51,9 @@ const deroulement = `
         <p style="font-size:0.52rem; font-weight:700; color:#f59e0b; text-transform:uppercase; letter-spacing:2px; margin:0 0 8px;">Phase 3 · 25 min</p>
         <p style="font-size:0.7rem; font-weight:700; color:#b45309; margin:0 0 8px;">Chaos Engineering</p>
         <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #f59e0b; margin-bottom:8px;">
-            <p style="font-size:0.52rem; color:#333; margin:0;">Questions de plus en plus complexes pour tester la robustesse des tables.</p>
+            <p style="font-size:0.52rem; color:#333; margin:0;">Questions de plus en plus complexes — jusqu'au <strong>tableau de bord</strong> : quel prestataire ? quelle commune ? quelle ligne ?</p>
         </div>
-        <p style="font-size:0.52rem; color:#555; margin:0; font-style:italic;">Puis bascule OLTP → OLAP avec les formules.</p>
+        <p style="font-size:0.52rem; color:#555; margin:0; font-style:italic;">La bascule OLTP → OLAP : on saisit, ça se calcule seul.</p>
     </div>
 
 </div>
@@ -107,6 +107,13 @@ const briefA = `
         <div style="font-size:1.6rem; flex-shrink:0;">📝</div>
         <p style="font-size:0.68rem; color:#333; margin:0; line-height:1.6;">
             <strong>type_contrat</strong> — texte libre ou liste fermée ? Combien de valeurs différentes peut-il prendre ?
+        </p>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:12px 18px;">
+        <div style="font-size:1.6rem; flex-shrink:0;">🏷️</div>
+        <p style="font-size:0.68rem; color:#333; margin:0; line-height:1.6;">
+            <strong>Votre équipe possède aussi la liste des motifs de réclamation.</strong> Combien de motifs distincts ? Une liste fermée numérotée, ou un texte ressaisi à la main à chaque réclamation ?
         </p>
     </div>
 
@@ -178,78 +185,112 @@ const briefB = `
 </div>
 `;
 
-const saisiCollective = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--grey-dirmob); margin:0 0 4px; font-weight:700;">Phase 2 — Tout le monde</p>
-<h2 style="margin-top:0;">Saisie collective : table <code>reclamations</code></h2>
+const briefReclamations = `
+<div style="display:flex; gap:6px; align-items:center; margin-bottom:12px;">
+    <div style="background:#64748b; color:white; font-size:0.6rem; font-weight:700; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:1px;">Équipes A + B</div>
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--grey-dirmob); margin:0; font-weight:700;">Phase 2 · Construction — la table centrale</p>
+</div>
+<h2 style="margin-top:0;">Ensemble : la table <code>reclamations</code></h2>
 
-<div class="row" style="align-items:flex-start; gap:18px; margin-top:10px;">
+<div style="background:#f5f5f5; border-radius:8px; padding:14px 18px; border-left:4px solid #64748b; margin-bottom:16px;">
+    <p style="font-size:0.66rem; color:#333; line-height:1.7; margin:0;">
+        Vos deux équipes ont leurs référentiels. On enregistre maintenant les <strong>réclamations</strong> qui les relient — c'est là qu'on saisit chaque jour.
+        <strong>Ne dessinez pas encore la table : répondez d'abord. La structure viendra à la fin.</strong>
+    </p>
+</div>
 
-    <div style="flex:1.3;">
-        <p style="font-size:0.56rem; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 8px;">Structure à construire ensemble</p>
-        <table class="mockup-table" style="font-size:0.48em; margin-bottom:10px;">
-            <tr>
-                <th style="background:#1e40af; color:white;">id_reclamation</th>
-                <th>date_reclamation</th>
-                <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
-                <th style="background:#fef3c7; color:#a16207;">id_motif</th>
-                <th>commune</th>
-                <th>objet_libre</th>
-                <th>date_cloture</th>
-                <th>cloturee</th>
-            </tr>
-            <tr>
-                <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">PK</td>
-                <td style="font-size:0.9em; color:#888;">Date</td>
-                <td style="background:#fef3c7; color:#a16207; font-style:italic;">FK → Équipe B</td>
-                <td style="background:#fef3c7; color:#a16207; font-style:italic;">FK → ref_motifs</td>
-                <td style="font-size:0.9em; color:#888;">Texte</td>
-                <td style="font-size:0.9em; color:#888;">Texte libre</td>
-                <td style="font-size:0.9em; color:#888;">Date / NULL</td>
-                <td style="font-size:0.9em; color:#888;">0 / 1</td>
-            </tr>
-        </table>
+<div style="display:flex; flex-direction:column; gap:9px;">
 
-        <div style="background:#dcfce7; border-radius:7px; padding:10px 14px; border-left:3px solid #15803d;">
-            <p style="font-size:0.56rem; font-weight:700; color:#15803d; margin:0 0 6px;">ref_motifs — fournie, ne pas modifier</p>
-            <div style="display:flex; gap:12px;">
-                <div style="font-size:0.46rem; font-family:monospace; color:#333; line-height:1.8;">
-                    1 · Retard<br>2 · Information voyageurs<br>3 · Suppression de service
-                </div>
-                <div style="font-size:0.46rem; font-family:monospace; color:#333; line-height:1.8;">
-                    4 · Comportement conducteur<br>5 · Confort / Surcharge<br>6 · Infrastructure / Arrêt
-                </div>
-            </div>
-        </div>
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:11px 18px;">
+        <div style="font-size:1.5rem; flex-shrink:0;">🎯</div>
+        <p style="font-size:0.66rem; color:#333; margin:0; line-height:1.6;">
+            <strong>Quelle est l'entité ?</strong> Une seule ligne de cette table, ça représente quoi exactement — en une phrase ?
+        </p>
     </div>
 
-    <div style="flex:1; display:flex; flex-direction:column; gap:9px;">
-        <p style="font-size:0.58rem; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:1.5px; margin:0;">Questions à vous poser</p>
-
-        <div class="fragment" style="background:#f5f5f5; border-radius:7px; padding:10px 14px; border-left:3px solid #555;">
-            <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.6;">
-                💬 Une réclamation concerne une ligne — comment la référencer <strong>sans écrire "389 - Keolis"</strong> dans chaque cellule ?
-            </p>
-        </div>
-
-        <div class="fragment" style="background:#f5f5f5; border-radius:7px; padding:10px 14px; border-left:3px solid #555;">
-            <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.6;">
-                💬 <code>date_cloture</code> vide vs <code>cloturee = 0</code> — est-ce redondant, ou les deux sont utiles ?
-            </p>
-        </div>
-
-        <div class="fragment" style="background:#f5f5f5; border-radius:7px; padding:10px 14px; border-left:3px solid #555;">
-            <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.6;">
-                💬 <code>objet_libre</code> est le seul champ texte libre. Pourquoi les autres ne le sont pas ?
-            </p>
-        </div>
-
-        <div class="fragment" style="background:#fff8e1; border-radius:7px; padding:10px 14px; border-left:3px solid #f59e0b;">
-            <p style="font-size:0.6rem; color:#b45309; margin:0; font-weight:600; line-height:1.6;">
-                ⚠ Utilisez les IDs de l'Équipe B pour <code>id_ligne</code> — les noms de lignes ne rentrent pas ici.
-            </p>
-        </div>
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:11px 18px;">
+        <div style="font-size:1.5rem; flex-shrink:0;">🔗</div>
+        <p style="font-size:0.66rem; color:#333; margin:0; line-height:1.6;">
+            La réclamation concerne une <strong>ligne de bus</strong>. Comment la relier <strong>sans recopier "169 - Transdev"</strong> dans chaque cellule ? Vous utilisez quoi, fourni par quelle équipe ?
+        </p>
     </div>
 
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:11px 18px;">
+        <div style="font-size:1.5rem; flex-shrink:0;">📍</div>
+        <p style="font-size:0.66rem; color:#333; margin:0; line-height:1.6;">
+            Elle vise aussi une <strong>commune</strong> et un <strong>motif</strong>. Texte libre saisi à la main — ou on pointe vers les référentiels <code>ref_communes</code> et <code>ref_motifs</code> ?
+        </p>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:11px 18px;">
+        <div style="font-size:1.5rem; flex-shrink:0;">🔁</div>
+        <p style="font-size:0.66rem; color:#333; margin:0; line-height:1.6;">
+            On veut savoir si une réclamation est <strong>traitée</strong>, et en <strong>combien de temps</strong>. Une seule colonne suffit-elle ? Faut-il une date <em>et</em> un indicateur 0/1 ?
+        </p>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#f8fafc; border-radius:8px; padding:11px 18px;">
+        <div style="font-size:1.5rem; flex-shrink:0;">📝</div>
+        <p style="font-size:0.66rem; color:#333; margin:0; line-height:1.6;">
+            <strong>Un seul champ mérite le texte libre.</strong> Lequel ? Et pourquoi tous les autres doivent rester codés ?
+        </p>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:14px; align-items:center; background:#fff8e1; border-radius:8px; padding:11px 18px; border-left:4px solid #f59e0b;">
+        <div style="font-size:1.5rem; flex-shrink:0;">⚠</div>
+        <p style="font-size:0.66rem; color:#b45309; margin:0; line-height:1.6; font-weight:600;">
+            On saisit les <strong>identifiants</strong> des Équipes A et B — jamais les noms. Les noms vivent dans les référentiels, un seul endroit.
+        </p>
+    </div>
+
+</div>
+`;
+
+const debriefReclamations = `
+<div style="display:flex; gap:6px; align-items:center; margin-bottom:12px;">
+    <div style="background:#64748b; color:white; font-size:0.6rem; font-weight:700; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:1px;">Équipes A + B</div>
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--grey-dirmob); margin:0; font-weight:700;">Phase 2 · La structure qui en résulte</p>
+</div>
+<h2 style="margin-top:0;">La table <code>reclamations</code> — le résultat</h2>
+<p style="font-size:0.72rem; color:#888; margin-top:-12px; margin-bottom:14px;">Vos réponses dessinent exactement ceci : 3 clés étrangères vers vos référentiels, un seul champ libre.</p>
+
+<div class="fragment offbeat-card card--green" style="padding:13px; margin-bottom:12px;">
+    <table class="mockup-table" style="font-size:0.46em;">
+        <tr>
+            <th style="background:#1e40af; color:white;">id_reclamation</th>
+            <th>date_reclamation</th>
+            <th style="background:#fef3c7; color:#a16207;">id_ligne</th>
+            <th style="background:#fef3c7; color:#a16207;">id_motif</th>
+            <th style="background:#fef3c7; color:#a16207;">id_commune</th>
+            <th>objet_libre</th>
+            <th>date_cloture</th>
+            <th>cloturee</th>
+        </tr>
+        <tr>
+            <td style="background:#dbe4ff; color:#1e40af; font-weight:700;">PK</td>
+            <td style="font-size:0.9em; color:#888;">Date</td>
+            <td style="background:#fef9e7; color:#a16207; font-style:italic;">FK → lignes_bus</td>
+            <td style="background:#fef9e7; color:#a16207; font-style:italic;">FK → ref_motifs</td>
+            <td style="background:#fef9e7; color:#a16207; font-style:italic;">FK → ref_communes</td>
+            <td style="font-size:0.9em; color:#888;">Texte libre</td>
+            <td style="font-size:0.9em; color:#888;">Date / vide</td>
+            <td style="font-size:0.9em; color:#888;">0 / 1</td>
+        </tr>
+        <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/01/2024</td><td style="color:#a16207; font-weight:700;">L169</td><td>1</td><td style="color:#6b21a8; font-weight:700;">C003</td><td style="color:#666;">Retard de 20 min à Meudon</td><td>07/01/2024</td><td>1</td></tr>
+        <tr><td style="color:#1e40af; font-weight:700;">R002</td><td>09/01/2024</td><td style="color:#a16207; font-weight:700;">L169</td><td>1</td><td style="color:#6b21a8; font-weight:700;">C004</td><td style="color:#666;">Retard répété le matin</td><td></td><td>0</td></tr>
+        <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>12/01/2024</td><td style="color:#a16207; font-weight:700;">L323</td><td>3</td><td style="color:#6b21a8; font-weight:700;">C003</td><td style="color:#666;">Bus supprimé sans annonce</td><td></td><td>0</td></tr>
+    </table>
+</div>
+
+<div class="row" style="gap:12px; align-items:stretch;">
+    <div class="fragment" style="flex:1; background:#f0fdf4; border-radius:8px; padding:11px 16px; border-left:4px solid #15803d;">
+        <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 5px;">Le test de la phrase</p>
+        <p style="font-size:0.58rem; color:#333; margin:0; line-height:1.6;">« R001, le 05/01, sur la ligne <strong>L169</strong>, à <strong>Meudon</strong>, motif <strong>Retard</strong> — clôturée le 07/01. » 1 ligne = 1 fait. ✓</p>
+    </div>
+    <div class="fragment" style="flex:1; background:#1e293b; border-radius:8px; padding:11px 16px;">
+        <p style="font-size:0.6rem; font-weight:700; color:white; margin:0 0 5px;">La règle d'or</p>
+        <p style="font-size:0.58rem; color:#94a3b8; margin:0; line-height:1.6;">Tout est <strong style="color:#009fe3;">codé</strong> sauf <code style="color:#95c11f;">objet_libre</code>. Donc tout est <strong style="color:white;">comptable, filtrable, analysable</strong> — c'est ce qui rend le tableau de bord possible.</p>
+    </div>
 </div>
 `;
 
@@ -297,9 +338,11 @@ const debriefA = `
 </div>
 
 <div class="fragment" style="border-top:2px dashed #009fe3; padding-top:14px;">
-    <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#009fe3; font-weight:700; margin:0 0 8px;">→ Structure attendue</p>
-    <div class="offbeat-card card--green" style="padding:11px;">
-        <table class="mockup-table" style="font-size:0.46em;">
+    <p style="font-size:0.54rem; text-transform:uppercase; letter-spacing:2px; color:#009fe3; font-weight:700; margin:0 0 8px;">→ Structure attendue — vos deux référentiels</p>
+    <div style="display:flex; gap:10px; align-items:flex-start;">
+    <div class="offbeat-card card--green" style="padding:11px; flex:2.2;">
+        <p style="font-size:0.45rem; font-weight:700; color:#1e40af; font-family:monospace; margin:0 0 4px;">prestataires</p>
+        <table class="mockup-table" style="font-size:0.44em;">
             <tr>
                 <th style="background:#1e40af; color:white;">id_prestataire</th>
                 <th>nom_prestataire</th>
@@ -313,6 +356,20 @@ const debriefA = `
             <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">P004</td><td>ATM Croix du Sud</td><td>Convention</td><td>2023-01-01</td><td>2027-12-31</td></tr>
         </table>
         <p style="font-size:0.5rem; color:#2e7d32; margin:6px 0 0; font-weight:600;">PK non-signifiante · type_contrat énuméré · dates ISO calculables</p>
+    </div>
+    <div class="offbeat-card" style="padding:11px; flex:1;">
+        <p style="font-size:0.45rem; font-weight:700; color:#15803d; font-family:monospace; margin:0 0 4px;">ref_motifs</p>
+        <table class="mockup-table" style="font-size:0.42em;">
+            <tr><th style="background:#15803d; color:white;">id_motif</th><th>libelle_motif</th></tr>
+            <tr><td style="color:#15803d; font-weight:700;">1</td><td>Retard</td></tr>
+            <tr><td style="color:#15803d; font-weight:700;">2</td><td>Information voyageurs</td></tr>
+            <tr><td style="color:#15803d; font-weight:700;">3</td><td>Suppression de service</td></tr>
+            <tr><td style="color:#15803d; font-weight:700;">4</td><td>Comportement conducteur</td></tr>
+            <tr><td style="color:#15803d; font-weight:700;">5</td><td>Confort / Surcharge</td></tr>
+            <tr><td style="color:#15803d; font-weight:700;">6</td><td>Infrastructure / Arrêt</td></tr>
+        </table>
+        <p style="font-size:0.48rem; color:#2e7d32; margin:5px 0 0; font-weight:600;">Liste fermée → comptages fiables</p>
+    </div>
     </div>
 </div>
 `;
@@ -470,16 +527,16 @@ const chaos1 = `
 
     <div style="display:flex; gap:14px; align-items:stretch;">
         <div style="flex:1; background:#f5f5f5; border-radius:8px; padding:14px 16px; border-left:4px solid #555;">
-            <p style="font-size:0.7rem; font-weight:700; color:#333; margin:0 0 8px;">Q3 — Combien de réclamations sur la ligne 389 ?</p>
+            <p style="font-size:0.7rem; font-weight:700; color:#333; margin:0 0 8px;">Q3 — Combien de réclamations sur la ligne 169 ?</p>
             <div class="fragment" style="background:#dcfce7; border-radius:6px; padding:8px 12px; border-left:3px solid #15803d;">
-                <p style="font-size:0.62rem; font-family:monospace; color:#15803d; font-weight:700; margin:0;">=COUNTIF(reclamations!C:C, "L389")</p>
-                <p style="font-size:0.54rem; color:#555; margin:4px 0 0;"><code>id_ligne</code> = "L389" — FK vers lignes_bus</p>
+                <p style="font-size:0.62rem; font-family:monospace; color:#15803d; font-weight:700; margin:0;">=COUNTIF(reclamations!C:C, "L169")</p>
+                <p style="font-size:0.54rem; color:#555; margin:4px 0 0;"><code>id_ligne</code> = "L169" — FK vers lignes_bus</p>
             </div>
         </div>
         <div style="flex:1; background:#f5f5f5; border-radius:8px; padding:14px 16px; border-left:4px solid #555;">
-            <p style="font-size:0.7rem; font-weight:700; color:#333; margin:0 0 8px;">Q4 — Retards non clôturés sur la ligne 389 ?</p>
+            <p style="font-size:0.7rem; font-weight:700; color:#333; margin:0 0 8px;">Q4 — Retards non clôturés sur la ligne 169 ?</p>
             <div class="fragment" style="background:#dcfce7; border-radius:6px; padding:8px 12px; border-left:3px solid #15803d;">
-                <p style="font-size:0.62rem; font-family:monospace; color:#15803d; font-weight:700; margin:0;">=COUNTIFS(C:C,"L389", D:D,1, H:H,0)</p>
+                <p style="font-size:0.62rem; font-family:monospace; color:#15803d; font-weight:700; margin:0;">=COUNTIFS(C:C,"L169", D:D,1, H:H,0)</p>
                 <p style="font-size:0.54rem; color:#555; margin:4px 0 0;">3 critères simultanés — possible grâce aux 3 colonnes distinctes</p>
             </div>
         </div>
@@ -528,78 +585,68 @@ const chaos2 = `
 `;
 
 const olapFinal = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 4px; font-weight:700;">Phase 3 — Bascule OLAP</p>
-<h2 style="margin-top:0;">Le tableau de bord automatique</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-14px; margin-bottom:14px;">Créer une feuille <code>tableau_de_bord</code> dans le fichier réclamations — les formules ne changent jamais.</p>
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 4px; font-weight:700;">Phase 3 — Bascule OLAP · la table finale</p>
+<h2 style="margin-top:0;">Le tableau de bord qui répond tout seul</h2>
+<p style="font-size:0.72rem; color:#888; margin-top:-14px; margin-bottom:12px;">Une feuille <code>tableau_de_bord</code> — aucune saisie, que des formules. On a posé 3 questions métier : voici les réponses.</p>
 
-<div class="row" style="align-items:flex-start; gap:18px;">
+<!-- KPI band -->
+<div style="display:flex; gap:8px; margin-bottom:12px;">
+    <div style="flex:1; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px 6px; text-align:center;">
+        <p style="font-size:0.46rem; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0;">Total</p>
+        <p style="font-size:1.2rem; color:#1e3a5f; font-weight:700; margin:2px 0 0;">22</p>
+    </div>
+    <div style="flex:1; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px 6px; text-align:center;">
+        <p style="font-size:0.46rem; color:#15803d; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0;">Clôturées</p>
+        <p style="font-size:1.2rem; color:#15803d; font-weight:700; margin:2px 0 0;">12</p>
+    </div>
+    <div style="flex:1; background:#fff0f0; border:1px solid #fecaca; border-radius:8px; padding:8px 6px; text-align:center;">
+        <p style="font-size:0.46rem; color:#c0392b; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0;">Non clôt.</p>
+        <p style="font-size:1.2rem; color:#c0392b; font-weight:700; margin:2px 0 0;">10</p>
+    </div>
+    <div style="flex:1; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:8px 6px; text-align:center;">
+        <p style="font-size:0.46rem; color:#009fe3; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0;">Taux clôture</p>
+        <p style="font-size:1.2rem; color:#009fe3; font-weight:700; margin:2px 0 0;">55%</p>
+    </div>
+    <div style="flex:1; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:8px 6px; text-align:center;">
+        <p style="font-size:0.46rem; color:#d97706; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin:0;">Délai moyen</p>
+        <p style="font-size:1.2rem; color:#d97706; font-weight:700; margin:2px 0 0;">2,8 j</p>
+    </div>
+</div>
 
-    <div style="flex:1;">
-        <div class="offbeat-card card--green" style="padding:14px;">
-            <p style="font-size:0.54rem; color:#155724; background:#dcfce7; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 10px;">tableau_de_bord</p>
-            <table class="mockup-table" style="font-size:0.48em;">
-                <tr><th>Indicateur</th><th style="background:#dcfce7; color:#15803d;">Formule Excel</th></tr>
-                <tr>
-                    <td>Total réclamations</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTA(reclamations!A:A)-2</td>
-                </tr>
-                <tr>
-                    <td>Non clôturées</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIF(reclamations!H:H,0)</td>
-                </tr>
-                <tr>
-                    <td>Clôturées</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIF(reclamations!H:H,1)</td>
-                </tr>
-                <tr>
-                    <td>Motif Retard</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIF(reclamations!D:D,1)</td>
-                </tr>
-                <tr>
-                    <td>Motif Suppression</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIF(reclamations!D:D,3)</td>
-                </tr>
-                <tr>
-                    <td>Ligne 389</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIF(reclamations!C:C,"L389")</td>
-                </tr>
-                <tr>
-                    <td>Retards ouverts L389</td>
-                    <td style="font-family:monospace; color:#15803d;">=COUNTIFS(C:C,"L389",D:D,1,H:H,0)</td>
-                </tr>
-            </table>
-        </div>
+<!-- 3 questions métier → réponses (fragments) -->
+<div style="display:flex; gap:10px; align-items:stretch;">
+
+    <div class="fragment" style="flex:1; background:#fff0f0; border-radius:8px; padding:11px 13px; border-top:4px solid #c0392b;">
+        <p style="font-size:0.52rem; color:#c0392b; font-weight:700; margin:0 0 4px;">🔴 Prestataire le plus problématique ?</p>
+        <p style="font-size:0.92rem; color:#c0392b; font-weight:700; margin:0;">Transdev</p>
+        <p style="font-size:0.5rem; color:#888; margin:1px 0 7px;">8 réclamations non clôturées</p>
+        <p style="font-size:0.42rem; font-family:monospace; color:#555; margin:0; line-height:1.6; background:white; border-radius:4px; padding:5px 7px;">=INDEX(noms;MATCH(MAX(non_clot);non_clot;0))<br><span style="color:#999;">via</span> SUMIF(lignes_bus → prestataires)</p>
     </div>
 
-    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+    <div class="fragment" style="flex:1; background:#f5f0ff; border-radius:8px; padding:11px 13px; border-top:4px solid #7c3aed;">
+        <p style="font-size:0.52rem; color:#7c3aed; font-weight:700; margin:0 0 4px;">🟣 Commune la plus impactée ?</p>
+        <p style="font-size:0.92rem; color:#7c3aed; font-weight:700; margin:0;">Meudon</p>
+        <p style="font-size:0.5rem; color:#888; margin:1px 0 7px;">7 réclamations au total</p>
+        <p style="font-size:0.42rem; font-family:monospace; color:#555; margin:0; line-height:1.6; background:white; border-radius:4px; padding:5px 7px;">=COUNTIF(reclamations!E:E;"C003")<br><span style="color:#999;">E = id_commune (FK)</span></p>
+    </div>
 
-        <div class="fragment" style="background:#f0f9e8; border-radius:8px; padding:13px 16px; border-left:4px solid #95c11f;">
-            <p style="font-size:0.66rem; font-weight:700; color:#2e7d32; margin:0 0 6px;">Ce que vous venez de construire</p>
-            <p style="font-size:0.62rem; color:#333; margin:0; line-height:1.7;">
-                3 tables OLTP reliées par des FK<br>
-                → 1 tableau de bord OLAP qui se met à jour seul<br>
-                → Nouvelle réclamation = 1 ligne saisie = tous les indicateurs mis à jour
-            </p>
-        </div>
-
-        <div class="fragment" style="background:#1e293b; border-radius:8px; padding:13px 16px;">
-            <p style="font-size:0.66rem; font-weight:700; color:white; margin:0 0 6px;">La règle qui résiste au chaos</p>
-            <p style="font-size:0.62rem; color:#94a3b8; margin:0; line-height:1.7;">
-                Une base bien structurée n'est pas plus complexe à maintenir.<br>
-                Elle est <strong style="color:white;">moins complexe</strong> — parce que les questions difficiles deviennent des formules simples.
-            </p>
-        </div>
-
-        <div class="fragment" style="background:#fff8e1; border-radius:8px; padding:11px 16px; border-left:4px solid #f59e0b;">
-            <p style="font-size:0.62rem; color:#b45309; margin:0; line-height:1.7;">
-                📁 Modèle de correction complet disponible :<br>
-                <code>exercices/reclamations_complet.xlsx</code>
-            </p>
-        </div>
-
+    <div class="fragment" style="flex:1; background:#f0fdf4; border-radius:8px; padding:11px 13px; border-top:4px solid #15803d;">
+        <p style="font-size:0.52rem; color:#15803d; font-weight:700; margin:0 0 4px;">🟢 Ligne la plus problématique ?</p>
+        <p style="font-size:0.92rem; color:#15803d; font-weight:700; margin:0;">L169</p>
+        <p style="font-size:0.5rem; color:#888; margin:1px 0 7px;">7 réclamations · 6 ouvertes</p>
+        <p style="font-size:0.42rem; font-family:monospace; color:#555; margin:0; line-height:1.6; background:white; border-radius:4px; padding:5px 7px;">=COUNTIF(reclamations!C:C;"L169")<br><span style="color:#999;">C = id_ligne (FK)</span></p>
     </div>
 
 </div>
+
+<div class="fragment" style="background:#1e293b; border-radius:8px; padding:11px 18px; margin-top:12px;">
+    <p style="font-size:0.66rem; color:white; margin:0; text-align:center; line-height:1.6;">
+        Une nouvelle réclamation = <strong style="color:#95c11f;">1 ligne saisie</strong> = tout se recalcule.
+        Les questions difficiles sont devenues des <strong style="color:#009fe3;">formules simples</strong> — c'est ça, la bascule OLTP → OLAP.
+    </p>
+</div>
+
+<p style="font-size:0.5rem; color:#b45309; margin:8px 0 0; text-align:center;">📁 Corrigé : <code>exercices/reclamations_complet.xlsx</code> &nbsp;·&nbsp; 📖 Pas à pas : <code>exercices/TUTORIEL_construction.md</code></p>
 `;
 
 export function SeriousGame() {
@@ -620,7 +667,11 @@ export function SeriousGame() {
         <section dangerouslySetInnerHTML={{ __html: briefB }} />
         <section dangerouslySetInnerHTML={{ __html: debriefB }} />
       </section>
-      <section dangerouslySetInnerHTML={{ __html: saisiCollective }} />
+      {/* Phase 2 — Ensemble : reclamations · questions ↕ structure révélée */}
+      <section>
+        <section dangerouslySetInnerHTML={{ __html: briefReclamations }} />
+        <section dangerouslySetInnerHTML={{ __html: debriefReclamations }} />
+      </section>
       <section>
         <section dangerouslySetInnerHTML={{ __html: chaos1 }} />
         <section dangerouslySetInnerHTML={{ __html: chaos2 }} />

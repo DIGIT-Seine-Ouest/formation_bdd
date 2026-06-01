@@ -53,58 +53,10 @@ const titre = `
 `;
 
 const histoire = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#f59e0b; margin:0 0 6px; font-weight:700;">Pour commencer — une histoire</p>
-<h2 style="margin:0 0 4px; line-height:1.2;">Les Gringos partent aux Bahamas 🏝️</h2>
-<p style="font-size:0.72rem; color:#555; margin:0 0 14px; line-height:1.6;">L'hôtel permet de facturer les dépenses sur la chambre. Michel dit aux enfants : <strong>"Notez ce que vous mettez sur la chambre, je vérifierai à la fin."</strong></p>
-
-<div style="margin-bottom:14px; border-radius:8px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,0.10);">
-    <div style="background:#0f4c75; padding:7px 14px; display:flex; align-items:center; gap:8px;">
-        <span style="font-size:1rem;">📂</span>
-        <p style="font-size:0.52rem; color:rgba(255,255,255,0.75); margin:0; font-family:monospace;">notes_depenses.xlsx — chacun remplit comme il veut</p>
-    </div>
-    <table style="width:100%; border-collapse:collapse; font-size:0.54em;">
-        <tr>
-            <th style="background:#7c3aed; color:white; padding:8px 14px; text-align:left;">Claire</th>
-            <th style="background:#dc2626; color:white; padding:8px 14px; text-align:left;">Junior</th>
-            <th style="background:#0284c7; color:white; padding:8px 14px; text-align:left;">Michael Jr</th>
-            <th style="background:#d97706; color:white; padding:8px 14px; text-align:left;">Jay</th>
-        </tr>
-        <tr>
-            <td style="padding:7px 14px; background:#faf5ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">bijou souvenir 12€</td>
-            <td style="padding:7px 14px; background:#fff5f5; border-bottom:1px solid #e5e7eb; font-family:monospace;">HBO 9,99$</td>
-            <td style="padding:7px 14px; background:#eff6ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">glace + soda 4€</td>
-            <td style="padding:7px 14px; background:#fffbeb; border-bottom:1px solid #e5e7eb; font-family:monospace;">Spa Bahamas — 45€</td>
-        </tr>
-        <tr>
-            <td style="padding:7px 14px; background:#faf5ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">t-shirt Bahamas 20</td>
-            <td style="padding:7px 14px; background:#fff5f5; border-bottom:1px solid #e5e7eb; font-family:monospace;">Canal+ Sport €14</td>
-            <td style="padding:7px 14px; background:#eff6ff; border-bottom:1px solid #e5e7eb; font-family:monospace;">carte postale 2,50€</td>
-            <td style="padding:7px 14px; background:#fffbeb; border-bottom:1px solid #e5e7eb; font-family:monospace;">2 cocktails 18</td>
-        </tr>
-        <tr>
-            <td style="padding:7px 14px; background:#faf5ff; font-family:monospace;">collier 15,00€</td>
-            <td style="padding:7px 14px; background:#fff5f5; font-family:monospace;">Netflix 1 sem. 8€</td>
-            <td style="padding:7px 14px; background:#eff6ff; font-family:monospace;">jeux arcade ~10€</td>
-            <td style="padding:7px 14px; background:#fffbeb; font-family:monospace;">repas plage 35€</td>
-        </tr>
-    </table>
-</div>
-
-<div style="display:flex; gap:10px;">
-    <div class="fragment" style="flex:1; background:#1e293b; border-radius:8px; padding:11px 18px; display:flex; align-items:center; gap:14px;">
-        <div style="font-size:1.6rem; flex-shrink:0;">✈️</div>
-        <p style="font-size:0.72rem; color:white; margin:0; line-height:1.6;">
-            Retour à la maison. La facture arrive.<br>
-            <strong style="color:#fcd34d;">"Combien Junior a mis en chaînes payantes ?"</strong>
-        </p>
-    </div>
-    <div class="fragment" style="flex:1; background:#fee2e2; border-radius:8px; padding:11px 18px; border-left:4px solid #dc2626;">
-        <p style="font-size:0.58rem; font-weight:700; color:#dc2626; margin:0 0 5px; font-family:monospace;">=SUMIF(range, "chaîne payante", montants) → 0</p>
-        <p style="font-size:0.56rem; color:#7f1d1d; margin:0; line-height:1.7;">
-            <code>"HBO 9,99$"</code> · <code>"Canal+ Sport €14"</code> · <code>"Netflix 1 sem. 8€"</code><br>
-            Trois écritures. Zéro correspondance.
-        </p>
-    </div>
+<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; text-align:center;">
+    <p style="font-size:0.8rem; text-transform:uppercase; letter-spacing:5px; color:#f59e0b; margin:0 0 18px; font-weight:700;">Intro</p>
+    <h1 style="font-family:'IBM Plex Serif',serif; font-size:3.4rem; line-height:1.1; margin:0; color:#0f4c75; font-style:italic;">Pour commencer</h1>
+    <div style="width:80px; height:3px; background:linear-gradient(90deg,#009fe3,#95c11f); border-radius:2px; margin:22px 0 0;"></div>
 </div>
 `;
 
@@ -645,11 +597,7 @@ export function Accueil() {
         data-background-gradient="linear-gradient(135deg, #009fe3 0%, #95c11f 100%)"
         dangerouslySetInnerHTML={{ __html: titre }}
       />
-      <section>
-        <section dangerouslySetInnerHTML={{ __html: histoire }} />
-        <section dangerouslySetInnerHTML={{ __html: bonneStructure }} />
-        <section dangerouslySetInnerHTML={{ __html: resolution }} />
-      </section>
+      <section dangerouslySetInnerHTML={{ __html: histoire }} />
       <section dangerouslySetInnerHTML={{ __html: programme }} />
     </>
   );
