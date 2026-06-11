@@ -8,7 +8,7 @@ import { Donnees } from './slides/Donnees';
 import { Module1 } from './slides/Module1';
 import { Module2 } from './slides/Module2';
 import { Module3 } from './slides/Module3';
-import { SeriousGame } from './slides/SeriousGame';
+import { Ressources } from './slides/Ressources';
 
 export function App() {
   useEffect(() => {
@@ -32,7 +32,7 @@ export function App() {
         <Module1 />
         <Module2 />
         <Module3 />
-        <SeriousGame />
+        <Ressources />
       </div>
     </div>
   );
