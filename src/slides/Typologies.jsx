@@ -185,7 +185,7 @@ const strava = `
 const yegoTables = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Cas réel — les scooters Yego (GPSO)</p>
 <h2 style="margin-top:0;">Deux tables. Même système.</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Ces données sont réelles — collectées sur les scooters GPSO. Observez bien les deux tables.</p>
+<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Structure réelle de l'API MDS Yego (GPSO) — données mockées pour la formation. Observez bien les deux tables.</p>
 
 <div style="display:flex; gap:14px; align-items:stretch; margin-bottom:18px;">
 

@@ -199,6 +199,73 @@ const stack = `
 </div>
 `;
 
+const bigData = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#e53e3e; margin:0 0 4px; font-weight:700;">Et quand le flux devient énorme ?</p>
+<h2 style="margin-top:0;">Big data : la fenêtre, l'objet, l'entrepôt</h2>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:12px;">Un scooter émet un événement toutes les ~30 s en course. Une flotte entière → <strong>des millions de lignes par an</strong>. On ne peut pas tout garder au même endroit.</p>
+
+<div style="display:flex; gap:8px; align-items:stretch; max-width:980px; margin:0 auto 12px;">
+
+    <div style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #2563eb;">
+        <div style="background:#2563eb; padding:8px 14px;">
+            <p style="font-size:0.6rem; font-weight:700; color:white; margin:0;">🔥 Base chaude · OLTP</p>
+        </div>
+        <div style="background:#eff6ff; padding:11px 14px;">
+            <p style="font-size:0.58rem; color:#1e3a5f; margin:0 0 8px; line-height:1.65;">Ne garde qu'une <strong>fenêtre glissante</strong> du flux — l'API MDS elle-même ne sert que les événements récents.</p>
+            <div style="background:white; border-radius:6px; padding:7px 11px; border-left:3px solid #2563eb; margin-bottom:8px;">
+                <p style="font-size:0.52rem; color:#2563eb; margin:0; font-family:monospace;">events : 30 jours · ~10 000 lignes</p>
+            </div>
+            <p style="font-size:0.52rem; color:#555; margin:0; line-height:1.6;">Rapide, chère, <strong>petite</strong> — dimensionnée pour l'opérationnel, pas pour l'historique.</p>
+        </div>
+    </div>
+
+    <div class="fragment" style="display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; gap:3px;">
+        <p style="font-size:0.42rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center; line-height:1.7;">archivage<br>continu</p>
+        <div style="font-size:1.4rem; color:#0284c7;">→</div>
+    </div>
+
+    <div class="fragment" style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #0284c7;">
+        <div style="background:#0284c7; padding:8px 14px;">
+            <p style="font-size:0.6rem; font-weight:700; color:white; margin:0;">🗄️ Stockage objet · data lake</p>
+        </div>
+        <div style="background:#f0f9ff; padding:11px 14px;">
+            <p style="font-size:0.58rem; color:#0c4a6e; margin:0 0 8px; line-height:1.65;">L'historique <strong>complet</strong> dort en fichiers (Parquet) sur S3 / GCS / MinIO — la couche <strong>bronze</strong> du medallion.</p>
+            <div style="background:white; border-radius:6px; padding:7px 11px; border-left:3px solid #0284c7; margin-bottom:8px;">
+                <p style="font-size:0.52rem; color:#0284c7; margin:0; font-family:monospace;">events/year=2026/month=06/*.parquet</p>
+            </div>
+            <p style="font-size:0.52rem; color:#555; margin:0; line-height:1.6;">Quasi gratuit, illimité, immuable. <strong>On ne jette rien — on déplace.</strong></p>
+        </div>
+    </div>
+
+    <div class="fragment" style="display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; gap:3px;">
+        <p style="font-size:0.42rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center; line-height:1.7;">à la<br>demande</p>
+        <div style="font-size:1.4rem; color:#9333ea;">→</div>
+    </div>
+
+    <div class="fragment" style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #9333ea;">
+        <div style="background:#9333ea; padding:8px 14px;">
+            <p style="font-size:0.6rem; font-weight:700; color:white; margin:0;">🏛️ Data warehouse · OLAP</p>
+        </div>
+        <div style="background:#faf5ff; padding:11px 14px;">
+            <p style="font-size:0.58rem; color:#4c1d95; margin:0 0 8px; line-height:1.65;">La <strong>transformation</strong> se fait ici (le T du ELT) : l'entrepôt lit le lake, agrège, produit silver puis gold.</p>
+            <div style="background:white; border-radius:6px; padding:7px 11px; border-left:3px solid #9333ea; margin-bottom:8px;">
+                <p style="font-size:0.52rem; color:#7c3aed; margin:0; font-family:monospace;">events (5 ans) → trips → dashboard</p>
+            </div>
+            <p style="font-size:0.52rem; color:#555; margin:0; line-height:1.6;">L'historique <strong>se réveille</strong> quand une question arrive — jamais avant.</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#1e293b; border-radius:8px; padding:11px 20px; max-width:980px; margin:0 auto;">
+    <p style="font-size:0.7rem; color:white; margin:0; line-height:1.7;">
+        <strong style="color:#fcd34d;">Vous l'avez vécu dans l'exercice :</strong> l'anti-jointure a trouvé des trajets d'avril–mai <em>sans aucun événement</em> —
+        ils sont sortis de la fenêtre de 30 jours. <code style="color:#93c5fd;">trips</code> (petit, agrégé) garde la mémoire longue ;
+        <code style="color:#93c5fd;">events</code> (énorme, brut) ne vit qu'en fenêtre, puis part en stockage objet.
+    </p>
+</div>
+`;
+
 const retenir = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--green-dirmob); margin:0 0 6px; font-weight:700;">À retenir</p>
 <h2 style="margin-top:0;">Le fil, du bloc-notes au Modern Data Stack</h2>
@@ -242,6 +309,7 @@ export function ModernDataStack() {
       <section dangerouslySetInnerHTML={{ __html: etlElt }} />
       <section dangerouslySetInnerHTML={{ __html: medallion }} />
       <section dangerouslySetInnerHTML={{ __html: stack }} />
+      <section dangerouslySetInnerHTML={{ __html: bigData }} />
       <section dangerouslySetInnerHTML={{ __html: retenir }} />
     </>
   );

@@ -7,3 +7,4 @@ document_cadrage/
 # Vite build output & dependencies
 dist/
 node_modules/
+gpso_yego_api.html

@@ -18,12 +18,12 @@ const bloc = (accent, label, type, title, desc, href) => `
   </div>`;
 
 const ressources = `
-<div style="max-width:920px; margin:0 auto; text-align:left;">
+<div style="max-width:1020px; margin:0 auto; text-align:left;">
   <p style="font-size:0.64rem; text-transform:uppercase; letter-spacing:4px; color:var(--blue-dirmob, #009fe3); margin:0 0 6px; font-weight:700;">Pour aller plus loin</p>
   <h2 style="margin:0 0 6px;">Les ressources de la formation</h2>
   <p style="font-size:0.78rem; color:#555; margin:0 0 24px;">La théorie, le cas pratique et le résultat, côte à côte.</p>
 
-  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; align-items:stretch;">
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; align-items:stretch;">
     ${bloc('#009fe3', 'À retenir', 'DOCX', 'Cheat sheet',
         'Les concepts clés de la formation, en quelques pages.',
         'ressources/cheat_sheet.docx')}
@@ -33,6 +33,9 @@ const ressources = `
     ${bloc('#009fe3', 'Le fichier Excel généré', 'ZIP', 'Exercices',
         'reclamations.xlsx (réclamations + tableau de suivi) et les données des collègues.',
         'ressources/exercices.zip')}
+    ${bloc('#f59e0b', 'Démos SQL en live', 'ZIP', 'Données Yego',
+        'events / trips / vehicles (structure réelle MDS, mock data) + les requêtes DuckDB du cours.',
+        'ressources/yego_data.zip')}
   </div>
 
   <p style="font-size:0.58rem; color:#94a3b8; margin:22px 0 0; text-align:center;">Cliquez sur un bloc pour télécharger.</p>
