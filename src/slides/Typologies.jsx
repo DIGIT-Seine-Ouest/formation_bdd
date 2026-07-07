@@ -68,110 +68,118 @@ const oltpOlap = `
 </div>
 `;
 
-const exemples1 = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">OLTP vs OLAP — des exemples concrets</p>
-<h2 style="margin-top:0;">Base de données vs tableau de suivi (1/2)</h2>
+const wrapped = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#a855f7; margin:0 0 4px; font-weight:700;">Exemple détaillé 1/2 — vous le vivez chaque décembre</p>
+<h2 style="margin-top:0;">🎧 Le « Wrapped » musique de fin d'année</h2>
 
-<div class="row" style="margin-top:10px; align-items:stretch; gap:16px;">
+<div style="display:flex; gap:14px; align-items:stretch; max-width:960px; margin:10px auto 0;">
 
-    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
-        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🏃 Strava — course à pied</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
-        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
-            <tr><th>date</th><th>km</th><th>durée</th><th>allure</th></tr>
-            <tr><td>03/01</td><td>8,2</td><td>42:15</td><td>5'09"/km</td></tr>
-            <tr><td>05/01</td><td>12,0</td><td>1:01:30</td><td>5'07"/km</td></tr>
-            <tr><td>08/01</td><td>5,5</td><td>28:00</td><td>5'05"/km</td></tr>
-        </table>
-
-        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
-        <table class="mockup-table" style="font-size:0.48em;">
-            <tr><th>Mois</th><th style="background:#dcfce7; color:#15803d;">Total km</th><th>Sorties</th><th>Meilleure allure</th></tr>
-            <tr><td>Janvier</td><td style="color:#15803d; font-weight:700;">25,7 km</td><td>3</td><td>5'05"/km</td></tr>
-        </table>
+    <!-- OLTP : la table des écoutes -->
+    <div style="flex:1.25;">
+        <div style="background:#2563eb; border-radius:9px 9px 0 0; padding:7px 14px;">
+            <p style="font-size:0.56rem; font-weight:700; color:white; margin:0; font-family:monospace;">OLTP · ecoutes — toute l'année, en continu</p>
+        </div>
+        <div style="background:#eff6ff; border:2px solid #2563eb; border-top:none; border-radius:0 0 9px 9px; padding:10px 13px;">
+            <table class="mockup-table" style="font-size:0.44em;">
+                <tr><th>timestamp</th><th>titre</th><th>artiste</th><th>duree_s</th></tr>
+                <tr><td>2026-01-03 07:12</td><td>Flowers</td><td>M. Cyrus</td><td>200</td></tr>
+                <tr><td>2026-01-03 07:16</td><td>Houdini</td><td>Dua Lipa</td><td>185</td></tr>
+                <tr><td>2026-01-03 08:02</td><td>Flowers</td><td>M. Cyrus</td><td>200</td></tr>
+                <tr><td style="color:#94a3b8;" colspan="4">… 8 742 écoutes de janvier à décembre …</td></tr>
+                <tr><td>2026-11-30 22:47</td><td>Feather</td><td>S. Carpenter</td><td>187</td></tr>
+            </table>
+            <p style="font-size:0.5rem; color:#2563eb; font-weight:700; margin:7px 0 0;">1 écoute = 1 ligne, horodatée. L'appli écrit — elle n'analyse rien.</p>
+        </div>
     </div>
 
-    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
-        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🧸 Magasin de jouets</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
-        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
-            <tr><th>date</th><th>article</th><th>qté</th><th>prix unit.</th></tr>
-            <tr><td>01/12</td><td>Lego City</td><td>2</td><td>39,90 €</td></tr>
-            <tr><td>01/12</td><td>Poupée</td><td>1</td><td>24,50 €</td></tr>
-            <tr><td>02/12</td><td>Lego City</td><td>3</td><td>39,90 €</td></tr>
-        </table>
-
-        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
-        <table class="mockup-table" style="font-size:0.48em;">
-            <tr><th>Article</th><th style="background:#dcfce7; color:#15803d;">Ventes déc.</th><th>CA déc.</th></tr>
-            <tr><td>Lego City</td><td style="color:#15803d; font-weight:700;">5</td><td>199,50 €</td></tr>
-            <tr><td>Poupée</td><td style="color:#15803d; font-weight:700;">1</td><td>24,50 €</td></tr>
-        </table>
+    <!-- Transformation -->
+    <div class="fragment" style="display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; gap:4px; padding:0 4px;">
+        <p style="font-size:0.44rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center; line-height:1.8;">le 1ᵉʳ décembre :<br>une requête<br>d'agrégation</p>
+        <div style="font-size:1.7rem; color:#a855f7; line-height:1;">→</div>
+        <p style="font-size:0.42rem; color:#cbd5e1; font-family:monospace; margin:0;">GROUP BY artiste</p>
     </div>
 
+    <!-- OLAP : le wrapped -->
+    <div class="fragment" style="flex:1; background:linear-gradient(160deg,#7c3aed 0%,#a855f7 55%,#ec4899 100%); border-radius:12px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 10px 30px rgba(124,58,237,0.35);">
+        <p style="font-size:0.5rem; color:rgba(255,255,255,0.75); text-transform:uppercase; letter-spacing:3px; margin:0 0 10px; font-weight:700;">OLAP · Votre année 2026</p>
+        <p style="font-size:1.35rem; color:white; font-weight:700; margin:0 0 2px; font-family:'IBM Plex Serif',serif;">29 140 min</p>
+        <p style="font-size:0.52rem; color:rgba(255,255,255,0.75); margin:0 0 12px;">de musique écoutée</p>
+        <div style="border-top:1px solid rgba(255,255,255,0.25); padding-top:10px; display:flex; flex-direction:column; gap:7px;">
+            <p style="font-size:0.6rem; color:white; margin:0;">🥇 Top artiste : <strong>M. Cyrus</strong> <span style="opacity:0.7;">· 312 écoutes</span></p>
+            <p style="font-size:0.6rem; color:white; margin:0;">🎵 Top titre : <strong>Flowers</strong> <span style="opacity:0.7;">· 98 écoutes</span></p>
+            <p style="font-size:0.6rem; color:white; margin:0;">📈 Top 5 % des auditeurs de cet artiste</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#f8fafc; border-radius:8px; padding:11px 20px; border-left:4px solid #a855f7; margin:13px auto 0; max-width:960px;">
+    <p style="font-size:0.72rem; color:#333; margin:0; line-height:1.7;">
+        <strong style="color:#7c3aed;">Le Wrapped n'existe nulle part pendant l'année.</strong>
+        Il est <strong>calculé en décembre</strong> depuis la table des écoutes : COUNT par artiste, SUM des durées, un tri.
+        OLTP toute l'année → OLAP une fois par an.
+    </p>
 </div>
 `;
 
-const exemples2 = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">OLTP vs OLAP — des exemples concrets</p>
-<h2 style="margin-top:0;">Base de données vs tableau de suivi (2/2)</h2>
+const strava = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#f97316; margin:0 0 4px; font-weight:700;">Exemple détaillé 2/2 — la montre au poignet</p>
+<h2 style="margin-top:0;">🏃 Strava — chaque course, puis le bilan</h2>
 
-<div class="row" style="margin-top:10px; align-items:stretch; gap:16px; margin-bottom:14px;">
+<div style="display:flex; gap:14px; align-items:stretch; max-width:960px; margin:10px auto 0;">
 
-    <div class="offbeat-card" style="flex:1; padding:14px 16px;">
-        <p style="font-size:0.64rem; font-weight:700; color:#333; margin:0 0 10px;">🛒 Liste de courses</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
-        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
-            <tr><th>date</th><th>article</th><th>catégorie</th><th>prix</th></tr>
-            <tr><td>05/01</td><td>lait</td><td>produits laitiers</td><td>1,20 €</td></tr>
-            <tr><td>07/01</td><td>pain</td><td>boulangerie</td><td>2,50 €</td></tr>
-            <tr><td>12/01</td><td>lait</td><td>produits laitiers</td><td>1,20 €</td></tr>
-        </table>
-
-        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
-        <table class="mockup-table" style="font-size:0.48em;">
-            <tr><th>Catégorie</th><th style="background:#dcfce7; color:#15803d;">Total jan.</th><th>Nb achats</th></tr>
-            <tr><td>Produits laitiers</td><td style="color:#15803d; font-weight:700;">2,40 €</td><td>2</td></tr>
-            <tr><td>Boulangerie</td><td style="color:#15803d; font-weight:700;">2,50 €</td><td>1</td></tr>
-        </table>
+    <!-- OLTP -->
+    <div style="flex:1.25;">
+        <div style="background:#2563eb; border-radius:9px 9px 0 0; padding:7px 14px;">
+            <p style="font-size:0.56rem; font-weight:700; color:white; margin:0; font-family:monospace;">OLTP · sorties — écrite par la montre, en direct</p>
+        </div>
+        <div style="background:#eff6ff; border:2px solid #2563eb; border-top:none; border-radius:0 0 9px 9px; padding:10px 13px;">
+            <table class="mockup-table" style="font-size:0.44em;">
+                <tr><th>date</th><th>km</th><th>duree</th><th>allure</th><th>fc_moy</th></tr>
+                <tr><td>03/01</td><td>8,2</td><td>42:15</td><td>5'09"/km</td><td>152</td></tr>
+                <tr><td>05/01</td><td>12,0</td><td>1:01:30</td><td>5'07"/km</td><td>149</td></tr>
+                <tr><td>08/01</td><td>5,5</td><td>28:00</td><td>5'05"/km</td><td>155</td></tr>
+                <tr><td style="color:#94a3b8;" colspan="5">… chaque sortie de l'année, au fil de l'eau …</td></tr>
+            </table>
+            <p style="font-size:0.5rem; color:#2563eb; font-weight:700; margin:7px 0 0;">1 sortie = 1 ligne. La montre capture — vous courez.</p>
+        </div>
     </div>
 
-    <div class="offbeat-card" style="flex:1; padding:14px 16px; border-left:3px solid #009fe3;">
-        <p style="font-size:0.64rem; font-weight:700; color:#009fe3; margin:0 0 10px;">🚌 DIRMOB — réclamations</p>
+    <!-- Transformation -->
+    <div class="fragment" style="display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; gap:4px; padding:0 4px;">
+        <p style="font-size:0.44rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin:0; text-align:center; line-height:1.8;">à l'ouverture<br>de l'appli :<br>agrégation</p>
+        <div style="font-size:1.7rem; color:#f97316; line-height:1;">→</div>
+        <p style="font-size:0.42rem; color:#cbd5e1; font-family:monospace; margin:0;">GROUP BY mois</p>
+    </div>
 
-        <p style="font-size:0.5rem; font-weight:700; color:#009fe3; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Base de données · OLTP</p>
-        <table class="mockup-table" style="font-size:0.48em; margin-bottom:6px;">
-            <tr><th>date</th><th>ligne</th><th>motif</th><th>statut</th></tr>
-            <tr><td>05/03</td><td>389</td><td>retard</td><td>non_traite</td></tr>
-            <tr><td>07/03</td><td>160</td><td>avance</td><td>traite</td></tr>
-            <tr><td>10/03</td><td>389</td><td>retard</td><td>non_traite</td></tr>
-        </table>
-
-        <p style="font-size:0.58rem; text-align:center; color:#ccc; margin:5px 0;">↓ &nbsp;TCD / agrégation</p>
-
-        <p style="font-size:0.5rem; font-weight:700; color:#95c11f; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 5px;">Tableau de suivi · OLAP</p>
-        <table class="mockup-table" style="font-size:0.48em;">
-            <tr><th>Motif</th><th style="background:#dcfce7; color:#15803d;">Mars</th><th>Non traités</th></tr>
-            <tr><td>retard</td><td style="color:#15803d; font-weight:700;">2</td><td>2</td></tr>
-            <tr><td>avance</td><td style="color:#15803d; font-weight:700;">1</td><td>0</td></tr>
-        </table>
+    <!-- OLAP -->
+    <div class="fragment" style="flex:1; background:#0f172a; border-radius:12px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid #f97316;">
+        <p style="font-size:0.5rem; color:#f97316; text-transform:uppercase; letter-spacing:3px; margin:0 0 10px; font-weight:700;">OLAP · Votre mois de janvier</p>
+        <div style="display:flex; gap:14px; margin-bottom:12px;">
+            <div>
+                <p style="font-size:1.2rem; color:white; font-weight:700; margin:0; font-family:'IBM Plex Serif',serif;">25,7 km</p>
+                <p style="font-size:0.48rem; color:#94a3b8; margin:0;">distance totale</p>
+            </div>
+            <div>
+                <p style="font-size:1.2rem; color:white; font-weight:700; margin:0; font-family:'IBM Plex Serif',serif;">3</p>
+                <p style="font-size:0.48rem; color:#94a3b8; margin:0;">sorties</p>
+            </div>
+        </div>
+        <div style="border-top:1px solid #334155; padding-top:10px; display:flex; flex-direction:column; gap:6px;">
+            <p style="font-size:0.58rem; color:white; margin:0;">⚡ Meilleure allure : <strong>5'05"/km</strong> <span style="color:#4ade80;">· record</span></p>
+            <p style="font-size:0.58rem; color:white; margin:0;">📈 +12 % vs décembre — <span style="color:#94a3b8;">calculé, jamais saisi</span></p>
+        </div>
     </div>
 
 </div>
-<div class="separator"></div>
-<p class="fragment" style="font-size:0.78rem; color:#333; margin:0; line-height:1.7; text-align:center;">
-    Dans chaque cas : la <strong>base de données (OLTP)</strong> enregistre les faits bruts · le <strong>tableau de suivi (OLAP)</strong> en extrait le sens.<br>
-    <span style="font-size:0.66rem; color:#888; font-style:italic;">Le TCD est le <em>résultat</em> d'une requête sur la base — pas la base elle-même.</span>
-</p>
+
+<div class="fragment" style="background:#f8fafc; border-radius:8px; padding:11px 20px; border-left:4px solid #f97316; margin:13px auto 0; max-width:960px;">
+    <p style="font-size:0.72rem; color:#333; margin:0; line-height:1.7;">
+        <strong style="color:#c2410c;">Même mécanique que le Wrapped, autre échelle de temps.</strong>
+        Le bilan mensuel est recalculé à chaque ouverture — parce que la table des sorties est propre : 1 ligne par course, des types cohérents.
+        <span style="color:#888;">Maintenant, un cas réel de la maison →</span>
+    </p>
+</div>
 `;
 
 const yegoTables = `
@@ -414,8 +422,8 @@ export function Typologies() {
         dangerouslySetInnerHTML={{ __html: intro }}
       />
       <section dangerouslySetInnerHTML={{ __html: oltpOlap }} />
-      <section dangerouslySetInnerHTML={{ __html: exemples1 }} />
-      <section dangerouslySetInnerHTML={{ __html: exemples2 }} />
+      <section dangerouslySetInnerHTML={{ __html: wrapped }} />
+      <section dangerouslySetInnerHTML={{ __html: strava }} />
       <section dangerouslySetInnerHTML={{ __html: yegoTables }} />
       <section dangerouslySetInnerHTML={{ __html: yegoSql }} />
       <section dangerouslySetInnerHTML={{ __html: entrepot }} />

@@ -15,58 +15,6 @@ const intro = `
 </div>
 `;
 
-const autourDeNous = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Le même principe partout</p>
-<h2 style="margin-top:0;">Les bases de données autour de vous</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Chaque service numérique repose sur des données organisées en tables.</p>
-
-<div class="row" style="align-items:flex-start; gap:14px; margin-bottom:16px;">
-
-    <div style="flex:1;">
-        <p style="font-size:0.54rem; background:#1877f2; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">Facebook · utilisateurs</p>
-        <table class="mockup-table">
-            <tr>
-                <th style="background:#1877f2; color:white;">id</th>
-                <th>nom</th><th>email</th><th>ville</th>
-            </tr>
-            <tr><td style="background:#e8f0fe; color:#1877f2; font-weight:700;">1</td><td>Martin</td><td>j.martin@…</td><td>Paris</td></tr>
-            <tr><td style="background:#e8f0fe; color:#1877f2; font-weight:700;">2</td><td>Dupont</td><td>a.dupont@…</td><td>Lyon</td></tr>
-            <tr><td style="background:#e8f0fe; color:#1877f2; font-weight:700;">3</td><td>Nguyen</td><td>n.nguyen@…</td><td>Nantes</td></tr>
-        </table>
-        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">3 milliards de lignes dans cette table.<br>Même structure, à l'échelle.</p>
-    </div>
-
-    <div style="flex:1;" class="fragment">
-        <p style="font-size:0.54rem; background:#e50914; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">Netflix · series</p>
-        <table class="mockup-table">
-            <tr><th style="background:#e50914; color:white;">id</th><th>titre</th><th>genre</th></tr>
-            <tr><td style="background:#fde8e8; color:#e50914; font-weight:700;">S01</td><td>Squid Game</td><td>thriller</td></tr>
-            <tr><td style="background:#fde8e8; color:#e50914; font-weight:700;">S02</td><td>Wednesday</td><td>fantastique</td></tr>
-            <tr><td style="background:#fde8e8; color:#e50914; font-weight:700;">S03</td><td>Dark</td><td>sci-fi</td></tr>
-        </table>
-        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">Une table parmi d'autres,<br>comme dans votre fichier.</p>
-    </div>
-
-    <div style="flex:1;" class="fragment">
-        <p style="font-size:0.54rem; background:#009fe3; color:white; display:inline-block; padding:3px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin:0 0 6px;">DIRMOB · réclamations</p>
-        <table class="mockup-table">
-            <tr><th style="background:#1e40af; color:white;">id</th><th style="color:#a16207;">id_ligne</th><th>motif</th><th>statut</th></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R001</td><td style="color:#a16207;">L1</td><td>retard</td><td>non_traite</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R002</td><td style="color:#a16207;">L2</td><td>avance</td><td>traite</td></tr>
-            <tr><td style="background:#dbe4ff; color:#1e40af; font-weight:700;">R003</td><td style="color:#a16207;">L1</td><td>retard</td><td>non_traite</td></tr>
-        </table>
-        <p style="font-size:0.58rem; color:#888; margin:5px 0 0; line-height:1.5;">Même logique que la vôtre :<br>partout, ce sont des tables.</p>
-    </div>
-
-</div>
-
-<div class="fragment" style="background:#f8fafc; border-radius:8px; padding:12px 20px; border-left:4px solid var(--blue-dirmob);">
-    <p style="font-size:0.76rem; color:#444; margin:0; line-height:1.65;">
-        <strong>La même logique partout :</strong> une information par cellule, une ligne par fait réel, une colonne par catégorie d'information.
-    </p>
-</div>
-`;
-
 
 
 const definition = `
@@ -401,6 +349,125 @@ const relationSchema = `
 `;
 
 
+const jointures = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Assembler deux tables</p>
+<h2 style="margin-top:0;">INNER · LEFT · FULL — les types de jointures</h2>
+
+<div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; max-width:940px; margin-left:auto; margin-right:auto;">
+    <div style="flex:1;">
+        <p style="font-size:0.46rem; font-weight:700; color:#a16207; font-family:monospace; margin:0 0 3px;">lignes_bus <span style="color:#94a3b8; font-weight:400;">(gauche)</span></p>
+        <table class="mockup-table" style="font-size:0.44em;">
+            <tr><th style="background:#a16207; color:white;">id</th><th>numero</th></tr>
+            <tr><td style="color:#a16207; font-weight:700;">L1</td><td>389</td></tr>
+            <tr><td style="color:#a16207; font-weight:700;">L2</td><td>160</td></tr>
+            <tr><td style="color:#a16207; font-weight:700;">L3</td><td>91</td></tr>
+        </table>
+    </div>
+    <div style="padding-top:22px; font-size:0.72rem; color:#94a3b8; flex-shrink:0; font-family:monospace;">ON lignes_bus.id = reclamations.id_ligne</div>
+    <div style="flex:1;">
+        <p style="font-size:0.46rem; font-weight:700; color:#1e40af; font-family:monospace; margin:0 0 3px;">reclamations <span style="color:#94a3b8; font-weight:400;">(droite)</span></p>
+        <table class="mockup-table" style="font-size:0.44em;">
+            <tr><th style="background:#1e40af; color:white;">id</th><th style="color:#a16207;">id_ligne</th><th>motif</th></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">R001</td><td style="color:#a16207; font-weight:700;">L1</td><td>retard</td></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">R002</td><td style="color:#a16207; font-weight:700;">L1</td><td>proprete</td></tr>
+            <tr><td style="color:#1e40af; font-weight:700;">R003</td><td style="color:#dc2626; font-weight:700;">L9 ⚠</td><td>retard</td></tr>
+        </table>
+    </div>
+</div>
+
+<div style="display:flex; gap:10px; align-items:stretch; max-width:940px; margin:0 auto;">
+
+    <div class="fragment" style="flex:1; border-radius:9px; overflow:hidden; border:2px solid #2563eb;">
+        <div style="background:#2563eb; padding:6px 12px;"><p style="font-size:0.56rem; font-weight:700; color:white; margin:0; font-family:monospace;">INNER JOIN</p></div>
+        <div style="background:#eff6ff; padding:9px 11px;">
+            <p style="font-size:0.52rem; color:#1e3a5f; margin:0 0 6px; line-height:1.5;">L'<strong>intersection</strong> : seules les lignes qui matchent des deux côtés.</p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr><th>numero</th><th>motif</th></tr>
+                <tr><td>389</td><td>retard</td></tr>
+                <tr><td>389</td><td>proprete</td></tr>
+            </table>
+            <p style="font-size:0.46rem; color:#64748b; margin:6px 0 0; line-height:1.5;">L2, L3 (sans réclamation) et R003 (ligne inconnue) <strong>disparaissent</strong>.</p>
+        </div>
+    </div>
+
+    <div class="fragment" style="flex:1; border-radius:9px; overflow:hidden; border:2px solid #15803d;">
+        <div style="background:#15803d; padding:6px 12px;"><p style="font-size:0.56rem; font-weight:700; color:white; margin:0; font-family:monospace;">LEFT JOIN</p></div>
+        <div style="background:#f0fdf4; padding:9px 11px;">
+            <p style="font-size:0.52rem; color:#14532d; margin:0 0 6px; line-height:1.5;"><strong>Tout le côté gauche</strong>, complété si correspondance — sinon <code>NULL</code>.</p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr><th>numero</th><th>motif</th></tr>
+                <tr><td>389</td><td>retard</td></tr>
+                <tr><td>389</td><td>proprete</td></tr>
+                <tr><td>160</td><td style="color:#94a3b8; font-style:italic;">NULL</td></tr>
+                <tr><td>91</td><td style="color:#94a3b8; font-style:italic;">NULL</td></tr>
+            </table>
+            <p style="font-size:0.46rem; color:#64748b; margin:6px 0 0; line-height:1.5;">Le référentiel reste complet. <strong>RIGHT JOIN</strong> = le miroir exact.</p>
+        </div>
+    </div>
+
+    <div class="fragment" style="flex:1; border-radius:9px; overflow:hidden; border:2px solid #9333ea;">
+        <div style="background:#9333ea; padding:6px 12px;"><p style="font-size:0.56rem; font-weight:700; color:white; margin:0; font-family:monospace;">FULL OUTER JOIN</p></div>
+        <div style="background:#faf5ff; padding:9px 11px;">
+            <p style="font-size:0.52rem; color:#4c1d95; margin:0 0 6px; line-height:1.5;"><strong>Tout, des deux côtés</strong> — matches et orphelins.</p>
+            <table class="mockup-table" style="font-size:0.4em;">
+                <tr><th>numero</th><th>motif</th></tr>
+                <tr><td>389</td><td>retard · proprete</td></tr>
+                <tr><td>160 · 91</td><td style="color:#94a3b8; font-style:italic;">NULL</td></tr>
+                <tr><td style="color:#dc2626; font-style:italic;">NULL</td><td style="color:#dc2626; font-weight:700;">retard (L9 ⚠)</td></tr>
+            </table>
+            <p style="font-size:0.46rem; color:#64748b; margin:6px 0 0; line-height:1.5;">Rien ne disparaît : <strong>les trous deviennent visibles</strong> des deux côtés.</p>
+        </div>
+    </div>
+
+</div>
+`;
+
+const comparaison = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Le vrai super-pouvoir</p>
+<h2 style="margin-top:0;">La jointure, outil n°1 de comparaison de données</h2>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:14px;">Comparer deux jeux de données = les joindre, puis <strong>regarder où sont les NULL</strong>.</p>
+
+<div style="display:flex; flex-direction:column; gap:9px; max-width:920px; margin:0 auto;">
+
+    <div class="fragment" style="display:flex; gap:0; border-radius:9px; overflow:hidden; border:1px solid #e2e8f0;">
+        <div style="flex:1; background:#f0fdf4; padding:10px 15px;">
+            <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px;">① L'anti-jointure — « qui manque en face ? »</p>
+            <p style="font-size:0.54rem; color:#333; margin:0; line-height:1.6;">Lignes de bus sans aucune réclamation · stations du référentiel absentes de l'export terrain.</p>
+        </div>
+        <div style="flex:1; background:#0f172a; padding:10px 15px; display:flex; align-items:center;">
+            <p style="font-size:0.52rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:1.9;"><span style="color:#f472b6;">FROM</span> lignes_bus <span style="color:#f472b6;">LEFT JOIN</span> reclamations <span style="color:#f472b6;">ON</span> …<br><span style="color:#f472b6;">WHERE</span> reclamations.id <span style="color:#f472b6;">IS NULL</span> <span style="color:#64748b;">-- les sans-match</span></p>
+        </div>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:0; border-radius:9px; overflow:hidden; border:1px solid #e2e8f0;">
+        <div style="flex:1; background:#fff5f5; padding:10px 15px;">
+            <p style="font-size:0.6rem; font-weight:700; color:#dc2626; margin:0 0 3px;">② Les orphelins — « qui pointe vers du vide ? »</p>
+            <p style="font-size:0.54rem; color:#333; margin:0; line-height:1.6;">R003 → L9 : une réclamation sur une ligne <strong>qui n'existe pas</strong>. Erreur de saisie détectée mécaniquement.</p>
+        </div>
+        <div style="flex:1; background:#0f172a; padding:10px 15px; display:flex; align-items:center;">
+            <p style="font-size:0.52rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:1.9;"><span style="color:#f472b6;">FROM</span> reclamations <span style="color:#f472b6;">LEFT JOIN</span> lignes_bus <span style="color:#f472b6;">ON</span> …<br><span style="color:#f472b6;">WHERE</span> lignes_bus.id <span style="color:#f472b6;">IS NULL</span> <span style="color:#64748b;">-- FK cassées</span></p>
+        </div>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:0; border-radius:9px; overflow:hidden; border:1px solid #e2e8f0;">
+        <div style="flex:1; background:#faf5ff; padding:10px 15px;">
+            <p style="font-size:0.6rem; font-weight:700; color:#7c3aed; margin:0 0 3px;">③ Le rapprochement complet — « quoi de neuf entre deux versions ? »</p>
+            <p style="font-size:0.54rem; color:#333; margin:0; line-height:1.6;">Millésime SIG 2025 vs 2026 · export prestataire vs référentiel interne : présents des deux côtés / seulement à gauche / seulement à droite.</p>
+        </div>
+        <div style="flex:1; background:#0f172a; padding:10px 15px; display:flex; align-items:center;">
+            <p style="font-size:0.52rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:1.9;"><span style="color:#f472b6;">FULL OUTER JOIN</span> <span style="color:#64748b;">-- puis trier :</span><br>match · gauche seule (supprimé) · droite seule (nouveau)</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#fefce8; border-radius:8px; padding:11px 20px; border-left:4px solid #ca8a04; margin:13px auto 0; max-width:920px;">
+    <p style="font-size:0.72rem; color:#333; margin:0; line-height:1.7;">
+        <strong style="color:#92400e;">C'est la moitié du travail data au quotidien :</strong> contrôler la qualité, rapprocher deux sources, auditer un référentiel — tout passe par une jointure et la lecture de ses NULL.
+    </p>
+</div>
+`;
+
 const dataLineage = `
 <p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 2px; font-weight:700;">Commun numérique — au-delà de votre service</p>
 <h2 style="margin:0 0 6px; line-height:1.1;">Vos données voyagent loin — elles doivent être propres</h2>
@@ -522,8 +589,6 @@ export function Donnees() {
         dangerouslySetInnerHTML={{ __html: intro }}
       />
 
-      <section dangerouslySetInnerHTML={{ __html: autourDeNous }} />
-
       <section dangerouslySetInnerHTML={{ __html: definition }} />
 
       <section dangerouslySetInnerHTML={{ __html: vocabulaire }} />
@@ -532,6 +597,8 @@ export function Donnees() {
       <section>
         <section dangerouslySetInnerHTML={{ __html: relationnel }} />
         <section dangerouslySetInnerHTML={{ __html: relationSchema }} />
+        <section dangerouslySetInnerHTML={{ __html: jointures }} />
+        <section dangerouslySetInnerHTML={{ __html: comparaison }} />
         <section dangerouslySetInnerHTML={{ __html: dataLineage }} />
       </section>
     </>
