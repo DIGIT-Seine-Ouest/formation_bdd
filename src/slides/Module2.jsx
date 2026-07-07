@@ -1,8 +1,8 @@
 const intro = `
 <div style="text-align:left; max-width:680px; margin:0 auto; color:white;">
-    <p class="section-intro-label" style="color:white;">Partie 3</p>
-    <p class="section-intro-title">Les règles<br>qui changent tout</p>
-    <p class="section-intro-sub">Atomicité, types, identifiants — les 3 piliers d'une donnée exploitable.</p>
+    <p class="section-intro-label" style="color:white;">Partie 3 · Construire</p>
+    <p class="section-intro-title">Traduire le cadrage<br>en tables robustes</p>
+    <p class="section-intro-sub">Le KPI a dicté la structure. Atomicité, types, identifiants — les règles pour la construire sans qu'elle casse.</p>
 </div>
 `;
 

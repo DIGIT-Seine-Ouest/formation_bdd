@@ -5,9 +5,10 @@ import 'reveal.js/dist/reveal.css';
 import './styles.css';
 import { Accueil } from './slides/Accueil';
 import { Donnees } from './slides/Donnees';
-import { Module1 } from './slides/Module1';
+import { Typologies } from './slides/Typologies';
+import { Conception } from './slides/Conception';
 import { Module2 } from './slides/Module2';
-import { Module3 } from './slides/Module3';
+import { ModernDataStack } from './slides/ModernDataStack';
 import { Ressources } from './slides/Ressources';
 
 export function App() {
@@ -29,9 +30,10 @@ export function App() {
       <div className="slides">
         <Accueil />
         <Donnees />
-        <Module1 />
+        <Typologies />
+        <Conception />
         <Module2 />
-        <Module3 />
+        <ModernDataStack />
         <Ressources />
       </div>
     </div>
