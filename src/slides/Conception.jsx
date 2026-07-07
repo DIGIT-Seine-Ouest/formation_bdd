@@ -270,10 +270,119 @@ const remonter = `
         La structure des données se déduit du KPI — jamais l'inverse.
     </p>
     <p style="font-size:0.64rem; color:rgba(255,255,255,0.85); margin:0;">
-        C'est pour ça qu'on cadre d'abord. Reste à connaître les règles de construction — c'est la suite.
+        C'est pour ça qu'on cadre d'abord. Reste à construire le pont — requête par requête.
     </p>
 </div>
 `;
+
+const vueOltp = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#9333ea; margin:0 0 4px; font-weight:700;">La construction — le secret du pont</p>
+<h2 style="margin-top:0;">L'OLAP est une VUE de l'OLTP</h2>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:12px;">On n'écrit que dans <code>events</code>. Tout le reste — <code>trips</code>, les KPI, le dashboard — n'est <strong>jamais saisi</strong> : c'est calculé, en cascade.</p>
+
+<div style="display:flex; gap:18px; align-items:stretch; max-width:960px; margin:0 auto;">
+
+    <!-- La cascade -->
+    <div style="flex:1.25; display:flex; flex-direction:column; gap:0;">
+
+        <div style="background:#eff6ff; border:2px solid #2563eb; border-radius:10px 10px 0 0; padding:10px 14px;">
+            <p style="font-size:0.56rem; font-weight:700; color:#2563eb; font-family:monospace; margin:0 0 3px;">events — OLTP</p>
+            <p style="font-size:0.54rem; color:#1e3a5f; margin:0; line-height:1.5;">La <strong>seule</strong> table où l'on écrit. Le flux brut, ligne par ligne.</p>
+        </div>
+
+        <div class="fragment" style="background:#0f172a; padding:8px 14px; border-left:2px solid #9333ea; border-right:2px solid #9333ea;">
+            <p style="font-size:0.5rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:1.9;"><span style="color:#f472b6; font-weight:700;">CREATE VIEW</span> trips <span style="color:#f472b6; font-weight:700;">AS</span><br><span style="color:#f472b6;">SELECT</span> trip_id, <span style="color:#fcd34d;">MIN</span>(event_ts), <span style="color:#fcd34d;">MAX</span>(event_ts), …<br><span style="color:#f472b6;">FROM</span> events <span style="color:#f472b6;">WHERE</span> event_type <span style="color:#f472b6;">IN</span> (…) <span style="color:#f472b6;">GROUP BY</span> trip_id</p>
+        </div>
+
+        <div class="fragment" style="background:#faf5ff; border:2px solid #9333ea; padding:10px 14px;">
+            <p style="font-size:0.56rem; font-weight:700; color:#7c3aed; font-family:monospace; margin:0 0 3px;">trips — une vue</p>
+            <p style="font-size:0.54rem; color:#4c1d95; margin:0; line-height:1.5;">Personne ne la remplit. Elle <strong>se recalcule</strong> depuis events à chaque lecture.</p>
+        </div>
+
+        <div class="fragment" style="background:#0f172a; padding:8px 14px; border-left:2px solid #95c11f; border-right:2px solid #95c11f;">
+            <p style="font-size:0.5rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:1.9;"><span style="color:#f472b6; font-weight:700;">CREATE VIEW</span> kpi_hebdo <span style="color:#f472b6; font-weight:700;">AS</span><br><span style="color:#f472b6;">SELECT</span> semaine, <span style="color:#fcd34d;">COUNT</span>(*), <span style="color:#fcd34d;">AVG</span>(trip_duration) <span style="color:#f472b6;">FROM</span> trips <span style="color:#f472b6;">GROUP BY</span> semaine</p>
+        </div>
+
+        <div class="fragment" style="background:#f0f9e8; border:2px solid #95c11f; border-radius:0 0 10px 10px; padding:10px 14px;">
+            <p style="font-size:0.56rem; font-weight:700; color:#4a7c00; font-family:monospace; margin:0 0 3px;">📊 dashboard — des vues sur la vue</p>
+            <p style="font-size:0.54rem; color:#2e7d32; margin:0; line-height:1.5;">Chaque bloc de l'écran = une requête enregistrée.</p>
+        </div>
+
+    </div>
+
+    <!-- Les 3 principes -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:9px; justify-content:center;">
+        <div class="fragment" style="background:#f8fafc; border-radius:8px; padding:11px 15px; border-left:4px solid #2563eb;">
+            <p style="font-size:0.6rem; color:#333; margin:0; line-height:1.65;"><strong>On n'écrit qu'à un seul endroit.</strong> Une donnée saisie deux fois finira par diverger — une vue, jamais.</p>
+        </div>
+        <div class="fragment" style="background:#f8fafc; border-radius:8px; padding:11px 15px; border-left:4px solid #9333ea;">
+            <p style="font-size:0.6rem; color:#333; margin:0; line-height:1.65;"><strong>Une vue = une question enregistrée.</strong> Pas une copie des données : une requête rejouée à chaque lecture.</p>
+        </div>
+        <div class="fragment" style="background:#f8fafc; border-radius:8px; padding:11px 15px; border-left:4px solid #95c11f;">
+            <p style="font-size:0.6rem; color:#333; margin:0; line-height:1.65;"><strong>events bouge → tout suit.</strong> Un nouveau trajet apparaît dans trips, les KPI, le dashboard — zéro ressaisie, zéro décalage.</p>
+        </div>
+        <div class="fragment" style="background:#1e293b; border-radius:10px; padding:12px 16px; text-align:center;">
+            <p style="font-size:0.7rem; color:white; font-weight:700; margin:0; font-family:'IBM Plex Serif',serif; line-height:1.5;">Le tableau de bord n'est pas une copie des données.<br><span style="color:#fcd34d;">C'est une question posée en continu.</span></p>
+        </div>
+    </div>
+
+</div>
+`;
+
+const dashboardQueries = `
+<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#95c11f; margin:0 0 4px; font-weight:700;">La construction — la boucle est bouclée</p>
+<h2 style="margin-top:0;">Le dashboard du départ, bloc par bloc = des requêtes</h2>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:12px;">Revoici l'écran du « point d'arrivée ». Chaque bloc est une requête sur <code>events</code>, <code>trips</code> (la vue) ou <code>vehicles</code>.</p>
+
+<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; max-width:960px; margin:0 auto;">
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #009fe3;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Trajets en juin</p>
+        <p style="font-size:0.95rem; color:white; font-weight:700; margin:0 0 7px; font-family:'IBM Plex Serif',serif;">3 842</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;"><span style="color:#f472b6;">SELECT</span> <span style="color:#fcd34d;">COUNT</span>(*) <span style="color:#f472b6;">FROM</span> trips<br><span style="color:#f472b6;">WHERE</span> start_ts &gt;= '2026-06-01'</p>
+    </div>
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #95c11f;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Durée moyenne</p>
+        <p style="font-size:0.95rem; color:white; font-weight:700; margin:0 0 7px; font-family:'IBM Plex Serif',serif;">14 min 32</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;"><span style="color:#f472b6;">SELECT</span> <span style="color:#fcd34d;">AVG</span>(trip_duration)<br><span style="color:#f472b6;">FROM</span> trips</p>
+    </div>
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #f59e0b;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Flotte disponible</p>
+        <p style="font-size:0.95rem; color:#fcd34d; font-weight:700; margin:0 0 7px; font-family:'IBM Plex Serif',serif;">41 / 60</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;"><span style="color:#f472b6;">SELECT</span> <span style="color:#fcd34d;">COUNT</span>(*) <span style="color:#f472b6;">FROM</span> vehicles<br><span style="color:#f472b6;">WHERE</span> state &lt;&gt; 'non_operational'</p>
+    </div>
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #e53e3e;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Batterie &lt; 20 %</p>
+        <p style="font-size:0.95rem; color:#f87171; font-weight:700; margin:0 0 7px; font-family:'IBM Plex Serif',serif;">7 scooters</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;"><span style="color:#f472b6;">SELECT</span> <span style="color:#fcd34d;">COUNT</span>(*) <span style="color:#f472b6;">FROM</span> vehicles<br><span style="color:#f472b6;">WHERE</span> battery_pct &lt; 0.20</p>
+    </div>
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #009fe3;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Trajets par commune</p>
+        <p style="font-size:0.62rem; color:white; font-weight:700; margin:0 0 7px;">Boulogne 1 306 · Issy 998 · …</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;">events <span style="color:#f472b6;">JOIN</span> ref_communes <span style="color:#64748b;">(spatial)</span><br><span style="color:#f472b6;">GROUP BY</span> commune</p>
+    </div>
+
+    <div class="fragment" style="background:#0f172a; border-radius:10px; padding:11px 13px; border-top:3px solid #9333ea;">
+        <p style="font-size:0.44rem; color:#94a3b8; margin:0 0 2px; text-transform:uppercase; letter-spacing:1px;">Trajets par semaine</p>
+        <p style="font-size:0.62rem; color:white; font-weight:700; margin:0 0 7px;">S23 → S27 📈</p>
+        <p style="font-size:0.46rem; font-family:monospace; color:#93c5fd; margin:0; line-height:1.8; border-top:1px solid #334155; padding-top:6px;"><span style="color:#f472b6;">GROUP BY</span> <span style="color:#fcd34d;">date_trunc</span>('week', start_ts)</p>
+    </div>
+
+</div>
+
+<div class="fragment" style="background:#f0f9ff; border-radius:8px; padding:11px 20px; border-left:4px solid #0284c7; margin:12px auto 0; max-width:960px;">
+    <p style="font-size:0.66rem; color:#0c4a6e; margin:0; line-height:1.7;">
+        <strong>🌐 Rejouable sur le portail :</strong> publiez <code>yego_vehicles</code> sur data.seineouest.fr (Opendatasoft) et les mêmes blocs s'écrivent en <strong>ODSQL</strong> —
+        <code style="font-size:0.85em;">select=count(*)&nbsp;where=battery_pct&lt;0.2</code> · <code style="font-size:0.85em;">group_by=last_vehicle_state</code>.
+        Même logique, autre dialecte. <span style="color:#64748b;">Encore faut-il que la table de départ soit propre — les règles, maintenant.</span>
+    </p>
+</div>
+`;
+
 
 export function Conception() {
   return (
@@ -287,6 +396,8 @@ export function Conception() {
       <section dangerouslySetInnerHTML={{ __html: maieutique }} />
       <section dangerouslySetInnerHTML={{ __html: cadrage }} />
       <section dangerouslySetInnerHTML={{ __html: remonter }} />
+      <section dangerouslySetInnerHTML={{ __html: vueOltp }} />
+      <section dangerouslySetInnerHTML={{ __html: dashboardQueries }} />
     </>
   );
 }
