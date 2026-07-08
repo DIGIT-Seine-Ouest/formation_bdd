@@ -24,9 +24,9 @@ mais reproduisent fidèlement la structure de l'API MDS Yego
 
 ## Publier sur Opendatasoft (data.seineouest.fr)
 
-1. Publier `yego_trips_ods.csv` → dataset **`yego-trips`** : typer
+1. Publier `yego_trips_ods.csv` → dataset **`yego_trips_ods`** : typer
    `date_debut` / `date_fin` en **datetime** et `geo_point_2d` en **geo_point**.
-2. Publier `yego_vehicles_ods.csv` → dataset **`yego-vehicles`** : typer
+2. Publier `yego_vehicles_ods.csv` → dataset **`yego_vehicles_ods`** : typer
    `derniere_maj` en **datetime** et `geo_point_2d` en **geo_point**.
 3. Créer une page personnalisée et coller le contenu de
    `ods_dashboard_yego.html` (HTML + CSS).

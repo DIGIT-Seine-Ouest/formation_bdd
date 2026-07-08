@@ -302,7 +302,7 @@ const yegoSql = `
         <strong style="color:#fcd34d;">Filtrer + agréger + calculer : c'est ça, le pont OLTP → OLAP.</strong>
         <span style="font-size:0.62rem; color:rgba(255,255,255,0.65);">&nbsp;· SQL, ODSQL, TCD Excel — le geste est le même.</span>
     </p>
-    <p style="font-size:0.5rem; font-family:monospace; color:#7dd3fc; margin:0; text-align:center; line-height:1.7;">▶ à rejouer en live sur le dataset <strong style="color:#bae6fd;">yego-trips</strong> (Opendatasoft) :&nbsp;
+    <p style="font-size:0.5rem; font-family:monospace; color:#7dd3fc; margin:0; text-align:center; line-height:1.7;">▶ à rejouer en live sur le dataset <strong style="color:#bae6fd;">yego_trips_ods</strong> (Opendatasoft) :&nbsp;
         <span style="color:#94a3b8;">select=</span>commune, count(*) as nb_trajets, avg(duree_min) as duree_moy&nbsp;<span style="color:#94a3b8;">&amp;where=</span>date_debut >= date'2026-06-01'&nbsp;<span style="color:#94a3b8;">&amp;group_by=</span>commune</p>
 </div>
 `;

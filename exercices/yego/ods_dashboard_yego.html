@@ -3,9 +3,9 @@
   Tableau de bord Yego — page personnalisée Opendatasoft (data.seineouest.fr)
   ═══════════════════════════════════════════════════════════════════════════
   Prérequis : publier sur le portail les 2 fichiers « silver » :
-    · yego_trips_ods.csv    → dataset  yego-trips     (typer date_debut/date_fin
+    · yego_trips_ods.csv    → dataset  yego_trips_ods     (typer date_debut/date_fin
                               en datetime, geo_point_2d en geo_point)
-    · yego_vehicles_ods.csv → dataset  yego-vehicles  (geo_point_2d en geo_point)
+    · yego_vehicles_ods.csv → dataset  yego_vehicles_ods  (geo_point_2d en geo_point)
   Si vos identifiants de datasets diffèrent, ajustez trips-dataset / vehicles-dataset
   ci-dessous. Tout le reste est autonome (HTML + CSS à coller dans une page ODS).
 
@@ -14,9 +14,9 @@
 -->
 
 <ods-dataset-context context="trips, vehicles"
-                     trips-dataset="yego-trips"
+                     trips-dataset="yego_trips_ods"
                      trips-parameters="{'sort':'-date_debut'}"
-                     vehicles-dataset="yego-vehicles">
+                     vehicles-dataset="yego_vehicles_ods">
 
 <section class="yg-app" ng-init="sidebarOpen = false">
 
@@ -109,7 +109,7 @@
                           ods-adv-analysis="kDispo"
                           ods-adv-analysis-context="vehicles"
                           ods-adv-analysis-select="count(*) as nb"
-                          ods-adv-analysis-where="etat = 'available'">
+                          ods-adv-analysis-where="etat != 'non_operational'">
                         <span ods-adv-analysis="kFlotte"
                               ods-adv-analysis-context="vehicles"
                               ods-adv-analysis-select="count(*) as nb">
@@ -250,7 +250,7 @@
 
             <!-- ═══ FOOTER PÉDAGOGIQUE ═══ -->
             <footer class="yg-footer">
-                Chaque bloc de cette page = une requête ODSQL sur <code>yego-trips</code> ou <code>yego-vehicles</code>.
+                Chaque bloc de cette page = une requête ODSQL sur <code>yego_trips_ods</code> ou <code>yego_vehicles_ods</code>.
                 Rien n'est ressaisi : l'OLAP est une <strong>vue</strong> de l'OLTP.
                 <em>Formation « Vers des données robustes » · mock data, structure API MDS réelle.</em>
             </footer>

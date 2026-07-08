@@ -20,12 +20,13 @@ const titre = `
             font-size:0.66rem; text-transform:uppercase;
             letter-spacing:4px; color:#009fe3;
             margin:0 0 12px; font-weight:700;">
-            DIRMOB — Formation · 2026</p>
+            DIGIT Formation · 2026</p>
 
         <h1 style="
             position:relative; z-index:1;
             margin:0; line-height:1.08; font-size:2.8rem;">
-            Vers des données<br>robustes</h1>
+            Valoriser le potentiel des données
+        </h1>
 
         <div style="
             position:relative; z-index:1;
@@ -47,7 +48,7 @@ const titre = `
             background:#f0f4f8; color:#888;
             font-size:0.64rem; font-family:monospace;
             padding:5px 14px; border-radius:20px; letter-spacing:1px;">
-            2 h · 45 min théorie · 1h15 pratique</span>
+            1 h mixte (théorie/pratique)</span>
     </div>
 </div>
 `;

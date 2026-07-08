@@ -207,73 +207,6 @@ const vocabulaire = `
 </div>
 `;
 
-const relationnel = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Modèle relationnel</p>
-<h2 style="margin-top:0;">La base de données : un commun numérique</h2>
-<p style="font-size:0.74rem; color:#888; margin-top:-16px; margin-bottom:16px;">Chaque information est saisie une seule fois. Ce qui appartient à une autre table, on ne le ressaisit pas — on le récupère.</p>
-
-<div class="row" style="gap:16px; align-items:flex-start;">
-
-    <div style="flex:1;">
-        <div class="label--bad">Tout dans une seule table</div>
-        <div class="offbeat-card card--red" style="padding:12px;">
-            <table class="mockup-table" style="font-size:0.43em;">
-                <tr>
-                    <th>id</th><th>date</th><th>motif</th>
-                    <th style="background:#ffcdd2; color:#b71c1c;">numero_ligne</th>
-                    <th style="background:#ffcdd2; color:#b71c1c;">prestataire</th>
-                    <th style="background:#ffcdd2; color:#b71c1c;">depot</th>
-                </tr>
-                <tr><td>R001</td><td>05/03</td><td>retard</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
-                <tr><td>R002</td><td>07/03</td><td>avance</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
-                <tr><td>R003</td><td>10/03</td><td>retard</td><td style="background:#ffcdd2;">389</td><td style="background:#ffcdd2;">Keolis</td><td style="background:#ffcdd2;">Bordeaux</td></tr>
-            </table>
-            <p style="font-size:0.56rem; color:var(--red-alert); margin:7px 0 0; line-height:1.6;">Double-saisie : prestataire et dépôt ressaisis à chaque nouvelle réclamation. Une correction = à propager manuellement partout.</p>
-        </div>
-    </div>
-
-    <div class="fragment" style="flex:1;">
-        <div class="label--good">Deux entités séparées, liées par un identifiant</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <div class="offbeat-card card--green" style="padding:10px 12px;">
-                <p style="font-size:0.44rem; color:#555; font-family:monospace; margin:0 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">reclamations</p>
-                <table class="mockup-table" style="font-size:0.43em;">
-                    <tr>
-                        <th style="background:#1e40af; color:white;">id</th>
-                        <th>date</th><th>motif</th>
-                        <th style="background:#fef3c7; color:#a16207;">id_ligne →</th>
-                    </tr>
-                    <tr><td style="color:#1e40af; font-weight:700;">R001</td><td>05/03</td><td>retard</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_389</td></tr>
-                    <tr><td style="color:#1e40af; font-weight:700;">R002</td><td>07/03</td><td>avance</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_389</td></tr>
-                    <tr><td style="color:#1e40af; font-weight:700;">R003</td><td>10/03</td><td>retard</td><td style="color:#a16207; font-weight:700; background:#fef9e7;">ligne_160</td></tr>
-                </table>
-            </div>
-            <div class="offbeat-card" style="padding:10px 12px;">
-                <p style="font-size:0.44rem; color:#555; font-family:monospace; margin:0 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">lignes_bus</p>
-                <table class="mockup-table" style="font-size:0.43em;">
-                    <tr>
-                        <th style="background:#a16207; color:white;">id</th>
-                        <th>numero</th><th>prestataire</th><th>depot</th>
-                    </tr>
-                    <tr><td style="color:#a16207; font-weight:700;">ligne_389</td><td>389</td><td>Keolis</td><td>Bordeaux</td></tr>
-                    <tr><td style="color:#a16207; font-weight:700;">ligne_160</td><td>160</td><td>RATP</td><td>Paris</td></tr>
-                </table>
-            </div>
-        </div>
-        <p style="font-size:0.56rem; color:#2e7d32; margin:7px 0 0; line-height:1.6;">L'info vit dans lignes_bus. On ne la ressaisit pas — on la récupère par jointure quand on a besoin d'une vue.</p>
-    </div>
-
-</div>
-
-<div class="fragment" style="background:#fefce8; border-radius:8px; padding:13px 20px; border-left:4px solid #ca8a04; margin-top:14px;">
-    <p style="font-size:0.76rem; color:#333; margin:0; line-height:1.8;">
-        <strong style="color:#92400e;">La BDD est un commun numérique.</strong>
-        Ce qui appartient à la table de l'autre, on ne le ressaisit pas — on le récupère par <strong>jointure</strong>, à la demande.
-        C'est ainsi qu'on produit une vue OLAP sans double-saisie.
-    </p>
-</div>
-`;
-
 
 const relationSchema = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 6px; font-weight:700;">Schéma relationnel</p>
@@ -468,118 +401,6 @@ const comparaison = `
 </div>
 `;
 
-const dataLineage = `
-<p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 2px; font-weight:700;">Commun numérique — au-delà de votre service</p>
-<h2 style="margin:0 0 6px; line-height:1.1;">Vos données voyagent loin — elles doivent être propres</h2>
-
-<svg viewBox="0 0 1060 430" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
-  <defs>
-    <marker id="dl-pub" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#0f766e"/>
-    </marker>
-    <marker id="dl-pub2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#15803d"/>
-    </marker>
-    <marker id="dl-int" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#1e3a5f"/>
-    </marker>
-    <marker id="dl-tdb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#7c3aed"/>
-    </marker>
-    <linearGradient id="dl-src" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#009fe3"/>
-      <stop offset="100%" stop-color="#0369a1"/>
-    </linearGradient>
-  </defs>
-
-  <!-- ═══════ SWIM LANE BACKGROUNDS ═══════ -->
-  <rect x="0" y="0" width="1060" height="205" rx="0" fill="#f0fdf4" opacity="0.7"/>
-  <rect x="0" y="211" width="1060" height="219" rx="0" fill="#eff6ff" opacity="0.7"/>
-
-  <!-- Lane labels -->
-  <text x="182" y="16" fill="#15803d" font-size="10" font-weight="700" font-family="Roboto,system-ui" letter-spacing="1.5">🌍  OPEN DATA · PUBLIC</text>
-  <text x="182" y="227" fill="#1e3a5f" font-size="10" font-weight="700" font-family="Roboto,system-ui" letter-spacing="1.5">🔒  USAGE INTERNE</text>
-
-  <!-- Divider -->
-  <line x1="182" y1="207" x2="1052" y2="207" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
-
-  <!-- ═══════ ARROWS ═══════ -->
-
-  <!-- Source → data.seineouest.fr -->
-  <path d="M 169 80 L 244 80" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#dl-pub)"/>
-  <!-- data.SO → 7 villes -->
-  <path d="M 459 80 L 540 80" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#dl-pub)"/>
-  <!-- 7 villes → Sites internet -->
-  <path d="M 715 65 L 800 65" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#dl-pub2)"/>
-  <!-- 7 villes → Apps mobiles -->
-  <path d="M 715 105 C 755 105,755 148,800 148" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#dl-pub2)"/>
-
-  <!-- Source → Arcopole (dashed interne) -->
-  <path d="M 169 312 L 244 312" fill="none" stroke="#1e3a5f" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#dl-int)"/>
-  <!-- Arcopole → Tableaux de bord -->
-  <path d="M 459 312 L 540 312" fill="none" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#dl-tdb)"/>
-
-  <!-- ═══════ SOURCE NODE ═══════ -->
-  <rect x="14" y="22" width="155" height="386" rx="12" fill="url(#dl-src)" style="filter:drop-shadow(0 4px 14px rgba(0,159,227,0.35))"/>
-  <text x="91" y="130" text-anchor="middle" font-size="34" font-family="system-ui">📋</text>
-  <text x="91" y="164" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">Données terrain</text>
-  <text x="91" y="182" text-anchor="middle" fill="rgba(255,255,255,0.62)" font-size="9.5" font-style="italic" font-family="Roboto,system-ui">saisies au fil de l'eau</text>
-  <line x1="28" y1="196" x2="157" y2="196" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
-  <text x="91" y="220" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-weight="600" font-family="Roboto,system-ui">propre et à jour</text>
-
-  <!-- ═══════ PUBLIC NODES ═══════ -->
-
-  <!-- data.seineouest.fr -->
-  <rect x="244" y="40" width="215" height="80" rx="10" fill="#0f766e"/>
-  <rect x="253" y="47" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
-  <text x="286" y="60" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
-  <text x="351" y="88" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">🌐 data.seineouest.fr</text>
-  <text x="351" y="107" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-size="11" font-family="Roboto,system-ui">Open Data Seine-Ouest</text>
-
-  <!-- 7 villes -->
-  <rect x="540" y="30" width="175" height="110" rx="10" fill="#0d6657"/>
-  <text x="627" y="72" text-anchor="middle" font-size="24" font-family="system-ui">🏙️</text>
-  <text x="627" y="105" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">Villes</text>
-
-  <!-- Sites internet -->
-  <rect x="800" y="26" width="246" height="78" rx="10" fill="#15803d"/>
-  <rect x="809" y="33" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
-  <text x="842" y="46" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
-  <text x="923" y="70" text-anchor="middle" fill="white" font-size="13" font-weight="700" font-family="Roboto,system-ui">🌍 Sites internet</text>
-  <text x="923" y="89" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Portails municipaux</text>
-
-  <!-- Apps mobiles -->
-  <rect x="800" y="118" width="246" height="78" rx="10" fill="#15803d"/>
-  <rect x="809" y="125" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
-  <text x="842" y="138" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🌍 Public</text>
-  <text x="923" y="162" text-anchor="middle" fill="white" font-size="13" font-weight="700" font-family="Roboto,system-ui">📱 Applications mobiles</text>
-  <text x="923" y="181" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Transport · Services publics</text>
-
-  <!-- ═══════ INTERNAL NODES ═══════ -->
-
-  <!-- Arcopole Pro -->
-  <rect x="244" y="256" width="215" height="112" rx="10" fill="#1e3a5f"/>
-  <rect x="253" y="263" width="66" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
-  <text x="286" y="276" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🔒 Interne</text>
-  <text x="351" y="308" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">🏢 Arcopole Pro</text>
-  <text x="351" y="324" text-anchor="middle" fill="rgba(255,255,255,0.58)" font-size="10" font-style="italic" font-family="Roboto,system-ui">consultation et saisie</text>
-  <text x="351" y="341" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Services techniques</text>
-  <text x="351" y="357" text-anchor="middle" fill="rgba(255,255,255,0.78)" font-size="11" font-family="Roboto,system-ui">Directions territoriales</text>
-
-  <!-- Tableaux de bord -->
-  <rect x="540" y="248" width="506" height="124" rx="10" fill="#7c3aed" style="filter:drop-shadow(0 4px 12px rgba(124,58,237,0.3))"/>
-  <rect x="550" y="256" width="60" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
-  <text x="580" y="269" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5" font-family="system-ui">🔒 Privé</text>
-  <text x="793" y="305" text-anchor="middle" fill="white" font-size="13.5" font-weight="700" font-family="Roboto,system-ui">📊 Tableaux de bord</text>
-  <text x="793" y="324" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11.5" font-family="Roboto,system-ui">Décisions politiques · Budget · Nouvelles stations</text>
-  <text x="793" y="343" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="10.5" font-style="italic" font-family="Roboto,system-ui">Maillage du territoire · Investissements · Politiques mobilité</text>
-
-  <!-- FOOTER -->
-  <line x1="10" y1="412" x2="1050" y2="412" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="530" y="426" text-anchor="middle" fill="#64748b" font-size="11" font-family="Roboto,system-ui">💡  Donnée mal saisie → carte erronée · appli défaillante · élu qui décide sur de mauvaises bases</text>
-</svg>
-`;
-
 
 export function Donnees() {
   return (
@@ -595,11 +416,9 @@ export function Donnees() {
 
       {/* Modèle relationnel */}
       <section>
-        <section dangerouslySetInnerHTML={{ __html: relationnel }} />
         <section dangerouslySetInnerHTML={{ __html: relationSchema }} />
         <section dangerouslySetInnerHTML={{ __html: jointures }} />
         <section dangerouslySetInnerHTML={{ __html: comparaison }} />
-        <section dangerouslySetInnerHTML={{ __html: dataLineage }} />
       </section>
     </>
   );
