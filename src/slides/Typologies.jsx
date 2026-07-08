@@ -252,27 +252,29 @@ const yegoTables = `
 const yegoSql = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:#9333ea; margin:0 0 4px; font-weight:700;">Cas réel Yego — côté SQL</p>
 <h2 style="margin-top:0;">Le passage OLTP → OLAP : une requête</h2>
-<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:12px;">Comment <code>/trips</code> est fabriquée depuis <code>/events</code> ? Quatre clauses SQL — chacune a un rôle précis.</p>
+<p style="font-size:0.7rem; color:#888; margin-top:-14px; margin-bottom:12px;">« Combien de trajets par commune en juin ? » — ce tableau n'existe dans aucune table : on le <strong>calcule</strong> depuis <code>/trips</code>. Quatre clauses, chacune un rôle.</p>
 
 <div style="display:flex; gap:16px; align-items:stretch; max-width:960px; margin:0 auto;">
 
     <!-- La requête -->
     <div style="flex:1.15; background:#0f172a; border-radius:10px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center;">
-        <p style="font-size:0.46rem; color:#64748b; font-family:monospace; margin:0 0 10px;">-- construire /trips depuis /events</p>
+        <p style="font-size:0.46rem; color:#64748b; font-family:monospace; margin:0 0 10px;">-- le bilan par commune, calculé à la demande</p>
         <p style="font-size:0.6rem; font-family:monospace; color:#e2e8f0; margin:0; line-height:2.2;">
-            <span style="color:#f472b6; font-weight:700;">SELECT</span>&nbsp; vehicle_id,<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#fcd34d;">MIN</span>(event_time) <span style="color:#f472b6;">AS</span> start_time,<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#fcd34d;">MAX</span>(event_time) <span style="color:#f472b6;">AS</span> end_time,<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#fcd34d;">MAX</span>(event_time) − <span style="color:#fcd34d;">MIN</span>(event_time) <span style="color:#f472b6;">AS</span> trip_duration<br>
-            <span style="color:#f472b6; font-weight:700;">FROM</span>&nbsp;&nbsp; <span style="color:#60a5fa; font-weight:700;">events</span><br>
-            <span style="color:#f472b6; font-weight:700;">WHERE</span>&nbsp; event_types <span style="color:#f472b6;">IN</span> (<span style="color:#86efac;">'trip_start'</span>, <span style="color:#86efac;">'trip_end'</span>)<br>
-            <span style="color:#f472b6; font-weight:700;">GROUP BY</span> vehicle_id, trip_id
+            <span style="color:#f472b6; font-weight:700;">SELECT</span>&nbsp; commune,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#fcd34d;">COUNT</span>(*) <span style="color:#f472b6;">AS</span> nb_trajets,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#fcd34d;">AVG</span>(duree_min) <span style="color:#f472b6;">AS</span> duree_moy<br>
+            <span style="color:#f472b6; font-weight:700;">FROM</span>&nbsp;&nbsp; <span style="color:#60a5fa; font-weight:700;">trips</span><br>
+            <span style="color:#f472b6; font-weight:700;">WHERE</span>&nbsp; date_debut >= <span style="color:#86efac;">'2026-06-01'</span><br>
+            <span style="color:#f472b6; font-weight:700;">GROUP BY</span> commune<br>
+            <span style="color:#f472b6; font-weight:700;">ORDER BY</span> nb_trajets <span style="color:#f472b6;">DESC</span>
         </p>
         <div class="fragment" style="border-top:1px solid #334155; margin-top:12px; padding-top:10px;">
-            <p style="font-size:0.48rem; color:#94a3b8; margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">→ Résultat : une ligne de /trips</p>
+            <p style="font-size:0.48rem; color:#94a3b8; margin:0 0 5px; text-transform:uppercase; letter-spacing:1px;">→ Résultat : 8 lignes, une par commune</p>
             <table class="mockup-table" style="font-size:0.42em; background:transparent;">
-                <tr><th style="background:#334155; color:#cbd5e1; border-color:#475569;">vehicle_id</th><th style="background:#334155; color:#cbd5e1; border-color:#475569;">start_time</th><th style="background:#334155; color:#cbd5e1; border-color:#475569;">end_time</th><th style="background:#334155; color:#cbd5e1; border-color:#475569;">trip_duration</th></tr>
-                <tr><td style="background:#0f172a; color:#c4b5fd; border-color:#334155; font-weight:700;">GA019TM</td><td style="background:#0f172a; color:#e2e8f0; border-color:#334155;">17:45:07</td><td style="background:#0f172a; color:#e2e8f0; border-color:#334155;">17:59:59</td><td style="background:#0f172a; color:#4ade80; border-color:#334155; font-weight:700;">892 s</td></tr>
+                <tr><th style="background:#334155; color:#cbd5e1; border-color:#475569;">commune</th><th style="background:#334155; color:#cbd5e1; border-color:#475569;">nb_trajets</th><th style="background:#334155; color:#cbd5e1; border-color:#475569;">duree_moy</th></tr>
+                <tr><td style="background:#0f172a; color:#c4b5fd; border-color:#334155; font-weight:700;">Boulogne-Billancourt</td><td style="background:#0f172a; color:#4ade80; border-color:#334155; font-weight:700;">1 252</td><td style="background:#0f172a; color:#e2e8f0; border-color:#334155;">21,6 min</td></tr>
+                <tr><td style="background:#0f172a; color:#c4b5fd; border-color:#334155; font-weight:700;">Issy-les-Moulineaux</td><td style="background:#0f172a; color:#4ade80; border-color:#334155; font-weight:700;">999</td><td style="background:#0f172a; color:#e2e8f0; border-color:#334155;">22,0 min</td></tr>
+                <tr><td style="background:#0f172a; color:#c4b5fd; border-color:#334155; font-weight:700;">Meudon</td><td style="background:#0f172a; color:#4ade80; border-color:#334155; font-weight:700;">453</td><td style="background:#0f172a; color:#64748b; border-color:#334155;">21,8 min …</td></tr>
             </table>
         </div>
     </div>
@@ -280,26 +282,28 @@ const yegoSql = `
     <!-- Décodage clause par clause -->
     <div style="flex:1; display:flex; flex-direction:column; gap:8px; justify-content:center;">
         <div class="fragment" style="background:#eff6ff; border-radius:8px; padding:9px 14px; border-left:4px solid #60a5fa;">
-            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#2563eb; font-weight:700;">FROM events</code> — on lit la table <strong>OLTP brute</strong> : chaque événement de chaque scooter, au fil de l'eau.</p>
+            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#2563eb; font-weight:700;">FROM trips</code> — on lit la table <strong>brute côté usage</strong> : 1 ligne = 1 trajet, telle qu'elle est enregistrée.</p>
         </div>
         <div class="fragment" style="background:#f0fdf4; border-radius:8px; padding:9px 14px; border-left:4px solid #22c55e;">
-            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#15803d; font-weight:700;">WHERE … IN (…)</code> — le <strong>filtre</strong> : on ne garde que les débuts et fins de trajet, on ignore le bruit (location_update…).</p>
+            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#15803d; font-weight:700;">WHERE date_debut >= …</code> — le <strong>filtre</strong> : on ne garde que les trajets de juin — 3 746 lignes sur 11 553.</p>
         </div>
         <div class="fragment" style="background:#faf5ff; border-radius:8px; padding:9px 14px; border-left:4px solid #9333ea;">
-            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#7c3aed; font-weight:700;">GROUP BY vehicle_id, trip_id</code> — l'<strong>agrégation</strong> : on replie N événements en <strong>1 ligne par trajet</strong>. C'est la maille de la table d'arrivée.</p>
+            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#7c3aed; font-weight:700;">GROUP BY commune</code> — l'<strong>agrégation</strong> : on replie 3 746 trajets en <strong>8 lignes</strong>, une par commune. C'est la maille du bilan.</p>
         </div>
         <div class="fragment" style="background:#fffbeb; border-radius:8px; padding:9px 14px; border-left:4px solid #f59e0b;">
-            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#b45309; font-weight:700;">SELECT MIN / MAX</code> — les <strong>calculs</strong> : premier événement = départ, dernier = arrivée, la différence = durée du trajet.</p>
+            <p style="font-size:0.58rem; margin:0; line-height:1.6; color:#333;"><code style="color:#b45309; font-weight:700;">SELECT COUNT / AVG</code> — les <strong>calculs</strong> : combien de trajets, quelle durée moyenne — des chiffres qui n'existent nulle part avant la requête.</p>
         </div>
     </div>
 
 </div>
 
 <div class="fragment" style="background:#1e293b; border-radius:8px; padding:11px 20px; margin:13px auto 0; max-width:960px;">
-    <p style="font-size:0.72rem; color:white; margin:0; line-height:1.7; text-align:center;">
-        <strong style="color:#fcd34d;">Filtrer + agréger + calculer : c'est ça, le pont OLTP → OLAP.</strong><br>
-        <span style="font-size:0.62rem; color:rgba(255,255,255,0.65);">En SQL dans un entrepôt · en TCD/COUNTIFS dans Excel — le geste est exactement le même.</span>
+    <p style="font-size:0.72rem; color:white; margin:0 0 6px; line-height:1.6; text-align:center;">
+        <strong style="color:#fcd34d;">Filtrer + agréger + calculer : c'est ça, le pont OLTP → OLAP.</strong>
+        <span style="font-size:0.62rem; color:rgba(255,255,255,0.65);">&nbsp;· SQL, ODSQL, TCD Excel — le geste est le même.</span>
     </p>
+    <p style="font-size:0.5rem; font-family:monospace; color:#7dd3fc; margin:0; text-align:center; line-height:1.7;">▶ à rejouer en live sur le dataset <strong style="color:#bae6fd;">yego-trips</strong> (Opendatasoft) :&nbsp;
+        <span style="color:#94a3b8;">select=</span>commune, count(*) as nb_trajets, avg(duree_min) as duree_moy&nbsp;<span style="color:#94a3b8;">&amp;where=</span>date_debut >= date'2026-06-01'&nbsp;<span style="color:#94a3b8;">&amp;group_by=</span>commune</p>
 </div>
 `;
 

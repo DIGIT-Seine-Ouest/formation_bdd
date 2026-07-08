@@ -1,0 +1,477 @@
+<!--
+  ═══════════════════════════════════════════════════════════════════════════
+  Tableau de bord Yego — page personnalisée Opendatasoft (data.seineouest.fr)
+  ═══════════════════════════════════════════════════════════════════════════
+  Prérequis : publier sur le portail les 2 fichiers « silver » :
+    · yego_trips_ods.csv    → dataset  yego-trips     (typer date_debut/date_fin
+                              en datetime, geo_point_2d en geo_point)
+    · yego_vehicles_ods.csv → dataset  yego-vehicles  (geo_point_2d en geo_point)
+  Si vos identifiants de datasets diffèrent, ajustez trips-dataset / vehicles-dataset
+  ci-dessous. Tout le reste est autonome (HTML + CSS à coller dans une page ODS).
+
+  Le fil du cours : chaque bloc de cet écran = UNE requête ODSQL (ods-adv-analysis).
+  L'OLAP est une vue de l'OLTP — ici, en production.
+-->
+
+<ods-dataset-context context="trips, vehicles"
+                     trips-dataset="yego-trips"
+                     trips-parameters="{'sort':'-date_debut'}"
+                     vehicles-dataset="yego-vehicles">
+
+<section class="yg-app" ng-init="sidebarOpen = false">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="yg-header">
+        <div class="yg-header-inner">
+            <div>
+                <p class="yg-kicker">GPSO · Direction des mobilités</p>
+                <h1 class="yg-title">🛵 Scooters Yego — tableau de bord</h1>
+            </div>
+            <div class="yg-live">
+                <span class="yg-live-dot"></span> Mis à jour automatiquement · API MDS
+            </div>
+        </div>
+    </header>
+
+    <div class="yg-layout">
+
+        <!-- ═══ SIDEBAR · FILTRE COMMUNE ═══ -->
+        <aside class="yg-sidebar">
+            <p class="yg-sidebar-title">Filtrer par commune</p>
+            <ul class="yg-filter-list"
+                ods-adv-analysis="communes"
+                ods-adv-analysis-context="trips"
+                ods-adv-analysis-select="commune, count(*) as nb"
+                ods-adv-analysis-group-by="commune"
+                ods-adv-analysis-order-by="nb desc">
+                <li class="yg-filter-item"
+                    ng-class="{'active': !trips.parameters['refine.commune']}"
+                    ng-click="trips.parameters = {'sort':'-date_debut'}">
+                    <span class="yg-filter-name">Tout GPSO</span>
+                </li>
+                <li class="yg-filter-item" ng-repeat="c in communes"
+                    ng-class="{'active': trips.parameters['refine.commune'] == c.commune}"
+                    ng-click="trips.parameters['refine.commune'] = c.commune">
+                    <span class="yg-filter-name">{{ c.commune }}</span>
+                    <span class="yg-filter-count">{{ c.nb | number }}</span>
+                </li>
+            </ul>
+            <p class="yg-sidebar-note">La flotte et la carte restent à l'échelle GPSO — les positions des scooters n'ont pas de commune de rattachement.</p>
+        </aside>
+
+        <!-- ═══ CONTENU ═══ -->
+        <main class="yg-main">
+
+            <!-- Contexte du filtre -->
+            <div class="yg-context" ng-if="!trips.parameters['refine.commune']">
+                <span class="yg-context-label">Usage ·</span> Tout le territoire GPSO
+            </div>
+            <div class="yg-context" ng-if="trips.parameters['refine.commune']">
+                <span class="yg-context-label">Usage ·</span> {{ trips.parameters['refine.commune'] }}
+                <button class="yg-clear" ng-click="trips.parameters = {'sort':'-date_debut'}">✕ effacer</button>
+            </div>
+
+            <!-- ═══ KPI USAGE (dataset trips) ═══ -->
+            <div class="yg-kpi-grid">
+
+                <div class="yg-kpi" style="--accent:#009fe3;">
+                    <span class="yg-kpi-value"
+                          ods-adv-analysis="kTrajets"
+                          ods-adv-analysis-context="trips"
+                          ods-adv-analysis-select="count(*) as nb">
+                        {{ kTrajets[0].nb | number }}
+                    </span>
+                    <span class="yg-kpi-label">Trajets</span>
+                </div>
+
+                <div class="yg-kpi" style="--accent:#95c11f;">
+                    <span class="yg-kpi-value"
+                          ods-adv-analysis="kDuree"
+                          ods-adv-analysis-context="trips"
+                          ods-adv-analysis-select="avg(duree_min) as duree">
+                        {{ kDuree[0].duree | number:1 }} <small>min</small>
+                    </span>
+                    <span class="yg-kpi-label">Durée moyenne</span>
+                </div>
+
+                <div class="yg-kpi" style="--accent:#0369a1;">
+                    <span class="yg-kpi-value"
+                          ods-adv-analysis="kKm"
+                          ods-adv-analysis-context="trips"
+                          ods-adv-analysis-select="sum(distance_m) / 1000 as km">
+                        {{ kKm[0].km | number:0 }} <small>km</small>
+                    </span>
+                    <span class="yg-kpi-label">Distance parcourue</span>
+                </div>
+
+                <div class="yg-kpi" style="--accent:#f59e0b;">
+                    <span class="yg-kpi-value"
+                          ods-adv-analysis="kDispo"
+                          ods-adv-analysis-context="vehicles"
+                          ods-adv-analysis-select="count(*) as nb"
+                          ods-adv-analysis-where="etat != 'non_operational'">
+                        <span ods-adv-analysis="kFlotte"
+                              ods-adv-analysis-context="vehicles"
+                              ods-adv-analysis-select="count(*) as nb">
+                            {{ kDispo[0].nb }} <small>/ {{ kFlotte[0].nb }}</small>
+                        </span>
+                    </span>
+                    <span class="yg-kpi-label">Flotte disponible</span>
+                </div>
+
+                <div class="yg-kpi" style="--accent:#e53e3e;">
+                    <span class="yg-kpi-value yg-alert-value"
+                          ods-adv-analysis="kBatt"
+                          ods-adv-analysis-context="vehicles"
+                          ods-adv-analysis-select="count(*) as nb"
+                          ods-adv-analysis-where="battery_pct < 20">
+                        {{ kBatt[0].nb }}
+                    </span>
+                    <span class="yg-kpi-label">Batterie &lt; 20 %</span>
+                </div>
+
+            </div>
+
+            <!-- Bandeau alerte batteries (même patron que le bandeau dépouillement) -->
+            <div ods-adv-analysis="alerteBatt"
+                 ods-adv-analysis-context="vehicles"
+                 ods-adv-analysis-select="count(*) as nb"
+                 ods-adv-analysis-where="battery_pct < 20">
+                <div class="yg-banner" ng-if="alerteBatt[0].nb > 0">
+                    <div class="yg-banner-icon">⚡</div>
+                    <div>
+                        <strong>{{ alerteBatt[0].nb }} scooter(s) à recharger</strong>
+                        <span class="yg-banner-sub">batterie sous le seuil des 20 % — signalés à l'opérateur</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ LIGNE 2 : COMMUNES + ÉTAT FLOTTE ═══ -->
+            <div class="yg-row">
+
+                <!-- Trajets par commune — barres de progression -->
+                <div class="yg-card">
+                    <h3 class="yg-card-title">Trajets par commune</h3>
+                    <div ods-adv-analysis="parCommune"
+                         ods-adv-analysis-context="trips"
+                         ods-adv-analysis-select="commune, count(*) as nb"
+                         ods-adv-analysis-group-by="commune"
+                         ods-adv-analysis-order-by="nb desc">
+                        <div class="yg-bar-item" ng-repeat="c in parCommune">
+                            <div class="yg-bar-header">
+                                <span class="yg-bar-name">{{ c.commune }}</span>
+                                <span class="yg-bar-value">{{ c.nb | number }}</span>
+                            </div>
+                            <div class="yg-bar-track">
+                                <div class="yg-bar-fill"
+                                     ng-style="{'width': (c.nb / parCommune[0].nb * 100) + '%'}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- État de la flotte -->
+                <div class="yg-card">
+                    <h3 class="yg-card-title">État de la flotte · maintenant</h3>
+                    <div ods-adv-analysis="parEtat"
+                         ods-adv-analysis-context="vehicles"
+                         ods-adv-analysis-select="etat_libelle, etat, count(*) as nb, avg(battery_pct) as batt"
+                         ods-adv-analysis-group-by="etat_libelle, etat"
+                         ods-adv-analysis-order-by="nb desc">
+                        <div class="yg-state-item" ng-repeat="e in parEtat">
+                            <span class="yg-state-badge"
+                                  ng-class="{'ok': e.etat == 'available', 'busy': e.etat == 'on_trip' || e.etat == 'reserved', 'ko': e.etat == 'non_operational'}">
+                                {{ e.etat_libelle }}
+                            </span>
+                            <span class="yg-state-count">{{ e.nb }}</span>
+                            <span class="yg-state-batt">🔋 {{ e.batt | number:0 }} % en moy.</span>
+                        </div>
+                    </div>
+                    <div class="yg-odsql-hint">
+                        <code>select=etat_libelle, count(*) as nb&nbsp;·&nbsp;group_by=etat_libelle</code>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ LIGNE 3 : ÉVOLUTION + CARTE ═══ -->
+            <div class="yg-row">
+
+                <!-- Trajets par jour — 14 derniers jours -->
+                <div class="yg-card">
+                    <h3 class="yg-card-title">Trajets par jour · 14 derniers jours</h3>
+                    <div ods-adv-analysis="maxJour"
+                         ods-adv-analysis-context="trips"
+                         ods-adv-analysis-select="count(*) as nb"
+                         ods-adv-analysis-group-by="date_format(date_debut, 'YYYY-MM-dd')"
+                         ods-adv-analysis-order-by="nb desc"
+                         ods-adv-analysis-limit="1">
+                        <div class="yg-chart"
+                             ods-adv-analysis="parJour"
+                             ods-adv-analysis-context="trips"
+                             ods-adv-analysis-select="date_format(date_debut, 'YYYY-MM-dd') as jour, count(*) as nb"
+                             ods-adv-analysis-group-by="date_format(date_debut, 'YYYY-MM-dd')"
+                             ods-adv-analysis-order-by="jour desc"
+                             ods-adv-analysis-limit="14">
+                            <div class="yg-chart-col" ng-repeat="j in parJour | orderBy:'jour'" title="{{ j.jour }} — {{ j.nb }} trajets">
+                                <div class="yg-chart-bar"
+                                     ng-style="{'height': (j.nb / maxJour[0].nb * 100) + '%'}"></div>
+                                <span class="yg-chart-label">{{ j.jour.slice(8) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carte de la flotte -->
+                <div class="yg-card yg-card-map">
+                    <h3 class="yg-card-title">Position de la flotte</h3>
+                    <div class="yg-map">
+                        <ods-map no-refit="false" scroll-wheel-zoom="false" basemap="jawg.light" style="height:100%;">
+                            <ods-map-layer context="vehicles"
+                                           picto="ods-scooter"
+                                           show-marker="true"
+                                           display="categories"
+                                           color-categories="{'available':'#95c11f','reserved':'#f59e0b','on_trip':'#009fe3','non_operational':'#e53e3e'}"
+                                           color-by-field="etat"
+                                           color-categories-other="#94a3b8"
+                                           shape-opacity="0.85"
+                                           size="5"></ods-map-layer>
+                        </ods-map>
+                    </div>
+                    <div class="yg-legend">
+                        <span><i style="background:#95c11f;"></i> Disponible</span>
+                        <span><i style="background:#009fe3;"></i> En course</span>
+                        <span><i style="background:#f59e0b;"></i> Réservé</span>
+                        <span><i style="background:#e53e3e;"></i> Hors service</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ FOOTER PÉDAGOGIQUE ═══ -->
+            <footer class="yg-footer">
+                Chaque bloc de cette page = une requête ODSQL sur <code>yego-trips</code> ou <code>yego-vehicles</code>.
+                Rien n'est ressaisi : l'OLAP est une <strong>vue</strong> de l'OLTP.
+                <em>Formation « Vers des données robustes » · mock data, structure API MDS réelle.</em>
+            </footer>
+
+        </main>
+    </div>
+</section>
+
+<style>
+/* ═══ Tableau de bord Yego — design system DIRMOB ═══ */
+.yg-app {
+    --blue: #009fe3;
+    --blue-deep: #0369a1;
+    --green: #95c11f;
+    --red: #e53e3e;
+    --amber: #f59e0b;
+    --ink: #16283c;
+    --muted: #64748b;
+    --bg: #f2f6fa;
+    --card: #ffffff;
+    --radius: 14px;
+    --shadow: 0 4px 18px rgba(22, 40, 60, 0.07);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    margin: 0;
+}
+.yg-app * { box-sizing: border-box; }
+
+/* Header */
+.yg-header {
+    background: linear-gradient(120deg, var(--blue) 0%, var(--blue-deep) 55%, #16283c 100%);
+    padding: 26px 28px;
+}
+.yg-header-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+}
+.yg-kicker {
+    margin: 0 0 6px; color: rgba(255,255,255,0.65);
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+}
+.yg-title { margin: 0; color: #fff; font-size: 26px; font-weight: 800; letter-spacing: -0.3px; }
+.yg-live {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; font-size: 12px; font-weight: 600;
+    padding: 7px 14px; border-radius: 999px;
+}
+.yg-live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 0 0 rgba(149,193,31,0.6); animation: yg-pulse 2s infinite;
+}
+@keyframes yg-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(149,193,31,0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(149,193,31,0); }
+    100% { box-shadow: 0 0 0 0 rgba(149,193,31,0); }
+}
+
+/* Layout */
+.yg-layout {
+    max-width: 1240px; margin: 0 auto; padding: 22px 20px 40px;
+    display: grid; grid-template-columns: 230px 1fr; gap: 20px; align-items: start;
+}
+
+/* Sidebar */
+.yg-sidebar {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 16px 14px; position: sticky; top: 16px;
+}
+.yg-sidebar-title {
+    margin: 0 0 10px; font-size: 11px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+}
+.yg-filter-list { list-style: none; margin: 0; padding: 0; }
+.yg-filter-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    padding: 9px 11px; border-radius: 9px; cursor: pointer;
+    font-size: 13.5px; font-weight: 600; color: var(--ink);
+    transition: background 0.15s ease;
+}
+.yg-filter-item:hover { background: #eaf5fc; }
+.yg-filter-item.active { background: var(--blue); color: #fff; }
+.yg-filter-item.active .yg-filter-count { background: rgba(255,255,255,0.25); color: #fff; }
+.yg-filter-count {
+    font-size: 11px; font-weight: 700; color: var(--blue-deep);
+    background: #e3f1fa; border-radius: 999px; padding: 2px 9px;
+}
+.yg-sidebar-note { margin: 12px 4px 0; font-size: 10.5px; color: var(--muted); line-height: 1.5; }
+
+/* Contexte */
+.yg-context { font-size: 14px; font-weight: 700; margin: 2px 2px 14px; color: var(--ink); }
+.yg-context-label { color: var(--muted); font-weight: 600; }
+.yg-clear {
+    margin-left: 10px; border: 1px solid #d6dee8; background: #fff; color: var(--muted);
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; cursor: pointer;
+}
+.yg-clear:hover { color: var(--red); border-color: var(--red); }
+
+/* KPI */
+.yg-kpi-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 16px;
+}
+.yg-kpi {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    border-top: 4px solid var(--accent, var(--blue));
+    padding: 15px 17px; display: flex; flex-direction: column; gap: 3px;
+}
+.yg-kpi-value { font-size: 27px; font-weight: 800; letter-spacing: -0.5px; color: var(--ink); }
+.yg-kpi-value small { font-size: 14px; font-weight: 600; color: var(--muted); }
+.yg-alert-value { color: var(--red); }
+.yg-kpi-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+}
+
+/* Bandeau alerte */
+.yg-banner {
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(100deg, #fff7ed, #fffbeb);
+    border: 1px solid #fdba74; border-left: 5px solid var(--amber);
+    border-radius: 12px; padding: 12px 18px; margin-bottom: 18px;
+    font-size: 13.5px;
+}
+.yg-banner-icon {
+    width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%;
+    background: var(--amber); color: #fff; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+}
+.yg-banner-sub { display: block; color: #92400e; font-size: 12px; margin-top: 2px; }
+
+/* Cartes */
+.yg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.yg-card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 18px 20px;
+}
+.yg-card-title {
+    margin: 0 0 14px; font-size: 12px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+}
+
+/* Barres communes */
+.yg-bar-item { margin-bottom: 11px; }
+.yg-bar-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.yg-bar-name { font-size: 13px; font-weight: 600; }
+.yg-bar-value { font-size: 13px; font-weight: 800; color: var(--blue-deep); }
+.yg-bar-track { height: 9px; background: #e9eff5; border-radius: 999px; overflow: hidden; }
+.yg-bar-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    transition: width 0.5s ease;
+}
+
+/* État flotte */
+.yg-state-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 4px; border-bottom: 1px solid #eef2f7;
+}
+.yg-state-item:last-child { border-bottom: none; }
+.yg-state-badge {
+    font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 4px 12px; border-radius: 999px; min-width: 108px; text-align: center;
+}
+.yg-state-badge.ok   { background: #f0f9e8; color: #4a7c00; }
+.yg-state-badge.busy { background: #e3f1fa; color: var(--blue-deep); }
+.yg-state-badge.ko   { background: #fde8e8; color: var(--red); }
+.yg-state-count { font-size: 19px; font-weight: 800; }
+.yg-state-batt { margin-left: auto; font-size: 12px; color: var(--muted); }
+.yg-odsql-hint {
+    margin-top: 12px; padding: 8px 12px; border-radius: 8px;
+    background: #16283c; overflow-x: auto;
+}
+.yg-odsql-hint code { color: #93c5fd; font-size: 11px; white-space: nowrap; }
+
+/* Mini chart jours */
+.yg-chart {
+    display: flex; align-items: flex-end; gap: 6px;
+    height: 190px; padding: 6px 2px 0;
+}
+.yg-chart-col {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-end; height: 100%; gap: 5px;
+}
+.yg-chart-bar {
+    width: 100%; min-height: 4px; border-radius: 5px 5px 0 0;
+    background: linear-gradient(180deg, var(--blue), var(--blue-deep));
+    transition: height 0.5s ease;
+}
+.yg-chart-col:hover .yg-chart-bar { background: var(--green); }
+.yg-chart-label { font-size: 9.5px; color: var(--muted); font-weight: 600; }
+
+/* Carte */
+.yg-card-map { display: flex; flex-direction: column; }
+.yg-map { flex: 1; min-height: 210px; border-radius: 10px; overflow: hidden; }
+.yg-legend {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px;
+    font-size: 11.5px; color: var(--muted); font-weight: 600;
+}
+.yg-legend i {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px;
+}
+
+/* Footer */
+.yg-footer {
+    margin-top: 6px; padding: 14px 4px 0; border-top: 1px solid #e2e8f0;
+    font-size: 12px; color: var(--muted); line-height: 1.7;
+}
+.yg-footer code { background: #e9eff5; padding: 1px 6px; border-radius: 5px; font-size: 11px; }
+
+/* Responsive */
+@media (max-width: 1000px) {
+    .yg-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .yg-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+    .yg-layout { grid-template-columns: 1fr; }
+    .yg-sidebar { position: static; }
+    .yg-title { font-size: 20px; }
+}
+</style>
+
+</ods-dataset-context>

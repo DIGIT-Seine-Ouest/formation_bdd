@@ -111,6 +111,8 @@ while day <= PERIOD_END:
                 "trip_id": trip_id, "trip_duration": duration,
                 "trip_distance": distance, "accuracy": 15,
                 "start_time": ms(start), "end_time": ms(end),
+                "_commune": commune[1], "_lat": slat, "_lon": slon,
+                "_start": start, "_end": end,
             })
 
             if in_events_window:
@@ -169,6 +171,7 @@ vehicles = []
 for v in fleet:
     last = [e for e in events if e["device_id"] == v["device_id"]]
     lat, lon = near(v["home"][2], v["home"][3])
+    v["_lat"], v["_lon"] = lat, lon
     vehicles.append({
         "provider_name": PROVIDER_NAME, "provider_id": PROVIDER_ID,
         "device_id": v["device_id"], "vehicle_id": v["vehicle_id"],
@@ -181,9 +184,10 @@ for v in fleet:
     })
 
 
-def write(name, rows):
+def write(name, rows, fields=None):
+    fields = fields or [k for k in rows[0].keys() if not k.startswith("_")]
     with open(HERE / name, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
     print(f"{name}: {len(rows)} lignes")
@@ -195,3 +199,37 @@ write("yego_vehicles.csv", vehicles)
 write("ref_communes_gpso.csv", [
     {"id_commune": c[0], "nom": c[1], "lat": c[2], "lon": c[3]} for c in COMMUNES
 ])
+
+
+# ── Fichiers prêts-à-publier Opendatasoft (le « silver » : typé + joint) ─────
+def iso(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+trips_ods = [{
+    "trip_id": t["trip_id"],
+    "vehicle_id": t["vehicle_id"],
+    "device_id": t["device_id"],
+    "date_debut": iso(t["_start"]),
+    "date_fin": iso(t["_end"]),
+    "duree_min": round(t["trip_duration"] / 60, 1),
+    "distance_m": t["trip_distance"],
+    "commune": t["_commune"],
+    "geo_point_2d": f'{t["_lat"]},{t["_lon"]}',
+} for t in trips]
+
+STATE_FR = {"available": "Disponible", "reserved": "Réservé",
+            "on_trip": "En course", "non_operational": "Hors service"}
+vehicles_ods = [{
+    "device_id": w["device_id"],
+    "vehicle_id": w["vehicle_id"],
+    "vehicle_type": w["vehicle_type"],
+    "etat": w["last_vehicle_state"],
+    "etat_libelle": STATE_FR.get(w["last_vehicle_state"], w["last_vehicle_state"]),
+    "battery_pct": round(w["battery_pct"] * 100),
+    "derniere_maj": iso(datetime.fromtimestamp(w["last_event_time"] / 1000)) if w["last_event_time"] else "",
+    "geo_point_2d": f'{v2["_lat"]},{v2["_lon"]}',
+} for w, v2 in zip(vehicles, fleet)]
+
+write("yego_trips_ods.csv", trips_ods)
+write("yego_vehicles_ods.csv", vehicles_ods)

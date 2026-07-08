@@ -1,35 +1,58 @@
 # Rejouer les KPI dans Opendatasoft (ODSQL)
 
-Une fois `yego_vehicles.csv` (et éventuellement `yego_trips.csv`) publiés comme
-jeux de données sur **data.seineouest.fr** (Opendatasoft), les blocs du
-tableau de bord s'écrivent en **ODSQL** — même logique que le SQL du cours,
-autre dialecte. À passer dans l'Explore API v2 :
+On publie les deux fichiers « silver » sur **data.seineouest.fr** :
+
+| Fichier | Dataset ODS | Typage à vérifier au processing |
+|---|---|---|
+| `yego_trips_ods.csv` | `yego-trips` | `date_debut` / `date_fin` → **datetime** · `geo_point_2d` → **geo_point** |
+| `yego_vehicles_ods.csv` | `yego-vehicles` | `derniere_maj` → **datetime** · `geo_point_2d` → **geo_point** |
+
+Pas de jointure à faire : ODS ne joint pas à la requête, donc la commune est
+**déjà dans** `yego-trips` et le libellé d'état déjà dans `yego-vehicles`
+(c'est exactement le rôle du « silver »). Les requêtes passent par
+l'Explore API v2 :
 
 ```
-/api/explore/v2.1/catalog/datasets/yego_vehicles/records?...
+/api/explore/v2.1/catalog/datasets/yego-trips/records?...
 ```
 
-## Les KPI flotte (dataset `yego_vehicles`)
+## La requête de la slide « Le passage OLTP → OLAP » (dataset `yego-trips`)
+
+Le bilan par commune du cours, tel quel :
+
+```
+select=commune, count(*) as nb_trajets, avg(duree_min) as duree_moy
+&where=date_debut >= date'2026-06-01'
+&group_by=commune
+&order_by=nb_trajets desc
+```
+
+Résultat attendu : 8 lignes — Boulogne-Billancourt 1 252 (21,6 min),
+Issy-les-Moulineaux 999 (22,0 min), Meudon 453 (21,8 min)…
+
+## Les KPI usage (dataset `yego-trips`)
+
+| Bloc du dashboard | Paramètres ODSQL |
+|---|---|
+| Trajets en juin | `select=count(*)` `&where=date_debut >= date'2026-06-01'` |
+| Durée moyenne | `select=avg(duree_min) as duree_moy` |
+| Km parcourus | `select=sum(distance_m)/1000 as km` |
+| Trajets par jour | `select=date_format(date_debut, 'YYYY-MM-dd') as jour, count(*) as nb` `&group_by=jour` `&order_by=jour` |
+| Trajets par semaine | `select=count(*) as nb` `&group_by=date_format(date_debut, 'YYYY-ww')` |
+| Top scooters | `select=vehicle_id, count(*) as nb` `&group_by=vehicle_id` `&order_by=nb desc` `&limit=10` |
+
+## Les KPI flotte (dataset `yego-vehicles`)
+
+> `battery_pct` est déjà en 0–100 dans le fichier silver (0–1 dans l'API brute
+> — la conversion, c'est le « T » du chargement).
 
 | Bloc du dashboard | Paramètres ODSQL |
 |---|---|
 | Flotte totale | `select=count(*)` |
-| Flotte disponible | `select=count(*)` `&where=last_vehicle_state != "non_operational"` |
-| Batterie < 20 % | `select=count(*)` `&where=battery_pct < 0.2` |
-| État de la flotte (répartition) | `select=last_vehicle_state, count(*) as nb` `&group_by=last_vehicle_state` |
-| Batterie moyenne par état | `select=last_vehicle_state, avg(battery_pct) as batt_moy` `&group_by=last_vehicle_state` |
-
-## Les KPI usage (dataset `yego_trips`)
-
-> Penser à typer `start_time` en date lors de la publication (l'API livre de
-> l'epoch ms — c'est le « T » du chargement, ODS le fait dans le processing).
-
-| Bloc du dashboard | Paramètres ODSQL |
-|---|---|
-| Trajets en juin | `select=count(*)` `&where=start_ts >= date'2026-06-01'` |
-| Durée moyenne | `select=avg(trip_duration) as duree_moy` |
-| Trajets par semaine | `select=count(*) as nb` `&group_by=date_format(start_ts, 'YYYY-ww')` |
-| Top scooters | `select=vehicle_id, count(*) as nb` `&group_by=vehicle_id` `&order_by=nb desc` `&limit=10` |
+| Flotte disponible | `select=count(*)` `&where=etat != 'non_operational'` |
+| Batterie < 20 % | `select=count(*)` `&where=battery_pct < 20` |
+| État de la flotte (répartition) | `select=etat_libelle, count(*) as nb` `&group_by=etat_libelle` `&order_by=nb desc` |
+| Batterie moyenne par état | `select=etat_libelle, avg(battery_pct) as batt_moy` `&group_by=etat_libelle` |
 
 ## L'idée à retenir
 
