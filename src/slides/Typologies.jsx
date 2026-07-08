@@ -1,6 +1,6 @@
 // ─── Partie 2 : les deux typologies de BDD à l'ère de l'analytics ─────────────
 // OLTP (opérationnel) vs OLAP (analyse) — définitions canoniques, exemples
-// concrets, et la question du contenu (structuré / non structuré).
+// concrets (Wrapped, Strava, Yego), et quand l'OLTP suffit.
 
 const intro = `
 <div style="text-align:left; max-width:720px; margin:0 auto; color:white;">
@@ -307,60 +307,6 @@ const yegoSql = `
 </div>
 `;
 
-const entrepot = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Le contenu — brut vs formaté</p>
-<h2 style="margin-top:0;">Données non structurées → structurées</h2>
-<p style="font-size:0.72rem; color:#888; margin-top:-14px; margin-bottom:14px;">La même facture, selon comment elle est stockée, est exploitable… ou pas.</p>
-
-<div style="display:flex; gap:16px; align-items:stretch; margin-bottom:14px;">
-
-    <div style="flex:1;">
-        <div class="label--bad">Non structuré — brut</div>
-        <div class="offbeat-card card--red" style="padding:13px;">
-            <div style="background:#f1f5f9; border:1px dashed #94a3b8; border-radius:6px; padding:14px; text-align:center; margin-bottom:9px;">
-                <p style="font-size:1.6rem; margin:0;">🧾🖼️</p>
-                <p style="font-size:0.5rem; color:#64748b; margin:4px 0 0; font-family:monospace;">facture_2026_04.png · image bitmap</p>
-            </div>
-            <p style="font-size:0.58rem; color:var(--red-alert); margin:0; line-height:1.6;">
-                → Stockée à l'état brut. Impossible de calculer un total ou une moyenne : il faut d'abord la <strong>retraiter</strong>.
-            </p>
-        </div>
-    </div>
-
-    <div style="display:flex; align-items:center; flex-shrink:0; font-size:1.4rem; color:var(--blue-dirmob);">→</div>
-
-    <div style="flex:1;">
-        <div class="label--good">Structuré — formaté pour l'usage</div>
-        <div class="offbeat-card card--green" style="padding:13px;">
-            <table class="mockup-table" style="font-size:0.5em; margin-bottom:9px;">
-                <tr><th>ligne</th><th>article</th><th>qté</th><th>prix_ht</th><th>tva</th></tr>
-                <tr><td>1</td><td>Capteur</td><td>4</td><td>120,00</td><td>20%</td></tr>
-                <tr><td>2</td><td>Boîtier</td><td>4</td><td>35,00</td><td>20%</td></tr>
-            </table>
-            <p style="font-size:0.58rem; color:#2e7d32; margin:0; line-height:1.6;">
-                → Décomposée en tableau de chiffres. <strong>SOMME</strong>, <strong>MOYENNE</strong>, agrégats : immédiats.
-            </p>
-        </div>
-    </div>
-
-</div>
-
-<div class="fragment" style="display:flex; gap:12px;">
-    <div style="flex:1; background:#eff6ff; border-radius:8px; padding:10px 15px; border-left:4px solid #0284c7;">
-        <p style="font-size:0.6rem; font-weight:700; color:#0369a1; margin:0 0 3px;">🌊 Data Lake — on stocke le brut</p>
-        <p style="font-size:0.56rem; color:#333; margin:0; line-height:1.55;">Non structuré / semi-structuré, tel quel, pas cher. On verra plus tard comment l'exploiter.</p>
-    </div>
-    <div style="flex:1; background:#f0fdf4; border-radius:8px; padding:10px 15px; border-left:4px solid #15803d;">
-        <p style="font-size:0.6rem; font-weight:700; color:#15803d; margin:0 0 3px;">🏛️ Data Warehouse — on stocke le formaté</p>
-        <p style="font-size:0.56rem; color:#333; margin:0; line-height:1.55;">Structuré pour l'analyse. C'est le foyer naturel de l'OLAP.</p>
-    </div>
-    <div style="flex:1; background:#1e293b; border-radius:8px; padding:10px 15px;">
-        <p style="font-size:0.6rem; font-weight:700; color:#fcd34d; margin:0 0 3px;">🏠 Lakehouse — les deux</p>
-        <p style="font-size:0.56rem; color:rgba(255,255,255,0.75); margin:0; line-height:1.55;">L'approche moderne : le brut ET le formaté dans un seul système (Databricks, BigQuery…).</p>
-    </div>
-</div>
-`;
-
 const oltpSuffit = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">La nuance qui évite de sur-construire</p>
 <h2 style="margin-top:0;">Parfois… on s'arrête à l'OLTP</h2>
@@ -375,36 +321,36 @@ const oltpSuffit = `
         <div style="background:#eff6ff; padding:12px 16px;">
             <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #2563eb;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Annuaire des prestataires</strong> — « le téléphone de Keolis ? »</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Annuaire des élus</strong> — « le mail de l'adjointe aux mobilités ? » : une fiche, un contact</p>
                 </div>
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #2563eb;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Catalogue / référentiel</strong> — la liste des lignes de bus, des communes</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Annuaire des associations</strong> — nom, adresse, horaires, contact — on affiche la fiche telle quelle</p>
                 </div>
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #2563eb;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Consultation SIG</strong> — afficher les stations Vélib' sur la carte</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;"><strong>Carte des stations Vélib'</strong> — des points sur une carte : la table, affichée, sans calcul</p>
                 </div>
             </div>
-            <p style="font-size:0.56rem; color:#1e40af; margin:0; line-height:1.6;">On cherche <strong>une fiche</strong>, on l'affiche, on la met à jour. La base opérationnelle <em>est</em> le produit fini. Pas d'agrégat, pas d'entrepôt : rien à construire de plus.</p>
+            <p style="font-size:0.56rem; color:#1e40af; margin:0; line-height:1.6;">On cherche <strong>une fiche</strong>, on l'affiche, on la met à jour. La table <em>est</em> le produit fini. Pas d'agrégat, pas d'entrepôt : rien à construire de plus.</p>
         </div>
     </div>
 
     <div class="fragment" style="flex:1; border-radius:10px; overflow:hidden; border:2px solid #9333ea;">
         <div style="background:#9333ea; padding:8px 16px;">
-            <p style="font-size:0.64rem; font-weight:700; color:white; margin:0;">📊 Je veux mesurer / piloter → il faut l'OLAP</p>
+            <p style="font-size:0.64rem; font-weight:700; color:white; margin:0;">📊 Les résultats des élections → il faut l'OLAP</p>
         </div>
         <div style="background:#faf5ff; padding:12px 16px;">
             <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #9333ea;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;">« <strong>Combien</strong> de réclamations non traitées ce mois ? »</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;">« <strong>% par nuance</strong> et par commune ? » — on <strong>agrège</strong> les bureaux de vote</p>
                 </div>
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #9333ea;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;">« C'est <strong>en hausse ou en baisse</strong> par rapport à l'an dernier ? »</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;">« Participation <strong>en hausse</strong> par rapport au scrutin précédent ? » — on <strong>compare</strong></p>
                 </div>
                 <div style="background:white; border-radius:6px; padding:7px 12px; border-left:3px solid #9333ea;">
-                    <p style="font-size:0.58rem; color:#333; margin:0;">« <strong>Quel prestataire</strong> pose problème ? »</p>
+                    <p style="font-size:0.58rem; color:#333; margin:0;">« Le bureau le plus <strong>abstentionniste</strong> ? » — on <strong>classe</strong></p>
                 </div>
             </div>
-            <p style="font-size:0.56rem; color:#6b21a8; margin:0; line-height:1.6;">Là, une fiche ne répond plus : il faut <strong>agréger l'historique</strong> — un tableau de bord. Et donc construire un <strong>pont</strong> de l'OLTP vers l'OLAP.</p>
+            <p style="font-size:0.56rem; color:#6b21a8; margin:0; line-height:1.6;">Aucun de ces chiffres n'existe dans la table de départ : ils sont <strong>calculés</strong> — les données sont transformées. C'est de l'OLAP, et c'est exactement ce qu'on publie sur le portail Open Data.</p>
         </div>
     </div>
 
@@ -430,7 +376,6 @@ export function Typologies() {
       <section dangerouslySetInnerHTML={{ __html: strava }} />
       <section dangerouslySetInnerHTML={{ __html: yegoTables }} />
       <section dangerouslySetInnerHTML={{ __html: yegoSql }} />
-      <section dangerouslySetInnerHTML={{ __html: entrepot }} />
       <section dangerouslySetInnerHTML={{ __html: oltpSuffit }} />
     </>
   );

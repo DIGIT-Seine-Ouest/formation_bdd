@@ -166,21 +166,40 @@ while day <= PERIOD_END:
 events.sort(key=lambda e: e["event_time"])
 trips.sort(key=lambda t: t["start_time"])
 
-# ── Snapshot /vehicles (état final de la flotte) ─────────────────────────────
+# ── Snapshot /vehicles (photo de la flotte à l'instant T) ────────────────────
+# États et batteries tirés avec un Random DÉDIÉ (seed à part) : le snapshot est
+# une photo de milieu de journée — pas l'état de fin de génération — et surtout
+# on ne décale pas la séquence aléatoire de events/trips.
+snap = random.Random(7)
+snap_states = (["available"] * 41 + ["on_trip"] * 8
+               + ["reserved"] * 6 + ["non_operational"] * 5)
+snap.shuffle(snap_states)
+SNAP_TYPES = {"available": "[trip_end]", "on_trip": "[trip_start]",
+              "reserved": "[reservation_start]",
+              "non_operational": "[battery_low]"}
+low_left = 2  # + les 5 non_operational → 7 scooters sous 20 %
+
 vehicles = []
-for v in fleet:
+for v, state in zip(fleet, snap_states):
     last = [e for e in events if e["device_id"] == v["device_id"]]
     lat, lon = near(v["home"][2], v["home"][3])
     v["_lat"], v["_lon"] = lat, lon
+    if state == "non_operational":
+        batt = snap.uniform(0.02, 0.14)
+    elif state == "available" and low_left > 0:
+        batt = snap.uniform(0.15, 0.19)
+        low_left -= 1
+    else:
+        batt = snap.uniform(0.22, 1.0)
     vehicles.append({
         "provider_name": PROVIDER_NAME, "provider_id": PROVIDER_ID,
         "device_id": v["device_id"], "vehicle_id": v["vehicle_id"],
         "vehicle_type": "moped", "propulsion_types": "[electric]",
         "last_event_time": last[-1]["event_time"] if last else "",
-        "last_vehicle_state": last[-1]["vehicle_state"] if last else "available",
-        "last_event_types": last[-1]["event_types"] if last else "",
+        "last_vehicle_state": state,
+        "last_event_types": SNAP_TYPES[state],
         "current_location": geojson_point(lat, lon),
-        "battery_pct": round(v["battery"], 2),
+        "battery_pct": round(batt, 2),
     })
 
 

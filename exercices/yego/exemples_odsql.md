@@ -49,8 +49,8 @@ Issy-les-Moulineaux 999 (22,0 min), Meudon 453 (21,8 min)…
 | Bloc du dashboard | Paramètres ODSQL |
 |---|---|
 | Flotte totale | `select=count(*)` |
-| Flotte disponible | `select=count(*)` `&where=etat != 'non_operational'` |
-| Batterie < 20 % | `select=count(*)` `&where=battery_pct < 20` |
+| Flotte disponible | `select=count(*)` `&where=etat = 'available'` → 41 / 60 |
+| Batterie < 20 % | `select=count(*)` `&where=battery_pct < 20` → 7 scooters |
 | État de la flotte (répartition) | `select=etat_libelle, count(*) as nb` `&group_by=etat_libelle` `&order_by=nb desc` |
 | Batterie moyenne par état | `select=etat_libelle, avg(battery_pct) as batt_moy` `&group_by=etat_libelle` |
 

@@ -2,14 +2,6 @@
 // Traduire le cadrage en tables robustes : questions de conception, unicité
 // de l'info, atomicité, types, identifiants — sur les données MDS Yego.
 
-const intro = `
-<div style="text-align:left; max-width:680px; margin:0 auto; color:white;">
-    <p class="section-intro-label" style="color:white;">Partie 3 · Construire</p>
-    <p class="section-intro-title">Traduire le cadrage<br>en tables robustes</p>
-    <p class="section-intro-sub">Le KPI a dicté la structure. Atomicité, types, identifiants — les règles pour la construire sans qu'elle casse.</p>
-</div>
-`;
-
 const cadrage = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--grey-dirmob); margin:0 0 4px; font-weight:700;">Avant de créer la première colonne</p>
 <h2 style="margin-top:0;">Concevoir, c'est d'abord se poser les bonnes questions</h2>
@@ -432,10 +424,6 @@ const identifiant = `
 export function Module2() {
   return (
     <>
-      <section
-        data-background-color="#333333"
-        dangerouslySetInnerHTML={{ __html: intro }}
-      />
       <section dangerouslySetInnerHTML={{ __html: cadrage }} />
       <section dangerouslySetInnerHTML={{ __html: cadrageExemple }} />
       <section dangerouslySetInnerHTML={{ __html: cadrageDejaAilleurs }} />
