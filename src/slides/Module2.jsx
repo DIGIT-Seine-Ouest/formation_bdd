@@ -148,8 +148,8 @@ const cadrageExemple = `
 export function Module2() {
   return (
     <>
-      <section dangerouslySetInnerHTML={{ __html: cadrage }} />
-      <section dangerouslySetInnerHTML={{ __html: cadrageExemple }} />
+      {/* <section dangerouslySetInnerHTML={{ __html: cadrage }} /> */}
+      {/* <section dangerouslySetInnerHTML={{ __html: cadrageExemple }} /> */}
     </>
   );
 }

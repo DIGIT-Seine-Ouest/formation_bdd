@@ -80,41 +80,41 @@ const pointArrivee = `
 </div>
 `;
 
-const demandeFloue = `
-<p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--red-alert); margin:0 0 4px; font-weight:700;">Le point de départ réel</p>
-<h2 style="margin-top:0;">La demande métier arrive toujours floue</h2>
+// const demandeFloue = `
+// <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--red-alert); margin:0 0 4px; font-weight:700;">Le point de départ réel</p>
+// <h2 style="margin-top:0;">La demande métier arrive toujours floue</h2>
 
-<div class="citation" style="margin:12px auto 16px; max-width:680px; padding:18px 26px !important;">
-    <p style="font-size:0.4rem !important; opacity:0.65; margin:0 0 6px; text-transform:uppercase; letter-spacing:2px; font-family:monospace !important; line-height:1 !important;">✉️ Mail de la directrice mobilités · lundi 9h04</p>
-    <p style="font-size:1.05rem !important; line-height:1.5 !important; margin:0;">« Il me faudrait un suivi des scooters Yego. Vous pouvez me faire ça ? »</p>
-</div>
+// <div class="citation" style="margin:12px auto 16px; max-width:680px; padding:18px 26px !important;">
+//     <p style="font-size:0.4rem !important; opacity:0.65; margin:0 0 6px; text-transform:uppercase; letter-spacing:2px; font-family:monospace !important; line-height:1 !important;">✉️ Mail de la directrice mobilités · lundi 9h04</p>
+//     <p style="font-size:1.05rem !important; line-height:1.5 !important; margin:0;">« Il me faudrait un suivi des scooters Yego. Vous pouvez me faire ça ? »</p>
+// </div>
 
-<p style="font-size:0.7rem; color:#888; margin:0 0 10px; text-align:center;">Une même phrase, trois lectures — trois tableaux de bord <strong>incompatibles</strong> :</p>
+// <p style="font-size:0.7rem; color:#888; margin:0 0 10px; text-align:center;">Une même phrase, trois lectures — trois tableaux de bord <strong>incompatibles</strong> :</p>
 
-<div class="row" style="gap:12px; align-items:stretch;">
-    <div class="offbeat-card fragment" style="flex:1; padding:13px 15px;">
-        <p style="font-size:0.62rem; font-weight:700; color:var(--blue-dirmob); margin:0 0 6px;">Lecture A — l'usage</p>
-        <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle veut voir si le service décolle : les trajets augmentent-ils, et où ? »</p>
-        <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ trajets/semaine, par commune (trips)</p>
-    </div>
-    <div class="offbeat-card fragment card--green" style="flex:1; padding:13px 15px;">
-        <p style="font-size:0.62rem; font-weight:700; color:#2e7d32; margin:0 0 6px;">Lecture B — la flotte</p>
-        <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle veut savoir si le service tient : scooters en panne, batteries à plat ? »</p>
-        <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ vehicle_state, battery_pct (events)</p>
-    </div>
-    <div class="offbeat-card fragment card--grey" style="flex:1; padding:13px 15px;">
-        <p style="font-size:0.62rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 6px;">Lecture C — le contrat</p>
-        <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle prépare le comité de suivi : Yego couvre-t-il bien les 8 communes ? »</p>
-        <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ couverture territoriale vs engagements</p>
-    </div>
-</div>
+// <div class="row" style="gap:12px; align-items:stretch;">
+//     <div class="offbeat-card fragment" style="flex:1; padding:13px 15px;">
+//         <p style="font-size:0.62rem; font-weight:700; color:var(--blue-dirmob); margin:0 0 6px;">Lecture A — l'usage</p>
+//         <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle veut voir si le service décolle : les trajets augmentent-ils, et où ? »</p>
+//         <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ trajets/semaine, par commune (trips)</p>
+//     </div>
+//     <div class="offbeat-card fragment card--green" style="flex:1; padding:13px 15px;">
+//         <p style="font-size:0.62rem; font-weight:700; color:#2e7d32; margin:0 0 6px;">Lecture B — la flotte</p>
+//         <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle veut savoir si le service tient : scooters en panne, batteries à plat ? »</p>
+//         <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ vehicle_state, battery_pct (events)</p>
+//     </div>
+//     <div class="offbeat-card fragment card--grey" style="flex:1; padding:13px 15px;">
+//         <p style="font-size:0.62rem; font-weight:700; color:var(--grey-dirmob); margin:0 0 6px;">Lecture C — le contrat</p>
+//         <p style="font-size:0.58rem; color:#333; margin:0 0 8px; line-height:1.6;">« Elle prépare le comité de suivi : Yego couvre-t-il bien les 8 communes ? »</p>
+//         <p style="font-size:0.52rem; color:#888; margin:0; font-family:monospace;">→ couverture territoriale vs engagements</p>
+//     </div>
+// </div>
 
-<div class="separator fragment"></div>
-<p class="fragment" style="font-size:0.8rem; color:#333; margin:0; text-align:center; line-height:1.7;">
-    Foncer construire = choisir une lecture <strong>au hasard</strong>.<br>
-    <span style="font-size:0.68rem; color:#888; font-style:italic;">La demande n'est pas le besoin. Elle est le symptôme du besoin.</span>
-</p>
-`;
+// <div class="separator fragment"></div>
+// <p class="fragment" style="font-size:0.8rem; color:#333; margin:0; text-align:center; line-height:1.7;">
+//     Foncer construire = choisir une lecture <strong>au hasard</strong>.<br>
+//     <span style="font-size:0.68rem; color:#888; font-style:italic;">La demande n'est pas le besoin. Elle est le symptôme du besoin.</span>
+// </p>
+// `;
 
 const maieutique = `
 <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--blue-dirmob); margin:0 0 4px; font-weight:700;">Notre vrai rôle</p>
@@ -371,7 +371,6 @@ export function Conception() {
         dangerouslySetInnerHTML={{ __html: intro }}
       />
       <section dangerouslySetInnerHTML={{ __html: pointArrivee }} />
-      <section dangerouslySetInnerHTML={{ __html: demandeFloue }} />
       <section dangerouslySetInnerHTML={{ __html: maieutique }} />
       <section dangerouslySetInnerHTML={{ __html: anatomie }} />
       <section dangerouslySetInnerHTML={{ __html: blocUsage }} />
