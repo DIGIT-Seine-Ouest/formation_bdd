@@ -150,7 +150,6 @@ export function Module2() {
     <>
       <section dangerouslySetInnerHTML={{ __html: cadrage }} />
       <section dangerouslySetInnerHTML={{ __html: cadrageExemple }} />
-      <section dangerouslySetInnerHTML={{ __html: cadrageDejaAilleurs }} />
     </>
   );
 }
