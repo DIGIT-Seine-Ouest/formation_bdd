@@ -103,13 +103,13 @@ const ETAPES = [
     geste: <>Une colonne <code>annee_suivi</code> = 2026. En 2027, on colle les nouvelles lignes sous le tableau : il s’agrandit tout seul.</>,
   },
   {
-    titre: 'Je fais la synthèse', cel: 'B13', formule: '=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))', extra: 'tcd',
+    titre: 'Je fais la synthèse', cel: 'B13', formule: '=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))',
     vue: { rows: SYNTH, largeurs: [190, 170, 86, 90, 120] },
     remi: 'Et les totaux, je les tape où ?',
     delos: <>Nulle part. L’onglet <b>synthese</b> ne contient que des formules : il <b>lit</b> l’onglet saisie. Une ligne de plus ? Tout se recalcule.</>,
     piege: <>Le <b>TOTAL tapé à la main</b> et le « Récap (2) » recopié : il dit 4 librairies à Issy. Il y en a 5.</>,
     vendredi: 'vendredi_recap',
-    geste: <>Sans formule : Insertion › <b>Tableau croisé dynamique</b>, <code>commune</code> en Lignes, <code>id</code> en Valeurs. Quatre clics.</>,
+    geste: <>Quatre formules à connaître : <code>NBVAL</code>, <code>NB.SI</code>, <code>RECHERCHEV</code>, <code>INDEX/EQUIV</code>. Et sans formule ? Le TCD, juste après.</>,
   },
 ];
 
@@ -133,12 +133,12 @@ function Etape({ e, n }) {
               largeurs={maquette.largeurs} rows={selection(maquette.rows, e.cel)} compact />
           </Capture>
         </div>
-        {e.extra && <Capture nom={e.extra} alt="" maxH={n === 9 ? 310 : 290} />}
+        {e.extra && <div style={{ flex: '0 1 38%', minWidth: 0 }}><Capture nom={e.extra} alt="" maxH={n === 9 ? 310 : 290} /></div>}
       </div>
       <div className="row" style={{ marginTop: 8, alignItems: 'stretch' }}>
         <div className="etape-piege col fragment" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <div style={{ flex: 1 }}>⚠️ <b>Le piège du fichier de vendredi.</b> {e.piege}</div>
-          {e.vendredi && <Capture nom={e.vendredi} alt="Le fichier de vendredi" maxH={80} />}
+          {e.vendredi && <div style={{ flex: '0 1 46%', minWidth: 0 }}><Capture nom={e.vendredi} alt="Le fichier de vendredi" maxH={92} /></div>}
         </div>
         <div className="etape-tip col fragment"><div>{e.geste}</div></div>
       </div>
@@ -152,6 +152,43 @@ export function Ep3Tuto() {
       <Chapitre fond="#0f4c75" ep="Épisode 3" titre="Le tuto de Delos" sous="Neuf étapes. Rémi pose la question, Delos explique, le fichier de vendredi montre le piège." promesse="⏱ Gagner du temps" />
 
       {ETAPES.map((e, i) => <Etape key={e.titre} e={e} n={i + 1} />)}
+
+      <section>
+        <div className="planche-head">
+          <span className="ep">Bonus</span>
+          <h2>Sans formule : le tableau croisé dynamique</h2>
+        </div>
+        <div className="row" style={{ marginBottom: 10 }}>
+          <Bulle qui="remi" humeur="stress" size={44} className="col">INDEX, EQUIV… Il n’y a pas plus simple ?</Bulle>
+          <Bulle qui="delos" humeur="content" size={44} droite className="col fragment">Si : le TCD. Quatre clics, et c’est Excel qui compte. Il ne marche que sur une table propre… comme la tienne, maintenant.</Bulle>
+        </div>
+        <div className="row" style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <div className="fragment" style={{ flex: '0 1 auto', minWidth: 0 }}>
+            <Capture nom="tcd-creer" alt="Créer un tableau croisé dynamique sur T_saisie" maxH={300}>
+              <Case recit="Les 4 clics" style={{ padding: '22px 14px 12px' }}>
+                <div className="stack" style={{ fontSize: 17 }}>
+                  <p>① Cliquer dans l’onglet <code>saisie</code></p>
+                  <p>② <span className="raccourci">Insertion</span> › <span className="raccourci">Tableau croisé dynamique</span> › OK</p>
+                  <p>③ Glisser <code>commune</code> dans <b>Lignes</b></p>
+                  <p>④ Glisser <code>id</code> dans <b>Valeurs</b></p>
+                </div>
+              </Case>
+            </Capture>
+          </div>
+          <span className="fragment" style={{ fontSize: 30 }}>➜</span>
+          <div className="fragment" style={{ flex: '0 1 auto', minWidth: 0 }}>
+            <Capture nom="tcd" alt="Le TCD : nombre de librairies par commune" maxH={380}>
+              <Excel fichier={FICHIER} onglets={['TCD', 'saisie', 'synthese']} cellule="B4" formule="6" largeurs={[220, 130]}
+                rows={[
+                  [{ v: 'Étiquettes de lignes', c: 'bleu gras' }, { v: 'Nombre de id', c: 'bleu gras' }],
+                  ...SYNTHESE.filter((s) => s.n).map((s) => [s.nom, s.n]),
+                  [{ v: 'Total général', c: 'gras' }, { v: LIBRAIRIES.length, c: 'gras' }],
+                ]} />
+            </Capture>
+          </div>
+        </div>
+        <div className="etape-tip fragment" style={{ marginTop: 10 }}><div>Le tableau <code>T_saisie</code> est reconnu tout seul. Nouvelle librairie ? Clic droit › <b>Actualiser</b>.</div></div>
+      </section>
 
       <section>
         <Planche ep="Ép. 3" titre="Mardi, 14 h 02 : les questions arrivent">

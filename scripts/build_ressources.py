@@ -20,6 +20,7 @@ from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from openpyxl.formatting.rule import FormulaRule
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
@@ -139,29 +140,85 @@ def exercice():
 
 
 # ── 2. La correction : la base de données de Rémi ───────────────────────────
-def correction():
+def _colonnes(n):
+    """Colonnes de l'onglet saisie à l'étape n du tuto de Delos (cf. etapeSaisie dans src/remi.js)."""
+    cols = (["id"] if n >= 6 else []) + ["librairie", "assortiment", "label"]
+    cols += (["code_commune"] if n >= 7 else []) + ["commune"] + (["annee_suivi"] if n >= 8 else [])
+    return cols
+
+
+def _vue(ws, cellule, zoom=150):
+    ws.sheet_view.zoomScale = zoom
+    ws.sheet_view.selection[0].activeCell = cellule
+    ws.sheet_view.selection[0].sqref = cellule
+
+
+SELECTION = {1: "A1", 2: "D3", 3: "C4", 4: "C4", 5: "B2", 6: "A2", 7: "F2", 8: "G2", 9: "B13"}
+
+
+def classeur_tuto(n):
+    """Le classeur de Rémi tel qu'il est à la fin de l'étape n (1 à 9) du tuto de Delos."""
     wb = Workbook()
-    # saisie (j'écris)
     ws = wb.active
     ws.title = "saisie"
-    ws.append(["id", "librairie", "assortiment", "label", "code_commune", "annee_suivi", "commune"])
-    for i, l in enumerate(LIBS, 2):
-        ws.append([l["id"], l["nom"], l["assort"], l["label"], l["code"], 2026, f"=VLOOKUP(E{i},communes!$A:$B,2,0)"])
-        ws[f"E{i}"].number_format = "@"
-        ws[f"G{i}"].fill = GRIS
-        ws[f"G{i}"].font = Font(italic=True, color="555555")
-    n = len(LIBS) + 1
-    tab = Table(displayName="T_saisie", ref=f"A1:G{n}")
-    tab.tableStyleInfo = TableStyleInfo(name="TableStyleMedium7", showRowStripes=True)
-    ws.add_table(tab)
-    ws.freeze_panes = "A2"
-    largeurs(ws, (9, 32, 18, 9, 14, 12, 22))
-    for col, ref in (("C", "$A$2:$A$12"), ("D", "$B$2:$B$4"), ("E", "$C$2:$C$9")):
-        dv = DataValidation(type="list", formula1=f"=listes!{ref}", allow_blank=False,
-                            error="Choisissez une valeur de la liste (onglet listes).", showErrorMessage=True)
-        ws.add_data_validation(dv)
-        dv.add(f"{col}2:{col}500")
+    cols = _colonnes(n)
+    L = {c: "ABCDEFG"[i] for i, c in enumerate(cols)}
+    ws.append(cols)
+    if n >= 2:
+        for i, l in enumerate(LIBS, 2):
+            val = dict(id=l["id"], librairie=l["nom"], assortiment=l["assort"], label=l["label"],
+                       code_commune=l["code"], commune=NOM[l["code"]], annee_suivi=2026)
+            if n >= 7:
+                val["commune"] = f"=VLOOKUP({L['code_commune']}{i},communes!$A:$B,2,0)"
+            ws.append([val[c] for c in cols])
+            if n >= 7:
+                ws[f"{L['code_commune']}{i}"].number_format = "@"
+                ws[f"{L['commune']}{i}"].fill = GRIS
+                ws[f"{L['commune']}{i}"].font = Font(italic=True, color="555555")
+        der = len(LIBS) + 1
+        fin = L[cols[-1]]
+        tab = Table(displayName="T_saisie", ref=f"A1:{fin}{der}")
+        tab.tableStyleInfo = TableStyleInfo(name="TableStyleMedium4", showRowStripes=False)
+        ws.add_table(tab)
+        if n >= 4:  # rien dans la couleur : c'est la colonne label qui décide
+            ws.conditional_formatting.add(f"A2:{fin}{der}", FormulaRule(formula=[f'${L["label"]}2="LIR"'], fill=PatternFill("solid", fgColor="C6EFCE", bgColor="C6EFCE")))
+    largeurs(ws, [dict(id=9, librairie=32, assortiment=18, label=9, code_commune=17, commune=22, annee_suivi=14)[c] for c in cols])
+    _vue(ws, SELECTION[n] if n < 9 else "A2")
+    if n >= 5:
+        wl = wb.create_sheet("listes")
+        wl.append(["assortiment", "label", "code_commune"])
+        for i in range(max(len(ASSORTIMENTS), len(COMMUNES))):
+            wl.append([ASSORTIMENTS[i] if i < len(ASSORTIMENTS) else None,
+                       LABELS[i] if i < len(LABELS) else None,
+                       COMMUNES[i][0] if i < len(COMMUNES) and n >= 7 else None])
+        if n < 7:
+            wl["C1"] = None
+        for c in wl[1]:
+            c.font = Font(bold=True)
+        largeurs(wl, (28, 10, 14))
+        _vue(wl, "A2")
+        valid = [("assortiment", "$A$2:$A$12"), ("label", "$B$2:$B$4")] + ([("code_commune", "$C$2:$C$9")] if n >= 7 else [])
+        for col, ref in valid:
+            dv = DataValidation(type="list", formula1=f"=listes!{ref}", allow_blank=False, showErrorMessage=True,
+                                errorTitle="Valeur non autorisée",
+                                error="Choisissez une valeur de la liste (onglet listes).")
+            ws.add_data_validation(dv)
+            dv.add(f"{L[col]}2:{L[col]}500")
+    if n >= 7:
+        _communes(wb)
+    if n >= 9:
+        _synthese(wb)
+        _dictionnaire(wb)
+    wb.calculation.fullCalcOnLoad = True
+    return wb
 
+
+def correction():
+    wb = classeur_tuto(9)
+    wb.save(OUT / "correction_suivi_librairies.xlsx")
+
+
+def _communes(wb):
     # communes (la table des collègues)
     wc = wb.create_sheet("communes")
     wc.append(["code_commune", "commune", "population"])
@@ -174,20 +231,12 @@ def correction():
     wc["E1"] = "Table maintenue par les collègues (populations légales INSEE). On ne la recopie pas : on la récupère par jointure."
     wc["E1"].font = Font(italic=True, color="888888")
     largeurs(wc, (14, 24, 12))
+    _vue(wc, "A2")
 
-    # listes (valeurs autorisées)
-    wl = wb.create_sheet("listes")
-    wl.append(["assortiment", "label", "code_commune"])
-    for i in range(max(len(ASSORTIMENTS), len(COMMUNES))):
-        wl.append([ASSORTIMENTS[i] if i < len(ASSORTIMENTS) else None,
-                   LABELS[i] if i < len(LABELS) else None,
-                   COMMUNES[i][0] if i < len(COMMUNES) else None])
-    for c in wl[1]:
-        c.font = Font(bold=True)
-    largeurs(wl, (28, 10, 14))
 
+def _synthese(wb):
     # synthese (je fais la synthèse) : rien n'est saisi, tout est lu dans « saisie »
-    wsy = wb.create_sheet("synthese", 1)
+    wsy = wb.create_sheet("synthese")
     wsy.merge_cells("A1:E1")
     wsy["A1"] = "TABLEAU DE SUIVI — LIBRAIRIES GPSO"
     wsy["A1"].font = Font(bold=True, color="FFFFFF", size=13)
@@ -206,6 +255,7 @@ def correction():
         wsy[f"C{i}"] = f"=COUNTIF(saisie!E:E,A{i})"
         wsy[f"D{i}"] = f"=VLOOKUP(A{i},communes!$A:$C,3,0)"
         wsy[f"E{i}"] = f"=ROUND(C{i}/D{i}*10000,2)"
+        wsy[f"E{i}"].number_format = "0.00"
     wsy["A13"], wsy["B13"], wsy["C13"] = "Q1 · le plus de librairies", "=INDEX(B5:B12,MATCH(MAX(C5:C12),C5:C12,0))", "=MAX(C5:C12)"
     wsy["A14"], wsy["B14"] = "Q2 · labellisées", "=B3"
     wsy["A15"], wsy["B15"], wsy["C15"] = "Q3 · pour 10 000 hab.", "=INDEX(B5:B12,MATCH(MAX(E5:E12),E5:E12,0))", "=MAX(E5:E12)"
@@ -217,7 +267,11 @@ def correction():
     wsy["A17"] = "Rien n'est saisi ici : tout est lu dans l'onglet saisie. Ajoutez une librairie dans saisie, ce tableau se met à jour."
     wsy["A17"].font = Font(italic=True, color="888888")
     largeurs(wsy, (28, 24, 12, 12, 16))
+    wsy["C15"].number_format = "0.00"
+    _vue(wsy, "B13")
 
+
+def _dictionnaire(wb):
     # dictionnaire
     wd = wb.create_sheet("dictionnaire")
     wd.append(["colonne", "signification", "format / valeurs autorisées", "exemple"])
@@ -227,16 +281,15 @@ def correction():
         ("assortiment", "spécialité principale", "liste (onglet listes)", "Généraliste"),
         ("label", "label du ministère de la Culture", "aucun · LIR (indépendante de référence) · LR (de référence)", "LIR"),
         ("code_commune", "code officiel INSEE de la commune : la clé de la jointure", "5 caractères, format Texte", "92048"),
-        ("annee_suivi", "année du relevé : l'an prochain on ajoute des lignes, pas un onglet", "AAAA", "2026"),
         ("commune", "nom de la commune, CALCULÉ par jointure avec l'onglet communes (ne pas saisir)", "formule RECHERCHEV", "Meudon"),
+        ("annee_suivi", "année du relevé : l'an prochain on ajoute des lignes, pas un onglet", "AAAA", "2026"),
     ]:
         wd.append(list(line))
     for c in wd[1]:
         c.font = Font(bold=True)
     largeurs(wd, (16, 62, 52, 14))
 
-    wb.calculation.fullCalcOnLoad = True
-    wb.save(OUT / "correction_suivi_librairies.xlsx")
+    _vue(wd, "A1")
 
 
 # ── 3. Les documents Word ───────────────────────────────────────────────────
@@ -378,8 +431,8 @@ def guide():
         ("assortiment", "liste déroulante", "Généraliste, BD et Mangas… (une seule spécialité)"),
         ("label", "liste déroulante", "aucun · LIR · LR (remplace le vert)"),
         ("code_commune", "liste déroulante, format Texte", "code INSEE : la clé de la jointure"),
-        ("annee_suivi", "nombre (AAAA)", "l'an prochain, on ajoute des lignes 2027 en dessous"),
         ("commune", "CALCULÉE (grisée)", "récupérée par jointure, jamais saisie"),
+        ("annee_suivi", "nombre (AAAA)", "l'an prochain, on ajoute des lignes 2027 en dessous"),
     ])
     d.add_heading("Construire la table", 2)
     puces(d, ["Saisir les en-têtes en ligne 1, sans titre au-dessus, sans cellule fusionnée.",
@@ -396,7 +449,7 @@ def guide():
     d.add_paragraph("La population n'appartient pas à Rémi : les collègues la tiennent à jour dans la table communes "
                     "(code_commune, commune, population). On ne la recopie pas, on la récupère grâce au code commune.")
     d.add_heading("La jointure : RECHERCHEV", 2)
-    code(d, "saisie!G2   =RECHERCHEV(E2;communes!$A:$B;2;0)")
+    code(d, "saisie!F2   =RECHERCHEV(E2;communes!$A:$B;2;0)")
     d.add_paragraph("RECHERCHEV(quoi je cherche ; où je cherche ; quelle colonne je renvoie ; 0 = correspondance exacte). "
                     "Ici : on cherche le code de la ligne (E2) dans la table communes et on renvoie la 2e colonne, le nom. "
                     "Avec 3 au lieu de 2, on renvoie la population.")
@@ -450,8 +503,12 @@ def guide():
 
 
 if __name__ == "__main__":
+    import sys
     exercice()
-    correction()
+    # La correction livrée contient un onglet TCD ajouté dans le vrai Excel (openpyxl ne sait pas
+    # créer de tableau croisé dynamique) : on ne l'écrase que sur demande explicite.
+    if "--correction" in sys.argv or not (OUT / "correction_suivi_librairies.xlsx").exists():
+        correction()
     cheat_sheet()
     guide()
     print(f"{len(LIBS)} librairies GPSO → {sorted(p.name for p in OUT.iterdir())}")
