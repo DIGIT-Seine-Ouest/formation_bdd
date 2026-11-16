@@ -6,10 +6,9 @@ import './styles.css';
 import { Ouverture } from './slides/Ouverture';
 import { Ep1Mission } from './slides/Ep1Mission';
 import { Ep2Theorie } from './slides/Ep2Theorie';
-import { Ep3Explique } from './slides/Ep3Explique';
-import { Ep4CestBon } from './slides/Ep4CestBon';
-import { Ep5Construire } from './slides/Ep5Construire';
-import { Ep6Valoriser } from './slides/Ep6Valoriser';
+import { Ep3Tuto } from './slides/Ep3Tuto';
+import { Ep4Pratique } from './slides/Ep4Pratique';
+import { Ep5Valoriser } from './slides/Ep5Valoriser';
 import { Final } from './slides/Final';
 
 export function App() {
@@ -37,10 +36,9 @@ export function App() {
         <Ouverture />
         <Ep1Mission />
         <Ep2Theorie />
-        <Ep3Explique />
-        <Ep4CestBon />
-        <Ep5Construire />
-        <Ep6Valoriser />
+        <Ep3Tuto />
+        <Ep4Pratique />
+        <Ep5Valoriser />
         <Final />
       </div>
     </div>

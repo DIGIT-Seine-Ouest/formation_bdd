@@ -1,4 +1,4 @@
-// ─── Épisode 6 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
+// ─── Épisode 5 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
 // Le coup de fil → nos réalisations → la chaîne : du poste de Rémi au national.
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import { Vitrine } from '../components/Vitrine';
@@ -11,13 +11,13 @@ const CHAINE = [
   ['🌍', 'Tout le monde', 'Chercheurs, applis, presse, autres collectivités… et Rémi lui-même', 'good'],
 ];
 
-export function Ep6Valoriser() {
+export function Ep5Valoriser() {
   return (
     <>
-      <Chapitre fond="#4c2a85" ep="Épisode 6" titre="Rémi appelle la DIGIT" sous="Le fichier marche. Et s’il servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
+      <Chapitre fond="#4c2a85" ep="Épisode 5" titre="Rémi appelle la DIGIT" sous="Le fichier marche. Et s’il servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
 
       <section>
-        <Planche ep="Ép. 6" titre="Le coup de fil">
+        <Planche ep="Ép. 5" titre="Le coup de fil">
           <div className="row" style={{ alignItems: 'flex-start' }}>
             <div className="col stack">
               <Case>
@@ -43,7 +43,7 @@ export function Ep6Valoriser() {
       </section>
 
       <section>
-        <Planche ep="Ép. 6" titre="Ce qu’on a déjà fait avec les villes">
+        <Planche ep="Ép. 5" titre="Ce qu’on a déjà fait avec les villes">
           <Vitrine />
         </Planche>
       </section>

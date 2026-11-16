@@ -314,3 +314,9 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 
 /* ── Vraies captures Excel (public/captures, faites sur Mac) ── */
 .capture { display: block; max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 28px rgba(0,0,0,.14); }
+
+/* ── Minuteur de l’exercice (Ép. 4) ───────── */
+.minuteur { display: flex; gap: 8px; align-items: center; justify-content: center; }
+.minuteur span { font-family: "Bangers", cursive; font-size: 44px; letter-spacing: 2px; min-width: 150px; text-align: center; }
+.minuteur span.fini { color: var(--red); }
+.minuteur button { font: 700 15px Roboto, sans-serif; cursor: pointer; background: var(--yellow); border: 3px solid var(--ink); border-radius: 6px; box-shadow: 3px 3px 0 var(--ink); padding: 4px 12px; }
