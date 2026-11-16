@@ -213,6 +213,13 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
     width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff;
     font: 700 12px/20px Roboto, sans-serif; text-align: center; box-shadow: 0 0 0 2px #fff;
 }
+.xlw td.neuf { outline: 3px solid #16a34a; outline-offset: -3px; background-color: #f0fdf4; }
+.xlw td.vert.neuf { background-color: #c6efce; }
+.xlw td.dd::after { content: "▾"; position: absolute; right: 4px; color: #217346; font-size: 11px; }
+.etape-piege { background: var(--red-soft); border: 3px solid var(--red); border-radius: 6px; padding: 8px 12px; font-size: 15.5px; }
+.etape-piege b { color: var(--red); }
+.etape-tip { display: flex; gap: 12px; align-items: center; background: #ecfdf5; border: 3px solid #16a34a; border-radius: 6px; padding: 8px 14px; font-size: 16.5px; box-shadow: 4px 4px 0 var(--ink); }
+.etape-tip::before { content: "💡"; font-size: 24px; }
 .xlw.compact td { height: 17px; padding: 1px 6px; font-size: 12px; }
 .xlw.compact th { font-size: 10.5px; padding: 0 3px; }
 
@@ -304,3 +311,6 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
     display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 14px; font-weight: 700;
     background: #fff; border: 2px solid var(--ink); border-bottom-width: 4px; border-radius: 6px; padding: 1px 8px;
 }
+
+/* ── Vraies captures Excel (public/captures, faites sur Mac) ── */
+.capture { display: block; max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 28px rgba(0,0,0,.14); }

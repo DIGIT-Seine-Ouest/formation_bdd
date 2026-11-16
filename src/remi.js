@@ -126,3 +126,40 @@ export function vaVite({ de = 1, a = DERNIERE, marques = {}, err = [], marquesFr
   }
   return rows;
 }
+
+// ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────
+// Ce qui vient d’être ajouté à l’étape n est entouré en vert (classe « neuf »).
+const TUTO_LIBS = LIBRAIRIES.slice(0, 8);
+const LARG = { id: 64, librairie: 196, assortiment: 108, label: 56, code_commune: 96, commune: 150, annee_suivi: 84 };
+const NEUF = { 1: 'tout', 2: ['commune'], 3: ['assortiment', 'label'], 4: ['label'], 5: ['assortiment'], 6: ['id'], 7: ['code_commune', 'commune'], 8: ['annee_suivi'] };
+
+export function etapeSaisie(n) {
+  const cols = [];
+  if (n >= 6) cols.push('id');
+  cols.push('librairie', 'assortiment', 'label');
+  if (n >= 7) cols.push('code_commune');
+  cols.push('commune');
+  if (n >= 8) cols.push('annee_suivi');
+  const neuf = NEUF[n] === 'tout' ? cols : NEUF[n] || [];
+  const rows = [cols.map((v) => ({ v, c: `${n === 1 ? 'hh' : 'h'}${neuf.includes(v) ? ' neuf' : ''}` }))];
+  const ligne = (val, forceNeuf) => cols.map((c) => {
+    const cls = [];
+    if (forceNeuf || (n > 1 && neuf.includes(c))) cls.push('neuf');
+    if (n >= 4 && val.label !== 'aucun') cls.push('vert');
+    if (c === 'code_commune') cls.push('bleu');
+    if (c === 'commune' && n >= 7) cls.push('calc');
+    if (c === 'assortiment' && n >= 5) cls.push('dd');
+    return { v: val[c], c: cls.join(' ') };
+  });
+  if (n === 1) {
+    rows.push(cols.map(() => ''), cols.map(() => ''), cols.map(() => ''));
+  } else {
+    TUTO_LIBS.forEach(([id, librairie, assortiment, label, code]) => {
+      rows.push(ligne({ id, librairie, assortiment, label, code_commune: code, commune: nomCommune(code), annee_suivi: 2026 }));
+    });
+    if (n === 8) {
+      rows.push(ligne({ id: 'LIB001', librairie: 'LE COMPTOIR DE LA BD', assortiment: 'BD et Mangas', label: 'aucun', code_commune: '92012', commune: 'Boulogne-Billancourt', annee_suivi: 2027 }, true));
+    }
+  }
+  return { rows, largeurs: cols.map((c) => LARG[c]), cols };
+}
