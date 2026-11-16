@@ -4,7 +4,6 @@
 // qui renvoie à l’étape du tuto de Delos.
 import { useEffect, useState } from 'react';
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
-import { Capture } from '../components/Capture';
 import { Excel } from '../components/Excel';
 import { VA_VITE_ONGLETS, vaVite } from '../remi';
 
@@ -51,10 +50,8 @@ export function Ep4Pratique() {
       <section>
         <div className="row" style={{ alignItems: 'flex-start' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Capture nom="vendredi_vue" alt="Le fichier de vendredi dans Excel" maxH={640}>
-              <Excel fichier="exercice_aide_memoire.xlsx" onglets={VA_VITE_ONGLETS} cellule="A5" formule="Boulogne-Billancourt (6)"
+            <Excel fichier="exercice_aide_memoire.xlsx" onglets={VA_VITE_ONGLETS} cellule="A5" formule="Boulogne-Billancourt (6)"
                 largeurs={[176, 196, 130, 104, 126]} rows={vaVite({ marques: MARQUES, marquesFragment: true })} compact />
-            </Capture>
           </div>
           <div className="stack" style={{ width: 320, flexShrink: 0 }}>
             <Bulle qui="remi" humeur="content" size={48}>Mon fichier de vendredi. Joli, non ?</Bulle>

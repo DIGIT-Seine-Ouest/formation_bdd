@@ -129,8 +129,8 @@ export function vaVite({ de = 1, a = DERNIERE, marques = {}, err = [], marquesFr
 
 // ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────
 // Ce qui vient d’être ajouté à l’étape n est entouré en vert (classe « neuf »).
-const TUTO_LIBS = LIBRAIRIES.slice(0, 8);
-const LARG = { id: 64, librairie: 196, assortiment: 108, label: 56, code_commune: 96, commune: 150, annee_suivi: 84 };
+const TUTO_LIBS = LIBRAIRIES.slice(0, 6);
+const LARG = { id: 74, librairie: 232, assortiment: 128, label: 66, code_commune: 128, commune: 178, annee_suivi: 112 };
 const NEUF = { 1: 'tout', 2: ['commune'], 3: ['assortiment', 'label'], 4: ['label'], 5: ['assortiment'], 6: ['id'], 7: ['code_commune', 'commune'], 8: ['annee_suivi'] };
 
 export function etapeSaisie(n) {
@@ -148,7 +148,6 @@ export function etapeSaisie(n) {
     if (n >= 4 && val.label !== 'aucun') cls.push('vert');
     if (c === 'code_commune') cls.push('bleu');
     if (c === 'commune' && n >= 7) cls.push('calc');
-    if (c === 'assortiment' && n >= 5) cls.push('dd');
     return { v: val[c], c: cls.join(' ') };
   });
   if (n === 1) {
