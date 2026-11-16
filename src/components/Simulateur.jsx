@@ -1,50 +1,41 @@
-// « Voilà ce que je peux déjà en faire » — un fichier, plusieurs valorisations.
-// Bascule VUE / DONNÉE : avec la vue, chaque usage échoue et dit pourquoi ;
-// avec la donnée (structure de la Base nationale des librairies), tout s'allume.
+// Usage interne : le fichier « pensé machine » répond tout seul.
+// Bascule « pensé humain » / « pensé machine » : avec le premier, chaque usage
+// échoue et dit pourquoi (renvoi aux astuces) ; avec le second, tout s'allume.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { GPSO, countBy, loadLibrairies } from '../data';
 
 const TABS = [
-  ['reponses', '⏱ Les questions de la cheffe'],
-  ['carte', '🗺️ Carte'],
-  ['portail', '🔎 Portail open data'],
+  ['kpi', '📋 Les 5 questions'],
   ['tdb', '📈 Tableau de bord'],
+  ['carte', '🗺️ Carte'],
+  ['portail', '🔎 Recherche'],
 ];
 
 const ECHECS = {
-  reponses: [
-    `Combien de labellisées ? → il faut compter les cases vertes à la main.`,
-    `Combien de librairies BD ? → « BD / Mangas », « bd », « BD-Manga » : trois façons d'écrire la même chose.`,
-    `Le total « 17 » est tapé à la main : il sera faux dès la prochaine ouverture.`,
-  ],
-  carte: [
-    `Aucune colonne ne contient un code commune.`,
-    `« Boulogne-Billancourt (6) » n'est pas un nom de commune : c'est un nom + un comptage.`,
-    `Les cellules fusionnées laissent 10 lignes sans ville.`,
-  ],
-  portail: [
-    `Le label était une couleur verte : il disparaît à l'export.`,
-    `Impossible de filtrer par spécialité : 7 libellés différents pour 3 spécialités.`,
-    `La ligne « TOTAL » serait publiée comme une librairie.`,
+  kpi: [
+    'Labellisées : il faut compter les cases vertes à la main (astuce 2).',
+    'BD : « BD / Mangas », « bd », « BD-Manga » ne se regroupent pas (astuce 4).',
+    'La ligne TOTAL est comptée comme une librairie (astuce 1).',
   ],
   tdb: [
-    `Un onglet par année : impossible de comparer 2026 et 2027.`,
-    `Pas d'identifiant : « Anagramme » à Meudon et à Sèvres, une ou deux librairies ?`,
-    `Aucune valeur n'est calculable sans tout ressaisir.`,
+    'Un onglet par année : impossible de comparer 2026 et 2027 (astuce 6).',
+    'Aucun chiffre ne se recalcule : tout est tapé à la main.',
+  ],
+  carte: [
+    '« Boulogne-Billancourt (6) » n’est pas une commune (astuce 3).',
+    'Aucun code INSEE pour placer les points (astuce 5).',
+    '10 lignes sans ville à cause des cellules fusionnées (astuce 1).',
+  ],
+  portail: [
+    'Le label était une couleur : il disparaît à l’export (astuce 2).',
+    '7 libellés différents pour 3 spécialités : filtre impossible (astuce 4).',
   ],
 };
 
-function Echec({ tab }) {
-  return (
-    <div className="fail">
-      <div className="big">📄❌</div>
-      <h3>Mon fichier « vue » ne passe pas</h3>
-      <ul>{ECHECS[tab].map((e) => <li key={e}>{e}</li>)}</ul>
-    </div>
-  );
-}
+const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0);
+const estLab = (r) => r.label !== 'aucun';
 
 function Carte({ rows, active, zone }) {
   const el = useRef(null);
@@ -52,7 +43,7 @@ function Carte({ rows, active, zone }) {
   const layer = useRef(null);
 
   useEffect(() => {
-    map.current = L.map(el.current, { zoomControl: true, attributionControl: true, preferCanvas: true });
+    map.current = L.map(el.current, { preferCanvas: true });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap · © CARTO', maxZoom: 18,
     }).addTo(map.current);
@@ -61,7 +52,6 @@ function Carte({ rows, active, zone }) {
   }, []);
 
   useEffect(() => {
-    if (!map.current) return;
     layer.current.clearLayers();
     const parCommune = new Map();
     rows.forEach((r) => {
@@ -71,12 +61,12 @@ function Carte({ rows, active, zone }) {
     });
     parCommune.forEach((libs) => {
       const { lat, lon, commune } = libs[0];
-      const lab = libs.some((l) => l.label !== 'aucun');
+      const liste = libs.slice(0, 12).map((l) => `${l.nom}${estLab(l) ? ' 🏅' : ''}`).join('<br>');
       L.circleMarker([lat, lon], {
         radius: 5 + Math.sqrt(libs.length) * (zone === 'gpso' ? 6 : 2.2),
-        color: '#0f4c75', weight: 1, fillColor: lab ? '#95c11f' : '#009fe3', fillOpacity: 0.75,
+        color: '#0f4c75', weight: 1, fillColor: libs.some(estLab) ? '#95c11f' : '#009fe3', fillOpacity: 0.75,
       })
-        .bindPopup(`<b>${commune}</b> — ${libs.length} librairie(s)<br>${libs.slice(0, 12).map((l) => `${l.nom}${l.label !== 'aucun' ? ' 🏅' : ''}`).join('<br>')}${libs.length > 12 ? '<br>…' : ''}`)
+        .bindPopup(`<b>${commune}</b> — ${libs.length} librairie(s)<br>${liste}${libs.length > 12 ? '<br>…' : ''}`)
         .addTo(layer.current);
     });
     if (zone === 'gpso') map.current.setView([48.82, 2.235], 13);
@@ -84,49 +74,47 @@ function Carte({ rows, active, zone }) {
   }, [rows, zone]);
 
   useEffect(() => {
-    if (active && map.current) setTimeout(() => map.current.invalidateSize(), 60);
+    if (active) setTimeout(() => map.current.invalidateSize(), 80);
   }, [active]);
 
   return (
     <>
       <div ref={el} className="sim-map" />
-      <div style={{ position: 'absolute', left: 12, bottom: 12, zIndex: 500, background: 'rgba(255,255,255,.92)', borderRadius: 8, padding: '6px 10px', fontSize: 12 }}>
-        Placé grâce à <code>code_commune</code> (INSEE) · <span style={{ color: '#95c11f' }}>●</span> avec librairie labellisée
-        <br /><span className="muted">Sans adresse, chaque librairie est posée au centre de sa commune.</span>
+      <div style={{ position: 'absolute', left: 10, bottom: 10, zIndex: 500, background: 'rgba(255,255,255,.94)', borderRadius: 6, padding: '6px 10px', fontSize: 12.5 }}>
+        Placé grâce à <code>code_commune</code> · <span style={{ color: '#95c11f' }}>●</span> au moins une librairie labellisée
+        <br /><span className="muted">Pas d’adresse dans le fichier : chaque point est au centre de sa commune.</span>
       </div>
     </>
   );
 }
 
-function Portail({ rows }) {
+function Recherche({ rows }) {
   const [q, setQ] = useState('');
   const [assort, setAssort] = useState(null);
   const [label, setLabel] = useState(null);
-  const base = rows.filter((r) => !q || '${r.nom} ${r.commune}'.toLowerCase().includes(q.toLowerCase()));
+  const base = rows.filter((r) => !q || `${r.nom} ${r.commune}`.toLowerCase().includes(q.toLowerCase()));
   const res = base.filter((r) => (!assort || r.assortiment === assort) && (!label || r.label === label));
-  const facet = (key, cur, set) =>
-    countBy(base.filter((r) => key === 'assortiment' ? (!label || r.label === label) : (!assort || r.assortiment === assort)), key)
-      .slice(0, 8)
-      .map(([v, n]) => (
-        <label key={v} className={cur === v ? 'on' : ''} onClick={() => set(cur === v ? null : v)}>
-          <span>{v}</span><span className="muted">{n}</span>
-        </label>
-      ));
-  const params = [q && 'q=${q}', assort && 'refine=assortiment:${assort}', label && 'refine=label:${label}'].filter(Boolean).join('&');
+  const facette = (key, cur, set, autre) =>
+    countBy(base.filter(autre), key).slice(0, 8).map(([v, n]) => (
+      <label key={v} className={cur === v ? 'on' : ''} onClick={() => set(cur === v ? null : v)}>
+        <span>{v}</span><span className="muted">{n}</span>
+      </label>
+    ));
+  const params = [q && `q=${q}`, assort && `refine=assortiment:${assort}`, label && `refine=label:${label}`].filter(Boolean).join('&');
   return (
     <div className="portal">
       <div className="facets">
-        <input type="search" placeholder="Rechercher (nom, commune)…" value={q} onChange={(e) => setQ(e.target.value)} />
-        <h4>Assortiment</h4>{facet('assortiment', assort, setAssort)}
-        <h4>Label</h4>{facet('label', label, setLabel)}
+        <input type="search" placeholder="Nom ou commune…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <h4>Spécialité</h4>{facette('assortiment', assort, setAssort, (r) => !label || r.label === label)}
+        <h4>Label</h4>{facette('label', label, setLabel, (r) => !assort || r.assortiment === assort)}
       </div>
       <div className="results">
         <div className="api">GET /api/records?{params || 'limit=20'} → {res.length} résultat(s)</div>
         <table>
-          <thead><tr><th>Librairie</th><th>Assortiment</th><th>Label</th><th>Commune</th></tr></thead>
+          <thead><tr><th>Librairie</th><th>Spécialité</th><th>Label</th><th>Commune</th></tr></thead>
           <tbody>
             {res.slice(0, 40).map((r) => (
-              <tr key={r.id}><td>{r.nom}</td><td>{r.assortiment}</td><td>{r.label === 'aucun' ? '' : '🏅 ${r.label}'}</td><td>{r.commune}</td></tr>
+              <tr key={r.id}><td>{r.nom}</td><td>{r.assortiment}</td><td>{estLab(r) ? `🏅 ${r.label}` : ''}</td><td>{r.commune}</td></tr>
             ))}
           </tbody>
         </table>
@@ -136,60 +124,57 @@ function Portail({ rows }) {
   );
 }
 
-const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0);
-
 function TableauDeBord({ rows, all, zone }) {
-  const lab = rows.filter((r) => r.label !== 'aucun').length;
-  const labFr = all.filter((r) => r.label !== 'aucun').length;
-  const bd = rows.filter((r) => r.assortiment === 'BD et Mangas').length;
-  const groupes = countBy(rows, zone === 'gpso' ? 'commune' : 'region').slice(0, 10);
+  const lab = rows.filter(estLab).length;
+  const labFr = all.filter(estLab).length;
+  const cle = zone === 'gpso' ? 'commune' : 'region';
+  const groupes = countBy(rows, cle).slice(0, 10);
   const max = groupes[0]?.[1] || 1;
   return (
     <div>
       <div className="kpis">
         <div className="kpi"><div className="v">{rows.length}</div><div className="l">librairies</div></div>
         <div className="kpi"><div className="v">{pct(lab, rows.length)} %</div><div className="l">labellisées (France : {pct(labFr, all.length)} %)</div></div>
-        <div className="kpi"><div className="v">{bd}</div><div className="l">spécialisées BD & mangas</div></div>
+        <div className="kpi"><div className="v">{rows.filter((r) => r.assortiment === 'BD et Mangas').length}</div><div className="l">spécialisées BD et mangas</div></div>
         <div className="kpi"><div className="v">{new Set(rows.map((r) => r.code)).size}</div><div className="l">communes couvertes</div></div>
       </div>
       <div className="bars">
-        <p className="small muted" style={{ margin: '4px 0 6px' }}>Librairies par {zone === 'gpso' ? 'commune' : 'région'} <span className="tiny">(vert = labellisées)</span></p>
+        <p className="small muted" style={{ margin: '4px 0 6px' }}>Librairies par {cle === 'commune' ? 'commune' : 'région'} <span className="tiny">(vert = labellisées)</span></p>
         {groupes.map(([k, n]) => {
-          const l = rows.filter((r) => (zone === 'gpso' ? r.commune : r.region) === k && r.label !== 'aucun').length;
+          const l = rows.filter((r) => r[cle] === k && estLab(r)).length;
           return (
             <div className="b" key={k}>
               <span>{k}</span>
-              <div className="track" style={{ display: 'flex' }}>
-                <div className="fill lab" style={{ width: '${(100 * l) / max}%', borderRadius: 0 }} />
-                <div className="fill" style={{ width: '${(100 * (n - l)) / max}%', borderRadius: 0 }} />
+              <div className="track">
+                <div className="fill lab" style={{ width: `${(100 * l) / max}%` }} />
+                <div className="fill" style={{ width: `${(100 * (n - l)) / max}%` }} />
               </div>
               <b>{n}</b>
             </div>
           );
         })}
       </div>
-      <p className="tiny muted" style={{ marginTop: 8 }}>Aucun chiffre saisi à la main : tout est recalculé à chaque mise à jour du fichier.</p>
     </div>
   );
 }
 
-function Reponses({ rows }) {
-  const lab = rows.filter((r) => r.label !== 'aucun');
-  const bd = rows.filter((r) => r.assortiment === 'BD et Mangas');
-  const QA = [
-    ['Combien de librairies labellisées sur le territoire ?', lab.length, lab.map((r) => r.nom).join(', ')],
-    ['Combien de librairies spécialisées BD ?', bd.length, bd.map((r) => '${r.nom} (${r.commune})').join(', ')],
-    ['Combien de communes ont au moins une librairie ?', new Set(rows.map((r) => r.code)).size, 'sur ${Object.keys(GPSO).length} communes de GPSO'],
+function CinqQuestions({ rows }) {
+  const parCommune = countBy(rows, 'commune').map(([c, n]) => `${c} ${n}`).join(' · ');
+  const lab = rows.filter(estLab);
+  const specs = countBy(rows, 'assortiment').map(([s, n]) => `${s} ${n}`).join(' · ');
+  const Q = [
+    ['📍 Combien, par commune ?', parCommune],
+    ['🏅 Combien de labellisées ?', `${lab.length} : ${lab.map((r) => r.nom).join(', ')}`],
+    ['📚 Quelles spécialités ?', specs],
+    ['🔄 Ouvertures / fermetures ?', 'Dès le relevé 2027 : comparaison des id entre deux années.'],
   ];
   return (
-    <div className="answers">
-      {QA.map(([q, n, d]) => (
-        <div className="q" key={q}>
-          <div className="ask">❓ {q}</div>
-          <div className="res"><b>{n}</b> <span className="small">— 1 filtre, 2 secondes</span><br /><span className="tiny muted">{d}</span></div>
-        </div>
-      ))}
-      <p className="small muted">Et quand l'an prochain on ajoute les lignes 2027, ces réponses se mettent à jour toutes seules.</p>
+    <div>
+      <div className="kpi-list">
+        {Q.map(([q, a]) => <div key={q}><p className="q">{q}</p><p className="a">{a}</p></div>)}
+        <div style={{ gridColumn: '1 / -1' }}><p className="q">🗺️ Une carte ?</p><p className="a">→ onglet Carte</p></div>
+      </div>
+      <p className="small muted" style={{ marginTop: 12 }}>Rien n’est tapé à la main : chaque réponse est recalculée dès qu’on ajoute une ligne.</p>
     </div>
   );
 }
@@ -197,48 +182,51 @@ function Reponses({ rows }) {
 export function Simulateur() {
   const ref = useRef(null);
   const [all, setAll] = useState([]);
-  const [fichier, setFichier] = useState('vue');
-  const [tab, setTab] = useState('reponses');
+  const [fichier, setFichier] = useState('machine');
+  const [tab, setTab] = useState('kpi');
   const [zone, setZone] = useState('gpso');
   const [visible, setVisible] = useState(false);
 
   useEffect(() => { loadLibrairies().then(setAll); }, []);
   useEffect(() => {
-    const onChange = (e) => {
-      const sec = ref.current?.closest('section');
-      setVisible(e.detail?.currentSlide === sec);
-    };
+    const onChange = (e) => setVisible(e.detail?.currentSlide === ref.current?.closest('section'));
     window.addEventListener('reveal:slidechanged', onChange);
     return () => window.removeEventListener('reveal:slidechanged', onChange);
   }, []);
 
-  const rows = useMemo(() => (zone === 'gpso' ? all.filter((r) => GPSO[r.code]) : all), [all, zone]);
-  const vue = fichier === 'vue';
+  const gpso = useMemo(() => all.filter((r) => GPSO[r.code]), [all]);
+  const rows = zone === 'gpso' ? gpso : all;
+  const humain = fichier === 'humain';
 
   return (
     <div className="sim" ref={ref}>
       <div className="sim-top">
-        <div className="seg file">
-          <button className={`vue ${vue ? 'on' : ''}`} onClick={() => setFichier('vue')}>📄 Mon fichier « vue »</button>
-          <button className={`donnee ${!vue ? 'on' : ''}`} onClick={() => setFichier('donnee')}>📊 Mon fichier « donnée »</button>
+        <div className="seg">
+          {TABS.map(([k, t]) => <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>{t}</button>)}
         </div>
         <div className="seg">
           <button className={zone === 'gpso' ? 'on' : ''} onClick={() => setZone('gpso')}>GPSO</button>
-          <button className={zone === 'france' ? 'on' : ''} onClick={() => setZone('france')} disabled={vue}>France entière</button>
+          <button className={zone === 'france' ? 'on' : ''} onClick={() => setZone('france')} disabled={humain || tab === 'kpi'}>France</button>
         </div>
-      </div>
-      <div className="seg" style={{ alignSelf: 'flex-start' }}>
-        {TABS.map(([k, t]) => <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>{t}</button>)}
       </div>
       <div className="sim-body">
         <div style={{ position: 'absolute', inset: 0, visibility: tab === 'carte' ? 'visible' : 'hidden' }}>
-          <Carte rows={vue ? [] : rows} active={visible && tab === 'carte'} zone={zone} />
+          <Carte rows={humain ? [] : rows} active={visible && tab === 'carte'} zone={zone} />
         </div>
-        {tab === 'reponses' && <div className="sim-pane"><Reponses rows={all.filter((r) => GPSO[r.code])} /></div>}
-        {tab === 'portail' && <div className="sim-pane"><Portail rows={rows} /></div>}
+        {tab === 'kpi' && <div className="sim-pane"><CinqQuestions rows={gpso} /></div>}
         {tab === 'tdb' && <div className="sim-pane"><TableauDeBord rows={rows} all={all} zone={zone} /></div>}
-        {vue && <Echec tab={tab} />}
-        {!all.length && !vue && <div className="fail"><p>Chargement des données…</p></div>}
+        {tab === 'portail' && <div className="sim-pane"><Recherche rows={rows} /></div>}
+        {humain && (
+          <div className="fail">
+            <h3>Le fichier « pensé humain » ne passe pas</h3>
+            <ul>{ECHECS[tab].map((e) => <li key={e}>{e}</li>)}</ul>
+          </div>
+        )}
+        {!humain && !all.length && <div className="fail"><p>Chargement des données…</p></div>}
+      </div>
+      <div className="seg" style={{ alignSelf: 'center' }}>
+        <button className={humain ? 'on' : ''} onClick={() => setFichier('humain')}>👀 Fichier pensé humain</button>
+        <button className={!humain ? 'on' : ''} onClick={() => setFichier('machine')}>🤖 Fichier pensé machine</button>
       </div>
     </div>
   );

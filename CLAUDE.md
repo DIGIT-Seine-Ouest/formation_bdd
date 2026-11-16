@@ -4,31 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Support of the 1-hour **beginner, hands-on** session **« Valoriser le potentiel des données »** (DIGIT Formation). It must deliver the promises of the event pitch: *des données bien structurées permettent de gagner du temps et d'améliorer la lisibilité de l'information ; bonnes pratiques essentielles pour faciliter leur exploitation.*
+Support of the 1-hour **beginner, hands-on** session **« Valoriser le potentiel des données »** (DIGIT Formation, GPSO). Event pitch to deliver: *des données bien structurées permettent de gagner du temps et d'améliorer la lisibilité de l'information ; bonnes pratiques essentielles pour faciliter leur exploitation.*
 
-Core message: **la vue n'est pas l'information.** Excel is a trap because it lets you mix both (merged cells, colours, totals, one tab per year).
+**Core message (do not dilute):** a local Excel file can become a valorised tool — a **dashboard** (internal use) or an **annuaire** (external use) — on one condition: **think machine, not human** (« Écrivez pour la Machine, c'est elle qui fabriquera les vues pour les humains »).
 
-Narrative (keep it simple, one storyline):
-1. **J'ai un fichier de suivi** — the GPSO bookshops tracked in a "pretty" Excel (a *view*); the boss's 3 questions; the CSV test.
-2. **Je le structure** — vue ≠ information, why Excel is a trap, the 5 rules, the structured file (= structure of the national dataset).
-3. **Voilà ce que je peux déjà en faire** — in-browser simulator: answers / map / open-data portal / dashboard, VUE file fails vs DONNÉE file works; honest limits.
-4. **Et chez nous ?** — real pages built with the cities (Meudon associations, Sèvres shops, Boulogne sports facilities), each illustrating one rule; live iframes.
-5. Clôture — checklist, call to action, downloads.
+**Format: a comic strip (BD).** Characters (SVG, `src/components/Personnages.jsx`): **Rémi** (DSI GPSO, "Data Hero"; drawn, not his photo — the site is public), **Claire** (cabinet, always in a hurry), **La Machine** (reads cell by cell, literally), **La DIGIT**.
 
-Demo dataset: *Base des librairies en France* (Ministère de la Culture, data.gouv.fr, Licence Ouverte 2.0) — 3 237 rows, 17 in GPSO. Note the national header `code_commune ` has a trailing space (used as a teaching point; trimmed in `src/data.js`).
+Storyline (one slide file per episode in `src/slides/`):
+0. `Ouverture` — cover + casting + promise.
+1. `Ep1Mission` — the annual study request with **5 recurring KPIs**; Rémi builds his base "pensé humain" (title, merged towns, green = labelled, total).
+2. `Ep2Urgence` — Claire needs a number RAPIDEMENT → 25 min; what the Machine sees; humain vs machine; **entité / attribut / valeur**, columns derived from the 5 KPIs.
+3. `Ep3Astuces` — 7 tips, one per slide, ordered **évident → subtil**, each = galère (Claire/Machine bubbles) + avant/après + narrator comment + time saved: 1 ligne = 1 librairie · rien dans la couleur · 1 case = 1 info (atomicité) · valeurs contrôlées · codes officiels · le temps est une colonne + id stable · dictionnaire. Ends with the structured base (= national dataset structure).
+4. `Ep4Interne` — internal use: simulator (5 questions / dashboard / map / search, toggle humain ↔ machine) + the 4 Excel gestures (Ctrl+T, validation, TCD, MFC).
+5. `Ep5Externe` — Rémi calls the DIGIT; live city pages (Meudon associations, Sèvres shops, Boulogne sports facilities, each tied to a tip); chain poste de Rémi → portail local → base nationale → tout le monde.
+6. `Final` — checklist, « Penser machine, pas humain », downloads, call to action.
+
+Demo dataset: *Base des librairies en France* (Ministère de la Culture, data.gouv.fr, Licence Ouverte 2.0) — 3 237 rows, **17 in GPSO** (Chaville included, Saint-Cloud is not GPSO). The national header `code_commune ` has a trailing space (trimmed in `src/data.js`).
 
 ## Stack
 
-Vite + React + Reveal.js 5 (`npm run dev`, `npm run build`), deployed to GitHub Pages by `.github/workflows/deploy.yml` on push to `main` (base path `/formation_bdd/`). Leaflet + CARTO tiles for the map (internet needed during the session).
+Vite + React + Reveal.js 5 (`npm run dev`, `npm run build`), deployed to GitHub Pages by `.github/workflows/deploy.yml` on push to `main` (base path `/formation_bdd/`). Leaflet + CARTO tiles; live iframes → internet needed during the session.
 
 | Path | Role |
 |---|---|
-| `src/App.jsx` | Reveal init; relays `slidechanged` as a `reveal:slidechanged` window event (used by the map) |
-| `src/slides/*.jsx` | One file per part: Accueil, MonFichier, Structurer, Valoriser, ChezNous, Ressources |
-| `src/components/Fichiers.jsx` | Excel-like renderings of the VUE and DONNÉE files |
-| `src/components/Simulateur.jsx` | Interactive simulator (tabs + VUE/DONNÉE toggle + GPSO/France) |
-| `src/data.js` | Loads the CSV + commune centroids |
+| `src/App.jsx` | Reveal init; relays `slidechanged` as a `reveal:slidechanged` window event (map + iframes load only when visible) |
+| `src/components/BD.jsx` | `Bulle`, `Case`, `Narrateur`, `Planche`, `Chapitre`, `Mini` (comic layout bricks) |
+| `src/components/Personnages.jsx` | SVG characters with moods (`neutre`, `content`, `stress`, `surpris`) |
+| `src/components/Fichiers.jsx` | Excel-like renderings of the "pensé humain" (VUE) and "pensé machine" (DONNEE) files |
+| `src/components/Simulateur.jsx`, `Vitrine.jsx` | Interactive simulator; city pages in iframes |
 | `public/data/` | National CSV + `centres_communes.json` (centroids from geo.api.gouv.fr) |
-| `public/ressources/` | Downloadable VUE / DONNÉE xlsx, generated by `scripts/build_ressources.py` (needs openpyxl) |
+| `public/ressources/` | Downloadable xlsx, generated by `scripts/build_ressources.py` (needs openpyxl) |
 
-Design tokens: `--blue #009fe3`, `--green #95c11f`, `--navy #0f4c75`; IBM Plex Serif (titles), Roboto (body).
+Gotchas: JS strings containing French apostrophes must use template literals or double quotes — never mass-replace quotes with sed/regex (it broke template literals once). Design tokens: `--blue #009fe3`, `--green #95c11f`, `--navy #0f4c75`, `--yellow #ffe066`; fonts Bangers (BD titles), Comic Neue (bubbles), IBM Plex Serif, Roboto.

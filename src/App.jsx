@@ -3,12 +3,13 @@ import Reveal from 'reveal.js';
 import 'reveal.js/dist/reset.css';
 import 'reveal.js/dist/reveal.css';
 import './styles.css';
-import { Accueil } from './slides/Accueil';
-import { MonFichier } from './slides/MonFichier';
-import { Structurer } from './slides/Structurer';
-import { Valoriser } from './slides/Valoriser';
-import { ChezNous } from './slides/ChezNous';
-import { Ressources } from './slides/Ressources';
+import { Ouverture } from './slides/Ouverture';
+import { Ep1Mission } from './slides/Ep1Mission';
+import { Ep2Urgence } from './slides/Ep2Urgence';
+import { Ep3Astuces } from './slides/Ep3Astuces';
+import { Ep4Interne } from './slides/Ep4Interne';
+import { Ep5Externe } from './slides/Ep5Externe';
+import { Final } from './slides/Final';
 
 export function App() {
   useEffect(() => {
@@ -19,10 +20,9 @@ export function App() {
       center: true,
       width: 1100,
       height: 700,
-      margin: 0.05,
-      preloadIframes: false,
+      margin: 0.04,
     });
-    // Le simulateur (carte Leaflet) a besoin de savoir quand sa slide devient visible
+    // La carte et les iframes doivent savoir quand leur slide devient visible
     const relay = (e) => window.dispatchEvent(new CustomEvent('reveal:slidechanged', { detail: e }));
     deck.on('slidechanged', relay);
     deck.on('ready', relay);
@@ -33,12 +33,13 @@ export function App() {
   return (
     <div className="reveal">
       <div className="slides">
-        <Accueil />
-        <MonFichier />
-        <Structurer />
-        <Valoriser />
-        <ChezNous />
-        <Ressources />
+        <Ouverture />
+        <Ep1Mission />
+        <Ep2Urgence />
+        <Ep3Astuces />
+        <Ep4Interne />
+        <Ep5Externe />
+        <Final />
       </div>
     </div>
   );
