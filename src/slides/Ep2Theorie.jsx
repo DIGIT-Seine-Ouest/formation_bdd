@@ -1,7 +1,26 @@
 // ─── Épisode 2 : « Delos, c’est quoi une base de données ? » → BIM, 2 slides ──
-// Cheat sheet mobilité : §1 définition + du réel à la table + vocabulaire,
-// la chose à retenir (j’écris ≠ je fais la synthèse).
-import { Bulle, Case, Mini, Planche } from '../components/BD';
+// 1. Du réel à la table : la liste de courses devient la table ARTICLE.
+// 2. Rebond : l’entité LIBRAIRIE, construite élément par élément (entité,
+//    attributs, enregistrement, valeur, identifiant) : la suite directe, c’est le tuto.
+// « J’écris ≠ je fais la synthèse » vient plus tard (Ép. 3, avant l’étape 9),
+// quand Rémi en a besoin ; ici, Delos ne fait que l’annoncer.
+import { Bulle, Case, Mini, Narrateur, Planche } from '../components/BD';
+
+// La table LIBRAIRIE, construite élément par élément (index de fragment = ordre des clics)
+const COLS = ['librairie', 'assortiment', 'label', 'commune'];
+const LIGNES = [
+  ['LIB001', 'LE COMPTOIR DE LA BD', 'BD et Mangas', 'aucun', 'Boulogne-Billancourt'],
+  ['LIB002', 'LES CURIEUX', 'Religion', 'aucun', 'Boulogne-Billancourt'],
+  ['LIB003', 'LES MOTS ET LES CHOSES', 'Généraliste', 'LIR', 'Boulogne-Billancourt'],
+];
+const ELEMENTS = [
+  [1, 'Entité', 'la chose qu’on décrit → une table (un onglet)', 'courses : ARTICLE'],
+  [2, 'Attribut (champ)', 'une caractéristique → une colonne. Ici, tirées des 4 objectifs du mail', 'courses : nom, quantite'],
+  [3, 'Enregistrement', 'une chose → une ligne : une librairie', 'courses : « café, ×3 »'],
+  [4, 'Valeur', 'le contenu d’une case : une seule information', 'courses : 3'],
+  [5, 'Identifiant (clé)', 'la colonne qui distingue chaque ligne : unique, stable', 'courses : id = 3'],
+];
+const F = (i) => ({ className: 'fragment', 'data-fragment-index': i });
 
 export function Ep2Theorie() {
   return (
@@ -19,19 +38,19 @@ export function Ep2Theorie() {
         <Planche ep="Ép. 2" titre="Du réel à la table">
           <div className="row" style={{ marginBottom: 16 }}>
             <Bulle qui="remi" humeur="neutre" size={54} className="col">C’est un très gros Excel, c’est ça ?</Bulle>
-            <Bulle qui="delos" humeur="content" size={54} droite className="col fragment">Ce sont des informations sur une <b>chose</b> (l’entité) et ses <b>caractéristiques</b> (les attributs), rangées pour être retrouvées, comptées, mises à jour. Prenons ta liste de courses.</Bulle>
+            <Bulle qui="delos" humeur="content" size={54} droite className="col fragment">Ce sont des informations sur une <b>chose</b> et ses <b>caractéristiques</b>, rangées pour être retrouvées, comptées, mises à jour. Prenons ta liste de courses.</Bulle>
           </div>
           <div className="row fragment" style={{ alignItems: 'center' }}>
             <Case recit="Voici des données" className="col">
-              <div style={{ fontFamily: '"Comic Neue", cursive', fontSize: 19, lineHeight: 1.6 }}>
+              <div style={{ fontFamily: '"Comic Neue", cursive', fontSize: 21, lineHeight: 1.6 }}>
                 <p>☐ Pain</p><p>☑ <s>Lait</s> ×2</p><p>☐ Café ×3 (URGENT)</p><p>☑ <s>Fromage</s></p>
               </div>
               <p className="tiny muted">la liste de courses de Rémi</p>
             </Case>
             <span style={{ fontSize: 34 }}>➜</span>
-            <Case recit="L’entité : quoi ?" ton="blue" className="col center">
+            <Case recit="La chose : quoi ?" ton="blue" className="col center">
               <p style={{ fontFamily: '"IBM Plex Serif", serif', fontSize: 30, fontWeight: 700, color: 'var(--blue)' }}>ARTICLE</p>
-              <p className="small muted" style={{ margin: '6px 0' }}>ses attributs :</p>
+              <p className="small muted" style={{ margin: '6px 0' }}>ses caractéristiques :</p>
               <p><code>id</code> <code>nom</code> <code>quantite</code> <code>achete</code></p>
             </Case>
             <span style={{ fontSize: 34 }}>➜</span>
@@ -39,38 +58,63 @@ export function Ep2Theorie() {
               <Mini cols={['id', 'nom', 'quantite', 'achete']} rows={[[1, 'pain', 1, 'non'], [2, 'lait', 2, 'oui'], [3, 'café', 3, 'non'], [4, 'fromage', 1, 'oui']]} />
             </Case>
           </div>
-          <div className="row fragment" style={{ marginTop: 18 }}>
-            <Case recit="Le vocabulaire" className="col">
-              <p style={{ fontSize: 17 }}>une ligne = un <b>enregistrement</b> · une colonne = un <b>attribut</b> (ou champ) · une case = une <b>valeur</b> · la colonne qui identifie chaque ligne = l’<b>identifiant</b> (clé)</p>
-            </Case>
-            <Bulle qui="delos" humeur="content" size={50} droite className="col">Pour toi : entité <b>LIBRAIRIE</b>. On la construit ensemble, étape par étape.</Bulle>
-          </div>
+          <Narrateur className="fragment" style={{ marginTop: 18, fontSize: 18 }}>
+            Le « URGENT » a disparu ? Non : il n’avait pas sa colonne. Une table ne garde que ce qu’on a prévu de ranger.
+          </Narrateur>
         </Planche>
       </section>
 
       <section>
-        <Planche ep="Ép. 2" titre="La chose à retenir : j’écris ≠ je fais la synthèse">
-          <div className="row" style={{ marginBottom: 14 }}>
-            <Bulle qui="remi" humeur="neutre" size={50} className="col">Écrire, faire la synthèse… c’est pas la même chose ?</Bulle>
-            <Bulle qui="delos" humeur="content" size={50} droite className="col fragment">Ton relevé de compte, c’est « j’écris ». Ton bilan du mois, c’est « je fais la synthèse ». Personne ne tape son bilan à la main. Enfin… presque personne.</Bulle>
-          </div>
-          <Case className="fragment">
-            <table className="logiques">
-              <thead><tr><th /><th style={{ color: 'var(--blue)' }}>✍️ J’écris</th><th style={{ color: 'var(--green-dark)' }}>📊 Je fais la synthèse</th></tr></thead>
-              <tbody>
-                <tr><td>Principe</td><td>1 fait = 1 ligne, brute</td><td>une vue consolidée, calculée</td></tr>
-                <tr><td>Rythme</td><td>au fil de l’eau</td><td>à la demande</td></tr>
-                <tr><td>Pour qui ?</td><td>la machine : pas de couleur, pas de total</td><td>l’œil : couleurs, totaux, graphiques</td></tr>
-                <tr><td>Chez Rémi</td><td>l’onglet <code>saisie</code></td><td>l’onglet <code>synthese</code></td></tr>
-              </tbody>
-            </table>
-          </Case>
-          <div className="fragment" style={{ marginTop: 18, textAlign: 'center' }}>
-            <div style={{ display: 'inline-block', background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '12px 24px', fontFamily: '"IBM Plex Serif", serif', fontSize: 24, boxShadow: '6px 6px 0 var(--yellow)' }}>
-              Soignez l’écriture, la synthèse suit toute seule.
+        <Planche ep="Ép. 2" titre="Ta base, élément par élément : l’entité LIBRAIRIE">
+          <div className="row" style={{ marginBottom: 12 }}>
+            <Bulle qui="remi" humeur="neutre" size={46} className="col">Et pour mes librairies, ça donne quoi ?</Bulle>
+            <div {...F(0)} style={{ flex: 1 }}>
+              <Bulle qui="delos" humeur="content" size={46} droite>Même chose que tes courses. On part du concept, et on pose chaque élément, un par un. Cinq mots, pas un de plus.</Bulle>
             </div>
           </div>
-          <p className="tiny muted fragment" style={{ marginTop: 10 }}>Pour les curieux, les vrais noms : OLTP (écriture) et OLAP (analyse).</p>
+          <div className="row" style={{ alignItems: 'flex-start' }}>
+            <div style={{ flex: 1.35 }}>
+              <div {...F(1)} className="fragment entite-nom">📚 LIBRAIRIE <span>— l’onglet <code>saisie</code></span></div>
+              <table className="mini construit">
+                <thead>
+                  <tr>
+                    <th {...F(5)} className="fragment cle">id 🔑</th>
+                    {COLS.map((c) => <th key={c} {...F(2)}>{c}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {LIGNES.map((l) => (
+                    <tr key={l[0]} {...F(3)} className={`fragment ${l[0] === 'LIB003' ? 'ligne-on' : ''}`}>
+                      <td {...F(5)} className="fragment cle">{l[0]}</td>
+                      {l.slice(1).map((v, j) => (
+                        <td key={j} className={l[0] === 'LIB003' && v === 'LIR' ? 'val' : ''}>
+                          {v}{l[0] === 'LIB003' && v === 'LIR' && <span {...F(4)} className="fragment pastille">valeur</span>}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p {...F(3)} className="fragment tiny muted" style={{ marginTop: 4 }}>… et 14 autres lignes : une par librairie du territoire.</p>
+            </div>
+            <div className="col stack" style={{ gap: 7 }}>
+              {ELEMENTS.map(([i, mot, def, courses]) => (
+                <div key={mot} {...F(i)} className="fragment element">
+                  <b>{i}. {mot}</b> : {def}<span>{courses}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="row" style={{ marginTop: 12, alignItems: 'center' }}>
+            <div {...F(6)} className="fragment col">
+              <Narrateur style={{ fontSize: 16 }}>
+                <b>Le test de la phrase</b> : « La librairie <b>LIB003</b>, Les Mots et les Choses, généraliste, labellisée LIR, est à Boulogne-Billancourt. » Une ligne = une phrase : la table est bien construite.
+              </Narrateur>
+            </div>
+            <div {...F(7)} className="fragment col">
+              <Bulle qui="delos" humeur="content" size={44} droite>Maintenant, on la construit dans Excel, étape par étape. Et le total ? Pas dans la table : on le <b>calculera à part</b>.</Bulle>
+            </div>
+          </div>
         </Planche>
       </section>
     </>

@@ -3,7 +3,9 @@
 // erreur du « fichier de vendredi ») → 💡 geste Excel, sur la vraie base.
 // Visuel : Excel pour Windows reconstruit en HTML (onglet du ruban, bouton à
 // cliquer entouré, boîtes de dialogue en fragments). Libellés : Excel Windows
-// en français (support.microsoft.com/fr-fr). Puis le TCD, puis Mme Tartempion.
+// en français (support.microsoft.com/fr-fr). Avant l’étape 9 : « j’écris ≠ je fais
+// la synthèse » (annoncé à l’Ép. 2). Puis le TCD, puis Mme Tartempion.
+import { Fragment } from 'react';
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import {
   Dialogue, Excel, PanneauTCD, XBoutons, XCase, XChamp, XLabel, XListe, XOnglets, XRadio,
@@ -217,6 +219,37 @@ function Etape({ e, n }) {
   );
 }
 
+// La chose à retenir, au moment où Rémi en a besoin : avant de faire ses totaux.
+function Retenir() {
+  return (
+    <section>
+      <Planche ep="Ép. 3" titre="La chose à retenir : j’écris ≠ je fais la synthèse">
+        <div className="row" style={{ marginBottom: 14 }}>
+          <Bulle qui="remi" humeur="content" size={50} className="col">Ma table est propre ! Et les totaux pour la Direction de la Culture, je les mets en bas ?</Bulle>
+          <Bulle qui="delos" humeur="surpris" size={50} droite className="col fragment">Surtout pas. Ta liste de courses, c’est « j’écris ». Le total du ticket de caisse, c’est « je fais la synthèse ». Personne ne recopie son ticket au bas de sa liste.</Bulle>
+        </div>
+        <Case className="fragment">
+          <table className="logiques">
+            <thead><tr><th /><th style={{ color: 'var(--blue)' }}>✍️ J’écris</th><th style={{ color: 'var(--green-dark)' }}>📊 Je fais la synthèse</th></tr></thead>
+            <tbody>
+              <tr><td>Principe</td><td>1 fait = 1 ligne, brute</td><td>une vue consolidée, calculée</td></tr>
+              <tr><td>Pour qui ?</td><td>la machine : pas de couleur, pas de total</td><td>l’œil : couleurs, totaux, graphiques</td></tr>
+              <tr><td>Les courses</td><td>la liste</td><td>le ticket de caisse</td></tr>
+              <tr><td>Chez Rémi</td><td>l’onglet <code>saisie</code> (étapes 1 à 8)</td><td>l’onglet <code>synthese</code> (étape 9)</td></tr>
+            </tbody>
+          </table>
+        </Case>
+        <div className="fragment" style={{ marginTop: 18, textAlign: 'center' }}>
+          <div style={{ display: 'inline-block', background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '12px 24px', fontFamily: '"IBM Plex Serif", serif', fontSize: 24, boxShadow: '6px 6px 0 var(--yellow)' }}>
+            Soignez l’écriture, la synthèse suit toute seule.
+          </div>
+        </div>
+        <p className="tiny muted fragment" style={{ marginTop: 10 }}>Pour les curieux, les vrais noms : OLTP (écriture) et OLAP (analyse).</p>
+      </Planche>
+    </section>
+  );
+}
+
 const PIVOT = [
   ['', ''],
   ['', ''],
@@ -230,7 +263,12 @@ export function Ep3Tuto() {
     <>
       <Chapitre fond="#0f4c75" ep="Épisode 3" titre="Le tuto de Delos" sous="Neuf étapes. Rémi pose la question, Delos explique, le fichier de vendredi montre le piège." promesse="⏱ Gagner du temps" />
 
-      {ETAPES.map((e, i) => <Etape key={e.titre} e={e} n={i + 1} />)}
+      {ETAPES.map((e, i) => (
+        <Fragment key={e.titre}>
+          {i === 8 && <Retenir />}
+          <Etape e={e} n={i + 1} />
+        </Fragment>
+      ))}
 
       <section>
         <div className="planche-head">
