@@ -46,7 +46,7 @@ export const SYNTHESE = COMMUNES.map(([code, nom, pop]) => {
 export const NB_LAB = LIBRAIRIES.filter((l) => l[3] !== 'aucun').length;
 export const fr = (x) => x.toLocaleString('fr-FR');
 
-// Les questions qui arriveront plus tard (Claire) : la mission, elle, n’en pose aucune.
+// Les questions qui arriveront plus tard (Mme Tartempion) : la mission, elle, n’en pose aucune.
 export const QUESTIONS = [
   ['Q1', 'Quelle commune compte le plus de librairies ?'],
   ['Q2', 'Combien sont labellisées par le ministère ?'],

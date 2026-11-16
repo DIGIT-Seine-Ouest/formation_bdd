@@ -3,7 +3,7 @@
 // erreur du « fichier de vendredi ») → 💡 geste Excel, sur la vraie base.
 // Visuel : Excel pour Windows reconstruit en HTML (onglet du ruban, bouton à
 // cliquer entouré, boîtes de dialogue en fragments). Libellés : Excel Windows
-// en français (support.microsoft.com/fr-fr). Puis le TCD, puis Claire.
+// en français (support.microsoft.com/fr-fr). Puis le TCD, puis Mme Tartempion.
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import {
   Dialogue, Excel, PanneauTCD, XBoutons, XCase, XChamp, XLabel, XListe, XOnglets, XRadio,
@@ -269,14 +269,14 @@ export function Ep3Tuto() {
         <Planche ep="Ép. 3" titre="Mardi, 14 h 02 : les questions arrivent">
           <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr 1.1fr', gap: 18 }}>
             <Case>
-              <Bulle qui="claire" humeur="stress" size={60}>Rémi ! Pour le maire, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
+              <Bulle qui="tartempion" humeur="stress" size={60}>Rémi ! Pour la réunion de 15 h, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
             </Case>
             <Case className="fragment center">
               <Bulle qui="remi" humeur="content" size={60}>Q1 : {Q1.nom.split('-')[0]}, {Q1.n}. Q2 : {NB_LAB}. Q3 : {Q3.nom}.</Bulle>
               <p className="sfx" style={{ fontSize: 46, marginTop: 14 }}>10 secondes !</p>
             </Case>
             <Case className="fragment">
-              <Bulle qui="claire" humeur="surpris" size={60}>{Q3.nom} ?!</Bulle>
+              <Bulle qui="tartempion" humeur="surpris" size={60}>{Q3.nom} ?!</Bulle>
               <div style={{ height: 12 }} />
               <Bulle qui="delos" humeur="content" size={60} droite>Une librairie pour {COMMUNES.find((c) => c[0] === Q3.code)[2].toLocaleString('fr-FR')} habitants. Les chiffres ne mentent pas. Les cellules fusionnées, si.</Bulle>
             </Case>

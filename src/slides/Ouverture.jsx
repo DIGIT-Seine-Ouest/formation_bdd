@@ -4,7 +4,7 @@ import { Case, Narrateur } from '../components/BD';
 
 const CASTING = [
   ['remi', 'content', 'Rémi', 'DSI de GPSO, badge « Data Hero ». Vient d’être missionné. Ne le sait pas encore.'],
-  ['claire', 'stress', 'Claire', 'Au cabinet. Ses notes sont toujours « pour hier ».'],
+  ['tartempion', 'stress', 'Mme Tartempion', 'Personnage inventé. Arrive avec trois questions… et une réunion à 15 h.'],
   ['delos', 'content', 'Delos', 'L’assistant IA de Rémi. Patient. Lit tout comme une machine : case par case.'],
   ['digit', 'content', 'La DIGIT', 'Transforme les fichiers bien construits en services.'],
 ];
