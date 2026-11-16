@@ -15,9 +15,9 @@ export const VUE = [
   [null, "L'Echappee Bulle", 'BD-Manga', false, ''],
   [null, 'Le Livre Et La Tortue', 'Généraliste', true, ''],
   [null, 'Nati', 'généraliste', false, ''],
-  ['Meudon (2)', 'Anagramme', 'Généraliste', false, 'même enseigne qu’à Sèvres ?'],
+  ['Meudon (2)', 'Anagramme', 'Généraliste', false, `même enseigne qu'à Sèvres ?`],
   [null, 'Le Meandre', 'généraliste', false, ''],
-  ['Sèvres (1)', 'Anagramme', 'Généraliste', false, 'même enseigne qu’à Meudon ?'],
+  ['Sèvres (1)', 'Anagramme', 'Généraliste', false, `même enseigne qu'à Meudon ?`],
   ['Vanves (1)', 'Le Cheval-Vapeur', 'Généraliste', false, ''],
   ["Ville-d'Avray (1)", 'Vert Paradis', 'Généraliste', false, ''],
 ];

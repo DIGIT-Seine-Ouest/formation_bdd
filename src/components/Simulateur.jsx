@@ -15,24 +15,24 @@ const TABS = [
 
 const ECHECS = {
   reponses: [
-    'Combien de labellisées ? → il faut compter les cases vertes à la main.',
-    'Combien de librairies BD ? → « BD / Mangas », « bd », « BD-Manga » : trois façons d’écrire la même chose.',
-    'Le total « 17 » est tapé à la main : il sera faux dès la prochaine ouverture.',
+    `Combien de labellisées ? → il faut compter les cases vertes à la main.`,
+    `Combien de librairies BD ? → « BD / Mangas », « bd », « BD-Manga » : trois façons d'écrire la même chose.`,
+    `Le total « 17 » est tapé à la main : il sera faux dès la prochaine ouverture.`,
   ],
   carte: [
-    'Aucune colonne ne contient un code commune.',
-    '« Boulogne-Billancourt (6) » n’est pas un nom de commune : c’est un nom + un comptage.',
-    'Les cellules fusionnées laissent 10 lignes sans ville.',
+    `Aucune colonne ne contient un code commune.`,
+    `« Boulogne-Billancourt (6) » n'est pas un nom de commune : c'est un nom + un comptage.`,
+    `Les cellules fusionnées laissent 10 lignes sans ville.`,
   ],
   portail: [
-    'Le label était une couleur verte : il disparaît à l’export.',
-    'Impossible de filtrer par spécialité : 7 libellés différents pour 3 spécialités.',
-    'La ligne « TOTAL » serait publiée comme une librairie.',
+    `Le label était une couleur verte : il disparaît à l'export.`,
+    `Impossible de filtrer par spécialité : 7 libellés différents pour 3 spécialités.`,
+    `La ligne « TOTAL » serait publiée comme une librairie.`,
   ],
   tdb: [
-    'Un onglet par année : impossible de comparer 2026 et 2027.',
-    'Pas d’identifiant : « Anagramme » à Meudon et à Sèvres, une ou deux librairies ?',
-    'Aucune valeur n’est calculable sans tout ressaisir.',
+    `Un onglet par année : impossible de comparer 2026 et 2027.`,
+    `Pas d'identifiant : « Anagramme » à Meudon et à Sèvres, une ou deux librairies ?`,
+    `Aucune valeur n'est calculable sans tout ressaisir.`,
   ],
 };
 
@@ -102,7 +102,7 @@ function Portail({ rows }) {
   const [q, setQ] = useState('');
   const [assort, setAssort] = useState(null);
   const [label, setLabel] = useState(null);
-  const base = rows.filter((r) => !q || `${r.nom} ${r.commune}`.toLowerCase().includes(q.toLowerCase()));
+  const base = rows.filter((r) => !q || '${r.nom} ${r.commune}'.toLowerCase().includes(q.toLowerCase()));
   const res = base.filter((r) => (!assort || r.assortiment === assort) && (!label || r.label === label));
   const facet = (key, cur, set) =>
     countBy(base.filter((r) => key === 'assortiment' ? (!label || r.label === label) : (!assort || r.assortiment === assort)), key)
@@ -112,7 +112,7 @@ function Portail({ rows }) {
           <span>{v}</span><span className="muted">{n}</span>
         </label>
       ));
-  const params = [q && `q=${q}`, assort && `refine=assortiment:${assort}`, label && `refine=label:${label}`].filter(Boolean).join('&');
+  const params = [q && 'q=${q}', assort && 'refine=assortiment:${assort}', label && 'refine=label:${label}'].filter(Boolean).join('&');
   return (
     <div className="portal">
       <div className="facets">
@@ -126,7 +126,7 @@ function Portail({ rows }) {
           <thead><tr><th>Librairie</th><th>Assortiment</th><th>Label</th><th>Commune</th></tr></thead>
           <tbody>
             {res.slice(0, 40).map((r) => (
-              <tr key={r.id}><td>{r.nom}</td><td>{r.assortiment}</td><td>{r.label === 'aucun' ? '' : `🏅 ${r.label}`}</td><td>{r.commune}</td></tr>
+              <tr key={r.id}><td>{r.nom}</td><td>{r.assortiment}</td><td>{r.label === 'aucun' ? '' : '🏅 ${r.label}'}</td><td>{r.commune}</td></tr>
             ))}
           </tbody>
         </table>
@@ -160,8 +160,8 @@ function TableauDeBord({ rows, all, zone }) {
             <div className="b" key={k}>
               <span>{k}</span>
               <div className="track" style={{ display: 'flex' }}>
-                <div className="fill lab" style={{ width: `${(100 * l) / max}%`, borderRadius: 0 }} />
-                <div className="fill" style={{ width: `${(100 * (n - l)) / max}%`, borderRadius: 0 }} />
+                <div className="fill lab" style={{ width: '${(100 * l) / max}%', borderRadius: 0 }} />
+                <div className="fill" style={{ width: '${(100 * (n - l)) / max}%', borderRadius: 0 }} />
               </div>
               <b>{n}</b>
             </div>
@@ -178,8 +178,8 @@ function Reponses({ rows }) {
   const bd = rows.filter((r) => r.assortiment === 'BD et Mangas');
   const QA = [
     ['Combien de librairies labellisées sur le territoire ?', lab.length, lab.map((r) => r.nom).join(', ')],
-    ['Combien de librairies spécialisées BD ?', bd.length, bd.map((r) => `${r.nom} (${r.commune})`).join(', ')],
-    ['Combien de communes ont au moins une librairie ?', new Set(rows.map((r) => r.code)).size, `sur ${Object.keys(GPSO).length} communes de GPSO`],
+    ['Combien de librairies spécialisées BD ?', bd.length, bd.map((r) => '${r.nom} (${r.commune})').join(', ')],
+    ['Combien de communes ont au moins une librairie ?', new Set(rows.map((r) => r.code)).size, 'sur ${Object.keys(GPSO).length} communes de GPSO'],
   ];
   return (
     <div className="answers">
@@ -189,7 +189,7 @@ function Reponses({ rows }) {
           <div className="res"><b>{n}</b> <span className="small">— 1 filtre, 2 secondes</span><br /><span className="tiny muted">{d}</span></div>
         </div>
       ))}
-      <p className="small muted">Et quand l’an prochain on ajoute les lignes 2027, ces réponses se mettent à jour toutes seules.</p>
+      <p className="small muted">Et quand l'an prochain on ajoute les lignes 2027, ces réponses se mettent à jour toutes seules.</p>
     </div>
   );
 }

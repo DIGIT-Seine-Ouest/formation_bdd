@@ -1,83 +1,114 @@
-// ─── Temps 1 : « J'ai un fichier de suivi » ─────────────────────────────────
-// Le fichier Excel que tout le monde a : lisible… mais c'est une VUE.
+// ─── Épisode 1 : Rémi constitue sa base ─────────────────────────────────────
+// Il fait ce que tout le monde fait : il ouvre Excel, il tape, il met en forme.
+// Puis un collègue lui demande un chiffre et ça coince.
 import { ExcelVue } from '../components/Fichiers';
-
-const BG = '#009fe3';
 
 export function MonFichier() {
   return (
     <>
-      <section data-background-color={BG}>
-        <div className="section-intro">
-          <div className="num">1</div>
-          <div className="title">J'ai un fichier de suivi</div>
-          <div className="sub">Je suis les librairies indépendantes de mon territoire. Comme tout le monde : dans Excel.</div>
+      {/* ── Transition épisode ── */}
+      <section data-background-color="#009fe3">
+        <div className="bd-transition" style={{ color: '#fff' }}>
+          <div className="ep">Épisode 1</div>
+          <div className="title">Rémi constitue sa base</div>
+          <div className="sub">« Ma direction me demande un suivi des librairies du territoire. »</div>
         </div>
       </section>
 
+      {/* ── Case 1 : la mission ── */}
       <section>
-        <p className="kicker">Mon fichier</p>
-        <h2>Le suivi des librairies de GPSO</h2>
-        <div className="row">
-          <div style={{ flex: 1.7 }}><ExcelVue /></div>
-          <div className="col stack" style={{ paddingTop: 10 }}>
-            <p>Un titre, des couleurs, des villes regroupées, un total.</p>
-            <p className="fragment" style={{ fontFamily: '"IBM Plex Serif", serif', fontSize: 26, color: 'var(--navy)' }}>Il est bien, ce fichier ?</p>
-            <p className="fragment small muted">Oui : il est <b>lisible</b>. Pour un humain, aujourd'hui.</p>
-            <p className="fragment tiny muted" style={{ marginTop: 26 }}>Les 17 librairies sont réelles : elles viennent de la Base nationale des librairies (on y reviendra).</p>
+        <div className="bd bd-2" style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <div className="panel">
+            <div className="caption">📧 Lundi matin, boîte mail.</div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 14, border: '1px solid var(--line)', fontSize: 16, lineHeight: 1.6 }}>
+              <p><b>De :</b> Direction Générale</p>
+              <p><b>Objet :</b> Suivi des librairies indépendantes</p>
+              <div style={{ borderTop: '1px solid var(--line)', margin: '8px 0', paddingTop: 8 }}>
+                <p>Rémi,</p>
+                <p style={{ marginTop: 6 }}>Le ministère de la Culture publie une base nationale des librairies.
+                  On a besoin d'un <b>suivi local</b> : combien on en a sur le territoire, lesquelles sont labellisées, quelle spécialité.</p>
+                <p style={{ marginTop: 6 }}><b>L'étude est annuelle</b> — les élus la veulent chaque année au budget.</p>
+              </div>
+            </div>
+          </div>
+          <div className="panel">
+            <div className="caption">💬 Narrateur</div>
+            <p style={{ fontSize: 17 }}>Ce scénario, vous le vivez chaque semaine. Pas forcément les librairies :</p>
+            <div className="stack" style={{ marginTop: 10 }}>
+              {[
+                ['🌳', 'Les arbres', '32 684 sur data.seineouest.fr'],
+                ['🏪', 'Les commerces', '209 sur data.sevres.fr'],
+                ['🤝', 'Les associations', '112 sur data.meudon.fr'],
+                ['⚽', 'Les équipements sportifs', '178 sur Boulogne'],
+                ['🩺', 'Les pros de santé', '2 604 sur le territoire'],
+              ].map(([e, t, d]) => (
+                <div key={t} className="fragment" style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 15 }}>
+                  <span style={{ fontSize: 22 }}>{e}</span> <b>{t}</b> <span className="muted">— {d}</span>
+                </div>
+              ))}
+            </div>
+            <p className="fragment small" style={{ marginTop: 14, fontWeight: 700, color: 'var(--navy)' }}>Le mécanisme est toujours le même.</p>
           </div>
         </div>
       </section>
 
+      {/* ── Case 2 : Rémi ouvre Excel ── */}
       <section>
-        <p className="kicker">⏱ Gagner du temps ?</p>
-        <h2>La cheffe pose trois questions</h2>
-        <div className="row">
-          <div style={{ flex: 1.2 }}><ExcelVue rows={13} /></div>
-          <div className="col stack">
-            <div className="card card--red fragment">
-              <p><b>« Combien de librairies labellisées ? »</b></p>
-              <p className="small muted">Je compte les cases vertes… et si quelqu'un imprime en noir et blanc ?</p>
+        <div className="bd bd-21" style={{ maxWidth: 1050, margin: '0 auto' }}>
+          <div className="panel">
+            <div className="caption">Rémi fait ce que tout le monde fait.</div>
+            <ExcelVue />
+          </div>
+          <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+              <span className="avatar avatar-sm">🧑‍💻</span>
+              <div className="bubble" style={{ fontSize: 16 }}>
+                J'ouvre Excel. Je tape le nom des librairies. Je mets un titre, des couleurs, je fusionne les villes, j'ajoute un total. <b>Voilà.</b>
+              </div>
             </div>
-            <div className="card card--red fragment">
-              <p><b>« Combien de librairies BD ? »</b></p>
-              <p className="small muted">« BD / Mangas », « bd », « BD-Manga »… je relis tout.</p>
-            </div>
-            <div className="card card--red fragment">
-              <p><b>« Tu peux me faire une carte ? »</b></p>
-              <p className="small muted">Ni adresse, ni code commune. « Boulogne-Billancourt (6) » n'est pas un lieu.</p>
-            </div>
+            <div className="caption">💬 Narrateur</div>
+            <p style={{ fontSize: 16 }}>Ce fichier est <b>lisible</b>. Il est même joli.</p>
+            <p style={{ fontSize: 16 }}>Mais c'est un <b>produit fini</b> : une note, un rapport. Ce n'est pas une <b>base de travail</b> qu'on alimente chaque année.</p>
+            <p className="fragment muted small" style={{ marginTop: 6 }}>Les 17 librairies sont réelles — elles viennent de la Base nationale des librairies (on y reviendra).</p>
           </div>
         </div>
-        <div className="callout fragment" style={{ marginTop: 16 }}>Mon fichier est <b>lisible</b>… mais il n'est pas <b>exploitable</b>.</div>
       </section>
 
+      {/* ── Case 3 : Le collègue demande un chiffre ── */}
       <section>
-        <p className="kicker">🖐 Le geste à faire chez soi</p>
-        <h2>Le test du CSV : « Enregistrer sous… → CSV »</h2>
-        <div className="row" style={{ alignItems: 'flex-start' }}>
-          <div className="col">
-            <p className="small muted" style={{ marginBottom: 8 }}>Ce qu'Excel garde quand on enlève la mise en forme :</p>
-            <div className="csv">
-{`;📚 SUIVI DES LIBRAIRIES DU TERRITOIRE — 2026;;
-;en vert = librairie labellisée · données…;;
-Ville;Librairie;Spécialité;Remarques
-Boulogne-Billancourt (6);Le Comptoir De La Bd;BD / Mangas;
-`}<span className="lost">{`;Les Curieux;Religieux;                  ← ville ?
-;Les Mots Et Les Choses;Géné.;           ← label ?
-`}</span>{`;Les Mots Et Les Choses Nord;Généraliste;2e boutique
-`}<span className="lost">{`;Les Mots Et Les Images;bd;              ← label ?
-`}</span>{`…
-`}<span className="lost">{`TOTAL;17 librairies;;                   ← une librairie ?`}</span>
+        <div className="bd bd-2" style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <div className="panel">
+            <div className="caption">⏱ Mardi 14h — un collègue débarque.</div>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 14 }}>
+              <span className="avatar avatar-sm">👩‍💼</span>
+              <div className="bubble" style={{ fontSize: 18 }}>
+                Rémi, j'ai besoin <b>rapidement</b> de 3 chiffres pour ma note au DG :<br />
+                <span className="fragment">① Combien de librairies <b>labellisées</b> ?</span><br />
+                <span className="fragment">② Combien de librairies <b>BD</b> ?</span><br />
+                <span className="fragment">③ Tu peux me faire <b>une carte</b> ?</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <span className="avatar avatar-sm">🧑‍💻</span>
+              <div className="bubble bubble--thought" style={{ fontSize: 16 }}>
+                <span className="fragment">① Labellisées ? Je compte les cases vertes… 🟩🟩🟩… et si elle imprime en N&B ?</span><br />
+                <span className="fragment">② BD ? Je lis « BD / Mangas », « bd », « BD-Manga »… ça fait combien ?</span><br />
+                <span className="fragment">③ Carte ? J'ai pas de code commune. « Boulogne-Billancourt (6) » c'est pas un lieu…</span>
+              </div>
             </div>
           </div>
-          <div className="col stack">
-            <div className="card card--red fragment"><span className="pill pill--bad">perdu</span><p className="small" style={{ marginTop: 6 }}>Le vert (le label), les fusions (la ville), la mise en page.</p></div>
-            <div className="card card--amber fragment"><span className="pill pill--bad">piège</span><p className="small" style={{ marginTop: 6 }}>Le titre, la note et le TOTAL deviennent… des lignes de données.</p></div>
-            <div className="card card--green fragment"><span className="pill pill--good">survit</span><p className="small" style={{ marginTop: 6 }}>Ce qui est écrit, une valeur par case. <b>Ça, c'est l'information.</b></p></div>
+          <div className="panel fragment" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="timer">⏱ 25 min</div>
+            <p className="center muted" style={{ marginTop: 6, fontSize: 15 }}>pour répondre à 3 questions simples</p>
+            <div className="callout fragment" style={{ marginTop: 20, fontSize: 20 }}>
+              Le fichier répond à <b>une seule question</b> :<br />
+              « à quoi ça ressemble ». Pas « combien », « lesquelles », « où ».
+            </div>
+            <div className="tip fragment" style={{ marginTop: 14, fontSize: 15 }}>
+              <div>Et si Rémi avait structuré autrement… il aurait répondu en <b>10 secondes</b>. On va voir comment.</div>
+            </div>
           </div>
         </div>
-        <div className="callout fragment" style={{ marginTop: 14 }}>Ce qui survit au CSV, c'est <b>l'information</b>. Le reste, c'était <b>la vue</b>.</div>
       </section>
     </>
   );

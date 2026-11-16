@@ -251,3 +251,154 @@ html, body, #root {
 .dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .dl a { text-decoration: none; color: inherit; display: block; }
 .dl .card { height: 100%; box-sizing: border-box; }
+
+/* ── Bande dessinée ───────────────────────── */
+.bd { display: grid; gap: 14px; }
+.bd-2 { grid-template-columns: 1fr 1fr; }
+.bd-3 { grid-template-columns: 1fr 1fr 1fr; }
+.bd-12 { grid-template-columns: 1fr 2fr; }
+.bd-21 { grid-template-columns: 2fr 1fr; }
+
+.panel {
+    border: 3px solid var(--ink);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #fff;
+    position: relative;
+    overflow: visible;
+}
+.panel--wide { grid-column: 1 / -1; }
+.panel--thought {
+    border: 3px dashed var(--muted);
+    background: #fefefe;
+}
+.panel--action {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+}
+.panel--fail {
+    border-color: var(--red);
+    background: var(--red-soft);
+}
+.panel--win {
+    border-color: #16a34a;
+    background: #dcfce7;
+}
+.panel--dark {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: #fff;
+}
+
+/* Personnage (emoji géant) */
+.avatar {
+    font-size: 52px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.avatar-sm { font-size: 36px; }
+
+/* Bulle de dialogue */
+.bubble {
+    position: relative;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 16px;
+    padding: 10px 14px;
+    font-size: 17px;
+    line-height: 1.45;
+}
+.bubble::after {
+    content: '';
+    position: absolute; left: 18px; bottom: -12px;
+    border-width: 12px 10px 0 10px;
+    border-style: solid;
+    border-color: var(--ink) transparent transparent transparent;
+}
+.bubble--right::after { left: auto; right: 18px; }
+.bubble--thought {
+    border-style: dashed;
+    border-color: var(--muted);
+}
+.bubble--thought::after { border-color: var(--muted) transparent transparent transparent; }
+
+/* Narration (encadré jaune en haut de case) */
+.caption {
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #92400e;
+    margin-bottom: 8px;
+}
+.caption b { color: #b45309; }
+
+/* Effet "POW / BOOM" */
+.sfx {
+    font-family: "IBM Plex Serif", serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--red);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transform: rotate(-3deg);
+}
+
+/* Timer */
+.timer {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 48px; font-weight: 700;
+    color: var(--red);
+    text-align: center;
+}
+.timer .label { font-size: 14px; color: var(--muted); font-weight: 400; }
+
+/* Astuce */
+.tip {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: #ecfdf5; border: 2px solid #16a34a; border-radius: 8px;
+    padding: 10px 14px;
+}
+.tip::before {
+    content: '💡';
+    font-size: 22px; flex-shrink: 0;
+}
+
+/* Niveau de difficulté (évident → subtil) */
+.level {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 3px 10px; border-radius: 999px;
+}
+.level--easy   { background: #dcfce7; color: #16a34a; }
+.level--medium { background: #fef3c7; color: #d97706; }
+.level--hard   { background: #fce7f3; color: #be185d; }
+
+/* Chaîne nationale */
+.chain { display: flex; align-items: center; gap: 0; justify-content: center; flex-wrap: wrap; }
+.chain-step {
+    padding: 10px 18px; border-radius: 10px;
+    font-size: 15px; font-weight: 700; text-align: center;
+    min-width: 150px;
+}
+.chain-arrow { font-size: 28px; color: var(--green); padding: 0 4px; }
+
+/* Transition page (style BD) */
+.bd-transition {
+    text-align: center;
+    font-family: "IBM Plex Serif", serif;
+}
+.bd-transition .ep {
+    font-size: 18px; text-transform: uppercase;
+    letter-spacing: 5px; opacity: .6; margin-bottom: 8px;
+}
+.bd-transition .title {
+    font-size: 48px; font-weight: 700; line-height: 1.1; margin-bottom: 16px;
+}
+.bd-transition .sub {
+    font-size: 22px; opacity: .85;
+}
