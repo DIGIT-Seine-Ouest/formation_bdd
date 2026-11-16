@@ -3,7 +3,7 @@ import { NOMS, Perso } from './Personnages';
 
 // Une bulle de dialogue avec le personnage qui parle
 export function Bulle({ qui, humeur, droite = false, pense = false, size = 64, className = '', children }) {
-  const style = qui === 'machine' ? 'machine' : pense ? 'pense' : '';
+  const style = qui === 'delos' ? 'machine' : pense ? 'pense' : '';
   return (
     <div className={`bulle-row ${droite ? 'right' : ''} ${className}`}>
       <div className="who"><Perso qui={qui} humeur={humeur} size={size} /><span>{NOMS[qui]}</span></div>

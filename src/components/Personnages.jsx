@@ -1,9 +1,9 @@
 // Les personnages de la BD, dessinés en SVG (pas de photo : le site est public).
-// <Perso qui="remi|claire|machine|digit" humeur="neutre|content|stress|surpris" size={72} />
+// <Perso qui="remi|claire|delos|digit" humeur="neutre|content|stress|surpris" size={72} />
 import { useId } from 'react';
 
-export const NOMS = { remi: 'Rémi', claire: 'Claire', machine: 'La Machine', digit: 'La DIGIT' };
-const FOND = { remi: '#cfeefe', claire: '#fde2e4', machine: '#e0e7ff', digit: '#e3f5c8' };
+export const NOMS = { remi: 'Rémi', claire: 'Claire', delos: 'Delos', digit: 'La DIGIT' };
+const FOND = { remi: '#cfeefe', claire: '#fde2e4', delos: '#d7f3f1', digit: '#e3f5c8' };
 
 function Bouche({ h, x = 60, y = 68, couleur = '#7a3b2e' }) {
   if (h === 'content') return <path d={`M${x - 8} ${y - 2} Q${x} ${y + 7} ${x + 8} ${y - 2}`} stroke={couleur} strokeWidth="2.4" fill="none" strokeLinecap="round" />;
@@ -82,22 +82,23 @@ function Claire({ h }) {
   );
 }
 
-function Machine({ h }) {
-  const perdu = h === 'surpris' || h === 'stress';
+function Delos({ h }) {
+  // Assistant IA : un soleil noir à rayons, un œil turquoise (clin d'œil au logo)
+  const rayons = Array.from({ length: 11 }, (_, i) => -100 + i * 20);
   return (
     <>
-      <rect x="30" y="86" width="60" height="40" rx="8" fill="#94a3b8" stroke="#1f1f1f" strokeWidth="2" />
-      <rect x="46" y="96" width="28" height="14" rx="3" fill="#1e293b" />
-      <text x="60" y="106" fontSize="8" fill="#22d3ee" textAnchor="middle" fontFamily="monospace">0101</text>
-      <line x1="60" y1="20" x2="60" y2="30" stroke="#1f1f1f" strokeWidth="2.5" />
-      <circle cx="60" cy="18" r="5" fill={perdu ? '#f87171' : '#22d3ee'} stroke="#1f1f1f" strokeWidth="2" />
-      <rect x="28" y="30" width="64" height="52" rx="12" fill="#cbd5e1" stroke="#1f1f1f" strokeWidth="2.5" />
-      <rect x="35" y="38" width="50" height="28" rx="6" fill="#0f172a" />
-      {h === 'content'
-        ? <g stroke="#22d3ee" strokeWidth="3" fill="none" strokeLinecap="round"><path d="M42 54 Q48 46 54 54" /><path d="M66 54 Q72 46 78 54" /></g>
-        : <g fill="#22d3ee"><rect x="43" y="46" width="10" height={perdu ? 12 : 8} rx="2" /><rect x="67" y="48" width="10" height={perdu ? 5 : 8} rx="2" /></g>}
-      <g fill="#475569">{[42, 50, 58, 66, 74].map((x) => <rect key={x} x={x} y="71" width="5" height="5" rx="1" />)}</g>
-      {perdu && <text x="96" y="34" fontSize="22" fontWeight="900" fill="#dc2626" fontFamily="Arial">?</text>}
+      <g transform="translate(60 62)">
+        {rayons.map((a) => (
+          <rect key={a} x="-4.5" y="-50" width="9" height="20" rx="1.5" fill="#111" transform={`rotate(${a})`} />
+        ))}
+        <circle r="30" fill="#111" />
+        <circle r="23" fill="#fff" />
+        {h === 'content'
+          ? <path d="M-13 2 Q0 -12 13 2" stroke="#009a93" strokeWidth="6" fill="none" strokeLinecap="round" />
+          : <path d="M-14 -4 A14 14 0 0 0 14 -4 Z" fill="#009a93" transform={h === 'surpris' ? 'scale(1.15)' : ''} />}
+        <path d="M-28 -16 L26 18" stroke="#111" strokeWidth="7" strokeLinecap="round" />
+      </g>
+      {h === 'surpris' && <text x="98" y="30" fontSize="22" fontWeight="900" fill="#009a93" fontFamily="Arial">!</text>}
     </>
   );
 }
@@ -122,11 +123,18 @@ function Digit({ h }) {
   );
 }
 
-const DESSIN = { remi: Remi, claire: Claire, machine: Machine, digit: Digit };
+const DESSIN = { remi: Remi, claire: Claire, delos: Delos, digit: Digit };
 
-export function Perso({ qui, humeur = 'neutre', size = 72 }) {
+export function Perso({ qui, humeur = 'neutre', size = 72, nu = false }) {
   const id = useId().replace(/:/g, '');
   const D = DESSIN[qui];
+  if (nu) {
+    return (
+      <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={NOMS[qui]} style={{ overflow: 'visible' }}>
+        <D h={humeur} />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={NOMS[qui]}>
       <defs><clipPath id={`c${id}`}><circle cx="60" cy="60" r="57" /></clipPath></defs>

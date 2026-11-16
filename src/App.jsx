@@ -5,10 +5,11 @@ import 'reveal.js/dist/reveal.css';
 import './styles.css';
 import { Ouverture } from './slides/Ouverture';
 import { Ep1Mission } from './slides/Ep1Mission';
-import { Ep2Urgence } from './slides/Ep2Urgence';
-import { Ep3Astuces } from './slides/Ep3Astuces';
-import { Ep4Interne } from './slides/Ep4Interne';
-import { Ep5Externe } from './slides/Ep5Externe';
+import { Ep2Theorie } from './slides/Ep2Theorie';
+import { Ep3Explique } from './slides/Ep3Explique';
+import { Ep4CestBon } from './slides/Ep4CestBon';
+import { Ep5Construire } from './slides/Ep5Construire';
+import { Ep6Valoriser } from './slides/Ep6Valoriser';
 import { Final } from './slides/Final';
 
 export function App() {
@@ -22,7 +23,7 @@ export function App() {
       height: 700,
       margin: 0.04,
     });
-    // La carte et les iframes doivent savoir quand leur slide devient visible
+    // Les iframes de la vitrine ne se chargent que quand leur slide est affichée
     const relay = (e) => window.dispatchEvent(new CustomEvent('reveal:slidechanged', { detail: e }));
     deck.on('slidechanged', relay);
     deck.on('ready', relay);
@@ -35,10 +36,11 @@ export function App() {
       <div className="slides">
         <Ouverture />
         <Ep1Mission />
-        <Ep2Urgence />
-        <Ep3Astuces />
-        <Ep4Interne />
-        <Ep5Externe />
+        <Ep2Theorie />
+        <Ep3Explique />
+        <Ep4CestBon />
+        <Ep5Construire />
+        <Ep6Valoriser />
         <Final />
       </div>
     </div>

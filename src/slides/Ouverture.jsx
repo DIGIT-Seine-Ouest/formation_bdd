@@ -1,11 +1,11 @@
-// ─── Ouverture : couverture + casting + la promesse ─────────────────────────
+// ─── Ouverture : couverture + casting ───────────────────────────────────────
 import { Perso } from '../components/Personnages';
 import { Case, Narrateur } from '../components/BD';
 
 const CASTING = [
-  ['remi', 'content', 'Rémi', 'DSI de GPSO. On vient de lui confier le suivi des librairies du territoire.'],
-  ['claire', 'neutre', 'Claire', 'Au cabinet. Toujours une note à rendre. Toujours pour hier.'],
-  ['machine', 'neutre', 'La Machine', 'Excel, un portail, une carte… Elle lit tout, case par case, au pied de la lettre.'],
+  ['remi', 'content', 'Rémi', 'DSI de GPSO, badge « Data Hero ». Vient d’être missionné. Ne le sait pas encore.'],
+  ['claire', 'stress', 'Claire', 'Au cabinet. Ses notes sont toujours « pour hier ».'],
+  ['delos', 'content', 'Delos', 'L’assistant IA de Rémi. Patient. Lit tout comme une machine : case par case.'],
   ['digit', 'content', 'La DIGIT', 'Transforme les fichiers bien construits en services.'],
 ];
 
@@ -21,8 +21,8 @@ export function Ouverture() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 18, background: '#fff', color: 'var(--ink)', border: '4px solid var(--ink)', borderRadius: 8, boxShadow: '7px 7px 0 var(--ink)', padding: '14px 26px 14px 16px' }}>
             <Perso qui="remi" humeur="content" size={96} />
             <div style={{ textAlign: 'left' }}>
-              <p style={{ fontFamily: 'Bangers, cursive', fontSize: 40, letterSpacing: 2, lineHeight: 1 }}>Les aventures de Rémi</p>
-              <p style={{ fontFamily: '"Comic Neue", cursive', fontWeight: 700, fontSize: 22, marginTop: 6 }}>ou comment un fichier Excel devient un service</p>
+              <p style={{ fontFamily: 'Bangers, cursive', fontSize: 40, letterSpacing: 2, lineHeight: 1 }}>Rémi et les librairies</p>
+              <p style={{ fontFamily: '"Comic Neue", cursive', fontWeight: 700, fontSize: 22, marginTop: 6 }}>ou comment un fichier Excel devient une base de données</p>
             </div>
           </div>
         </div>
@@ -40,8 +40,7 @@ export function Ouverture() {
           ))}
         </div>
         <Narrateur className="fragment" style={{ marginTop: 26 }}>
-          Ce que vous allez voir : un fichier Excel qui dort sur un poste peut devenir un <u>tableau de bord</u> pour l'équipe… ou un <u>annuaire</u> pour les habitants.
-          À une condition : <span style={{ background: '#fff', padding: '0 6px' }}>penser machine, pas humain.</span>
+          Toute ressemblance avec votre propre fichier Excel serait purement… fréquente.
         </Narrateur>
       </section>
     </>

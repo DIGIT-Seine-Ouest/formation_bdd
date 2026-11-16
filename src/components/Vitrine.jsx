@@ -4,17 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 
 export const REALISATIONS = [
   {
-    ville: 'Meudon', titre: 'Annuaire des associations', astuce: 'Astuce 1 · une ligne = un lieu d’activité',
+    ville: 'Meudon', titre: 'Annuaire des associations', astuce: 'Règle : 1 ligne = 1 fait (un lieu d’activité)',
     url: 'https://data.meudon.fr/pages/annuaire-des-asso-2025/',
     detail: '112 lignes. Une association active dans deux lieux = deux lignes, chacune avec son adresse et son point GPS.',
   },
   {
-    ville: 'Sèvres', titre: 'Annuaire des commerces', astuce: 'Astuce 3 · une case = une information',
+    ville: 'Sèvres', titre: 'Annuaire des commerces', astuce: 'Règle : atomicité (adresse découpée)',
     url: 'https://data.sevres.fr/pages/annuairecommerce/',
     detail: '209 commerces. Adresse découpée (numéro, répétition, voie) + code INSEE : chaque commerce se place sur la carte.',
   },
   {
-    ville: 'Boulogne-Billancourt', titre: 'Équipements sportifs', astuce: 'Astuce 5 · des codes officiels',
+    ville: 'Boulogne-Billancourt', titre: 'Équipements sportifs', astuce: 'Règle : identifiant officiel + jointure',
     url: 'https://boulognebillancourt-seineouest.opendatasoft.com/pages/equipements-sportifs/',
     detail: '178 équipements repris de la base nationale Data ES grâce à leurs identifiants : rien n’a été ressaisi.',
   },

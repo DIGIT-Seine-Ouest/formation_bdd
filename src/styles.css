@@ -97,11 +97,11 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
     border-color: transparent transparent transparent var(--ink);
 }
 .bulle.pense { border-style: dashed; color: #444; font-weight: 400; font-style: italic; }
-.bulle.machine { font-family: ui-monospace, Menlo, monospace; font-size: 15px; font-weight: 500; background: #eef2ff; border-color: #3730a3; }
-.bulle.machine::before { border-right-color: #3730a3; }
-.bulle-row.right .bulle.machine::before { border-left-color: #3730a3; border-right-color: transparent; }
+.bulle.machine { background: #effaf9; border-color: #009a93; }
+.bulle.machine::before { border-right-color: #009a93; }
+.bulle-row.right .bulle.machine::before { border-left-color: #009a93; border-right-color: transparent; }
 .bulle b { color: var(--red); }
-.bulle.machine b { color: #3730a3; }
+.bulle.machine b { color: #007a74; }
 
 .sfx {
     font-family: "Bangers", cursive; color: var(--red); letter-spacing: 3px;
@@ -165,67 +165,107 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .mot .k { font-family: "Bangers", cursive; font-size: 26px; letter-spacing: 1px; }
 .mot .eq { font-size: 17px; margin-top: 2px; }
 
-/* ── Faux Excel ───────────────────────────── */
-.xl {
-    border: 1px solid #c8c8c8; border-radius: 6px; overflow: hidden; background: #fff;
-    font-family: Calibri, "Segoe UI", Roboto, sans-serif; box-shadow: 0 6px 18px rgba(0,0,0,.08);
+/* ── Fenêtre Excel réaliste ───────────────── */
+.xlw {
+    border: 1px solid #b7b7b7; border-radius: 8px; overflow: hidden; background: #fff;
+    font-family: "Segoe UI", Calibri, Roboto, sans-serif; box-shadow: 0 10px 28px rgba(0,0,0,.14);
+    display: flex; flex-direction: column;
 }
-.xl-bar { background: #217346; color: #fff; font-size: 12px; padding: 5px 12px; display: flex; justify-content: space-between; }
-.xl table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
-.xl td, .xl th { border: 1px solid #d6d6d6; padding: 2px 8px; line-height: 1.35; white-space: nowrap; text-align: left; }
-.xl th { background: #f3f3f3; font-weight: 700; }
-.xl .rh { background: #f3f3f3; color: #888; width: 22px; text-align: center; font-size: 11px; }
-.xl .title-cell { background: #0f4c75; color: #fff; font-weight: 700; text-align: center; font-size: 14px; }
-.xl .lab { background: #c6efce; }
-.xl .merged { vertical-align: middle; font-weight: 700; background: #fafafa; }
-.xl .note { color: #999; font-style: italic; font-size: 11px; }
-.xl .total td { font-weight: 700; border-top: 2px solid #888; }
-.xl .key { background: var(--blue-soft); color: var(--navy); font-weight: 700; }
-
-/* ── Simulateur ───────────────────────────── */
-.sim { display: flex; flex-direction: column; gap: 10px; height: 500px; }
-.sim-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.seg { display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; padding: 3px; background: #fff; }
-.seg button { border: 0; background: transparent; padding: 5px 13px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer; color: var(--muted); }
-.seg button.on { background: var(--ink); color: #fff; font-weight: 700; }
-.seg button:disabled { opacity: .35; cursor: not-allowed; }
-.sim-body { flex: 1; min-height: 0; border: 3px solid var(--ink); border-radius: 6px; overflow: hidden; position: relative; background: #fff; }
-.sim-pane { position: absolute; inset: 0; padding: 14px 16px; overflow: auto; }
-.sim-map { position: absolute; inset: 0; }
-.fail {
-    position: absolute; inset: 0; z-index: 1000; background: rgba(255,245,245,.97);
-    display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center;
+.xlw-titre { background: #217346; color: #fff; font-size: 12.5px; padding: 5px 10px; display: flex; gap: 8px; align-items: center; }
+.xlw-logo { background: #fff; color: #217346; font-weight: 900; font-size: 11px; width: 16px; height: 16px; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; }
+.xlw-ruban { background: #f3f3f3; border-bottom: 1px solid #d4d4d4; font-size: 12px; padding: 4px 8px 0; display: flex; gap: 14px; color: #444; }
+.xlw-ruban span { padding: 2px 0 4px; }
+.xlw-ruban span.on { color: #217346; font-weight: 700; border-bottom: 3px solid #217346; }
+.xlw-fbar { display: flex; align-items: center; border-bottom: 1px solid #d4d4d4; font-size: 13px; background: #fff; }
+.xlw-nom { width: 62px; padding: 3px 8px; border-right: 1px solid #d4d4d4; color: #333; }
+.xlw-fx { padding: 3px 10px; color: #777; font-style: italic; border-right: 1px solid #d4d4d4; }
+.xlw-f { padding: 3px 10px; font-family: Consolas, ui-monospace, monospace; color: #1f1f1f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xlw-grille { overflow: hidden; }
+.xlw table { border-collapse: collapse; table-layout: fixed; width: 100%; font-size: 13px; }
+.xlw th { background: #f3f3f3; color: #555; font-weight: 400; font-size: 11.5px; border: 1px solid #dadada; padding: 1px 4px; text-align: center; }
+.xlw th.coin { background: #e9e9e9; }
+.xlw td { border: 1px solid #e1e1e1; padding: 2px 7px; height: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; color: #1f1f1f; }
+.xlw td.num { text-align: right; }
+.xlw td.titre { background: #1f4e79; color: #fff; font-weight: 700; text-align: center; font-size: 14px; }
+.xlw td.note { color: #888; font-style: italic; font-size: 12px; }
+.xlw td.h { background: #217346; color: #fff; font-weight: 700; }
+.xlw td.h::after { content: " ▾"; font-size: 10px; opacity: .8; }
+.xlw td.hh { background: #d9d9d9; font-weight: 700; }
+.xlw td.vert { background: #c6efce; }
+.xlw td.bleu { background: #ddebf7; }
+.xlw td.gras { font-weight: 700; }
+.xlw td.calc { background: #f2f2f2; color: #555; font-style: italic; }
+.xlw td.rouge { color: #c00000; font-weight: 700; }
+.xlw td.res { background: #e2f0d9; font-weight: 700; color: #375623; }
+.xlw td.sel { outline: 2.5px solid #217346; outline-offset: -2px; }
+.xlw td.fusion { vertical-align: middle; font-weight: 700; background: #fafafa; }
+.xlw tr:nth-child(even) td.zebre { background: #e2efda; }
+.xlw-onglets { display: flex; gap: 2px; align-items: flex-end; background: #f3f3f3; border-top: 1px solid #d4d4d4; font-size: 12px; padding: 0 6px; overflow: hidden; white-space: nowrap; }
+.xlw-onglets span { padding: 4px 11px; color: #444; }
+.xlw-onglets span.on { background: #fff; color: #217346; font-weight: 700; border-bottom: 3px solid #217346; }
+.xlw-onglets .nav, .xlw-onglets .plus { color: #999; }
+.xlw-onglets span.err { outline: 2.5px solid var(--red); outline-offset: -3px; color: var(--red); font-weight: 700; }
+.xlw td { position: relative; }
+.xlw td.err { outline: 3px solid var(--red); outline-offset: -3px; background-color: #fff1f1; }
+.xlw td.vert.err { background-color: #c6efce; }
+.xlw .mk {
+    position: absolute; right: 3px; top: 50%; transform: translateY(-50%);
+    width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff;
+    font: 700 12px/20px Roboto, sans-serif; text-align: center; box-shadow: 0 0 0 2px #fff;
 }
-.fail h3 { font-family: "Bangers", cursive; letter-spacing: 1px; font-size: 34px; color: var(--red); margin: 0 0 12px; }
-.fail ul { text-align: left; font-size: 17px; margin: 0; padding-left: 20px; }
-.fail li { margin: 6px 0; }
+.xlw.compact td { height: 17px; padding: 1px 6px; font-size: 12px; }
+.xlw.compact th { font-size: 10.5px; padding: 0 3px; }
 
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.kpi { background: var(--soft); border-radius: 8px; padding: 10px 12px; }
-.kpi .v { font-size: 30px; font-weight: 700; color: var(--navy); line-height: 1.1; }
-.kpi .l { font-size: 13px; color: var(--muted); }
-.bars { margin-top: 12px; }
-.bars .b { display: grid; grid-template-columns: 200px 1fr 36px; align-items: center; gap: 10px; font-size: 14px; margin: 4px 0; }
-.bars .track { background: var(--soft); border-radius: 4px; height: 15px; overflow: hidden; display: flex; }
-.bars .fill { background: var(--blue); height: 100%; }
-.bars .fill.lab { background: var(--green); }
+/* ── Tableau blanc (Rémi explique) ─────────── */
+.tableau-blanc {
+    background: #fff; border: 10px solid #9ca3af; border-radius: 6px; box-shadow: 5px 5px 0 var(--ink);
+    padding: 18px 22px; position: relative;
+}
+.tableau-blanc .marqueur { font-family: "Comic Neue", cursive; font-weight: 700; color: #1d4ed8; }
+.entite {
+    border: 3px solid #1d4ed8; border-radius: 6px; font-family: "Comic Neue", cursive; font-weight: 700; font-size: 18px;
+}
+.entite .nom { background: #1d4ed8; color: #fff; padding: 4px 12px; font-size: 22px; letter-spacing: 1px; }
+.entite .att { padding: 3px 12px; border-top: 1px dashed #93c5fd; display: flex; justify-content: space-between; gap: 18px; }
+.entite .att span:last-child { color: #6b7280; font-weight: 400; }
+.entite .pk { color: #b91c1c; }
+.bim {
+    font-family: "Bangers", cursive; font-size: 120px; color: var(--yellow); letter-spacing: 6px;
+    text-shadow: 6px 6px 0 var(--ink); transform: rotate(-8deg); display: inline-block; line-height: 1;
+}
 
-.portal { display: grid; grid-template-columns: 210px 1fr; gap: 14px; height: 100%; }
-.facets { font-size: 13.5px; border-right: 1px solid var(--line); padding-right: 12px; overflow: auto; }
-.facets h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 10px 0 4px; }
-.facets label { display: flex; justify-content: space-between; gap: 6px; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
-.facets label.on { background: var(--blue-soft); font-weight: 700; }
-.facets input[type=search] { width: 100%; box-sizing: border-box; font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; }
-.results { font-size: 13px; overflow: auto; }
-.results table { width: 100%; border-collapse: collapse; }
-.results th, .results td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
-.results th { font-size: 11px; text-transform: uppercase; color: var(--muted); }
-.api { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: var(--soft); padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; word-break: break-all; color: var(--navy); }
+/* ── Le bureau de Rémi ────────────────────── */
+.bureau { position: relative; width: 1040px; height: 470px; margin: 0 auto; border: 4px solid var(--ink); border-radius: 8px; overflow: hidden; box-shadow: 7px 7px 0 var(--ink); }
+.bureau-decor { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bureau-remi { position: absolute; left: 250px; top: 108px; }
+.bureau-invite { position: absolute; left: 10px; top: 190px; }
+.bureau-ecran {
+    position: absolute; left: 470px; top: 46px; width: 420px; height: 290px;
+    background: #1f2937; border: 4px solid var(--ink); border-radius: 10px; padding: 9px;
+    box-sizing: border-box;
+}
+.bureau-ecran-in { width: 100%; height: 100%; background: #fff; border-radius: 3px; overflow: hidden; font-size: 13px; }
+.bureau-bulle { position: absolute; left: 24px; top: 16px; max-width: 420px; }
+.bureau-bulle .bulle { font-size: 21px; }
 
-.kpi-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.kpi-list > div { background: var(--soft); border-radius: 8px; padding: 10px 14px; font-size: 15px; }
-.kpi-list .q { font-weight: 700; }
-.kpi-list .a { color: var(--green-dark); font-size: 17px; font-weight: 700; margin-top: 4px; }
+.mail { padding: 10px 14px; font-size: 13.5px; line-height: 1.45; }
+.mail .entete { border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+.mail .entete b { color: var(--ink); }
+
+.chat { padding: 10px; display: flex; flex-direction: column; gap: 7px; font-size: 13px; height: 100%; box-sizing: border-box; background: #f6fbfb; }
+.chat .barre { font-weight: 700; color: #009a93; font-size: 12px; border-bottom: 1px solid #cdeceb; padding-bottom: 4px; }
+.chat .moi { align-self: flex-end; background: #dbeafe; border-radius: 10px 10px 2px 10px; padding: 6px 10px; max-width: 85%; }
+.chat .ia  { align-self: flex-start; background: #fff; border: 1px solid #b6e3e1; border-radius: 10px 10px 10px 2px; padding: 6px 10px; max-width: 90%; }
+
+/* ── Prompts ──────────────────────────────── */
+.prompt { font-family: ui-monospace, Menlo, monospace; font-size: 13.5px; background: #0f172a; color: #e2e8f0; border-radius: 6px; padding: 9px 12px; line-height: 1.45; }
+.prompt b { color: #5eead4; font-weight: 400; }
+
+/* ── Tableau « deux logiques » ────────────── */
+.logiques { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 17px; }
+.logiques th, .logiques td { padding: 9px 14px; border-bottom: 2px solid var(--ink); text-align: left; vertical-align: top; }
+.logiques th { font-family: "Bangers", cursive; font-size: 24px; letter-spacing: 1px; font-weight: 400; }
+.logiques td:first-child { font-weight: 700; width: 120px; color: var(--muted); }
 
 /* ── Vitrine (iframes) ────────────────────── */
 .vitrine { display: grid; grid-template-columns: 300px 1fr; gap: 18px; height: 540px; }

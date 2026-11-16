@@ -6,33 +6,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Support of the 1-hour **beginner, hands-on** session **« Valoriser le potentiel des données »** (DIGIT Formation, GPSO). Event pitch to deliver: *des données bien structurées permettent de gagner du temps et d'améliorer la lisibilité de l'information ; bonnes pratiques essentielles pour faciliter leur exploitation.*
 
-**Core message (do not dilute):** a local Excel file can become a valorised tool — a **dashboard** (internal use) or an **annuaire** (external use) — on one condition: **think machine, not human** (« Écrivez pour la Machine, c'est elle qui fabriquera les vues pour les humains »).
+**Content = the earlier "mobility" training (cheat sheet + guide de construction), lighter and told as a comic (BD).** Source of truth for the notions: the mobility `cheat_sheet.docx` / `guide_construction.docx` (git history, commit 3e53a75), transposed to bookshops. Core message: **séparer « j'écris » (base de terrain, a raw table) de « je fais la synthèse » (le bilan, computed)** — an aide-mémoire made for the eye is not a database made for the machine. A local Excel file, once structured, becomes a dashboard (internal) or an annuaire (external).
 
-**Format: a comic strip (BD).** Characters (SVG, `src/components/Personnages.jsx`): **Rémi** (DSI GPSO, "Data Hero"; drawn, not his photo — the site is public), **Claire** (cabinet, always in a hurry), **La Machine** (reads cell by cell, literally), **La DIGIT**.
+**Characters** (SVG, `src/components/Personnages.jsx`): **Rémi** (DSI GPSO, "Data Hero"; drawn, not his photo — the site is public) who asks Delos *everything*; **Delos** (the AI assistant, teal eye — it does the teaching, gently at Rémi's expense); **Claire** (cabinet, "c'est pour hier"); **La DIGIT**.
 
-Storyline (one slide file per episode in `src/slides/`):
-0. `Ouverture` — cover + casting + promise.
-1. `Ep1Mission` — the annual study request with **5 recurring KPIs**; Rémi builds his base "pensé humain" (title, merged towns, green = labelled, total).
-2. `Ep2Urgence` — Claire needs a number RAPIDEMENT → 25 min; what the Machine sees; humain vs machine; **entité / attribut / valeur**, columns derived from the 5 KPIs.
-3. `Ep3Astuces` — 7 tips, one per slide, ordered **évident → subtil**, each = galère (Claire/Machine bubbles) + avant/après + narrator comment + time saved: 1 ligne = 1 librairie · rien dans la couleur · 1 case = 1 info (atomicité) · valeurs contrôlées · codes officiels · le temps est une colonne + id stable · dictionnaire. Ends with the structured base (= national dataset structure).
-4. `Ep4Interne` — internal use: simulator (5 questions / dashboard / map / search, toggle humain ↔ machine) + the 4 Excel gestures (Ctrl+T, validation, TCD, MFC).
-5. `Ep5Externe` — Rémi calls the DIGIT; live city pages (Meudon associations, Sèvres shops, Boulogne sports facilities, each tied to a tip); chain poste de Rémi → portail local → base nationale → tout le monde.
-6. `Final` — checklist, « Penser machine, pas humain », downloads, call to action.
+Storyline (one file per episode in `src/slides/`):
+0. `Ouverture` — cover + casting.
+1. `Ep1Mission` — Rémi is asked (big office scene `Bureau`) to build "une base de données des librairies pour un suivi interne", **with no precise question**. Teaser: he already made a file on Friday 17:45, "vite fait".
+2. `Ep2Theorie` — « Delos, c'est quoi une base de données ? » → BIM, the theory: shopping list → ARTICLE → table; vocabulary + test de la phrase; la chose à retenir (j'écris ≠ je fais la synthèse); cadrage in 3 questions ("no question asked? all the more reason").
+3. `Ep3Explique` — Rémi explains his base on a whiteboard (entity LIBRAIRIE + attributes); Delos: "and your Friday file looks like that?".
+4. `Ep4CestBon` — « Delos, c'est bon ? »: the rushed file (`VA_VITE` in `src/remi.js`, merged town cells, colours, total…) with 7 numbered markers, then **7 errors, évident → subtil**, each = Excel zoom with red cells + Rémi/Delos bubbles + "la théorie de Delos" + corrected mini-table: titre dans le tableau · cellules fusionnées · couleur · deux infos dans une case (atomicité) · valeurs écrites à la main (types, listes) · pas d'identifiant (two real « Anagramme ») · synthèse mélangée à la saisie (TOTAL, stale « Récap (2) », no 2027 tab).
+5. `Ep5Construire` — jointure with the colleagues' `communes` table, onglet `saisie`, onglet `synthese` (real formulas), TCD in 4 clicks, Claire finally brings the 3 questions (10 s; Q3 twist: Ville-d'Avray), Rémi's 4 Delos prompts.
+6. `Ep6Valoriser` — call to the DIGIT, live city pages (`Vitrine` iframes: Meudon, Sèvres, Boulogne), chain poste de Rémi → portail local → base nationale → tout le monde.
+7. `Final` — what Rémi learned + the kit to download.
 
-Demo dataset: *Base des librairies en France* (Ministère de la Culture, data.gouv.fr, Licence Ouverte 2.0) — 3 237 rows, **17 in GPSO** (Chaville included, Saint-Cloud is not GPSO). The national header `code_commune ` has a trailing space (trimmed in `src/data.js`).
+Data (`src/remi.js`): 17 GPSO bookshops from *Base des librairies en France* (Ministère de la Culture, data.gouv.fr, LO 2.0; Chaville included, Saint-Cloud is not GPSO) + legal populations (geo.api.gouv.fr). Never invent facts about the real bookshops (Rémi's "Visite" column is his own internal note).
+
+## Kit (`public/ressources/`, generated by `python3 scripts/build_ressources.py`, needs openpyxl + python-docx)
+`exercice_aide_memoire.xlsx` (= the Friday file `VA_VITE`: one sheet with merged town cells, colours, lists in cells, TOTAL, stale « Récap (2) »), `correction_suivi_librairies.xlsx` (saisie as an Excel table with dropdowns · synthese with formulas · communes · listes · dictionnaire), `cheat_sheet_librairies.docx`, `guide_construction_librairies.docx`. The Excel screens in the slides must match these files (tabs, cells, formulas).
 
 ## Stack
 
-Vite + React + Reveal.js 5 (`npm run dev`, `npm run build`), deployed to GitHub Pages by `.github/workflows/deploy.yml` on push to `main` (base path `/formation_bdd/`). Leaflet + CARTO tiles; live iframes → internet needed during the session.
+Vite + React + Reveal.js 5 (`npm run dev`, `npm run build`), deployed to GitHub Pages by `.github/workflows/deploy.yml` on push to `main` (base path `/formation_bdd/`). Live iframes → internet needed during the session.
 
 | Path | Role |
 |---|---|
-| `src/App.jsx` | Reveal init; relays `slidechanged` as a `reveal:slidechanged` window event (map + iframes load only when visible) |
-| `src/components/BD.jsx` | `Bulle`, `Case`, `Narrateur`, `Planche`, `Chapitre`, `Mini` (comic layout bricks) |
-| `src/components/Personnages.jsx` | SVG characters with moods (`neutre`, `content`, `stress`, `surpris`) |
-| `src/components/Fichiers.jsx` | Excel-like renderings of the "pensé humain" (VUE) and "pensé machine" (DONNEE) files |
-| `src/components/Simulateur.jsx`, `Vitrine.jsx` | Interactive simulator; city pages in iframes |
-| `public/data/` | National CSV + `centres_communes.json` (centroids from geo.api.gouv.fr) |
-| `public/ressources/` | Downloadable xlsx, generated by `scripts/build_ressources.py` (needs openpyxl) |
+| `src/App.jsx` | Reveal init; relays `slidechanged` as a `reveal:slidechanged` window event (iframes load only when visible) |
+| `src/components/BD.jsx` | `Bulle`, `Case`, `Narrateur`, `Planche`, `Chapitre`, `Mini` |
+| `src/components/Bureau.jsx` | Rémi's office, big, with a screen slot (mail, Delos chat…) |
+| `src/components/Excel.jsx` | Realistic Excel window (ribbon, name box, formula bar, grid, sheet tabs) |
+| `src/components/Vitrine.jsx` | City pages in iframes |
 
-Gotchas: JS strings containing French apostrophes must use template literals or double quotes — never mass-replace quotes with sed/regex (it broke template literals once). Design tokens: `--blue #009fe3`, `--green #95c11f`, `--navy #0f4c75`, `--yellow #ffe066`; fonts Bangers (BD titles), Comic Neue (bubbles), IBM Plex Serif, Roboto.
+Gotchas: JS strings with French apostrophes → use the typographic ’ or template literals; never mass-replace quotes with sed/regex (it broke template literals once). Design tokens: `--blue #009fe3`, `--green #95c11f`, `--navy #0f4c75`, `--yellow #ffe066`; fonts Bangers (BD titles), Comic Neue (bubbles), IBM Plex Serif, Roboto.

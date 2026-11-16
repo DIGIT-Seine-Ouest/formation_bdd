@@ -1,8 +1,8 @@
-// ─── Épisode 5 : usage externe — Rémi appelle la DIGIT ─────────────────────
+// ─── Épisode 6 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
 // Le coup de fil → nos réalisations → la chaîne : du poste de Rémi au national.
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import { Vitrine } from '../components/Vitrine';
-import { SOURCE_URL } from '../data';
+import { SOURCE_URL } from '../remi';
 
 const CHAINE = [
   ['🧑‍💻', 'Le poste de Rémi', '17 librairies de GPSO, mises à jour chaque année', 'blue'],
@@ -11,13 +11,13 @@ const CHAINE = [
   ['🌍', 'Tout le monde', 'Chercheurs, applis, presse, autres collectivités… et Rémi lui-même', 'good'],
 ];
 
-export function Ep5Externe() {
+export function Ep6Valoriser() {
   return (
     <>
-      <Chapitre fond="#4c2a85" ep="Épisode 5" titre="Rémi appelle la DIGIT" sous="Usage externe : et si ce fichier servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
+      <Chapitre fond="#4c2a85" ep="Épisode 6" titre="Rémi appelle la DIGIT" sous="Le fichier marche. Et s’il servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
 
       <section>
-        <Planche ep="Ép. 5" titre="Le coup de fil">
+        <Planche ep="Ép. 6" titre="Le coup de fil">
           <div className="row" style={{ alignItems: 'flex-start' }}>
             <div className="col stack">
               <Case>
@@ -27,7 +27,7 @@ export function Ep5Externe() {
                 <Bulle qui="digit" humeur="neutre" droite>Il est comment, ton fichier ? Une ligne par librairie ? Des codes INSEE ? Un dictionnaire ?</Bulle>
               </Case>
               <Case className="fragment">
-                <Bulle qui="remi" humeur="content">Oui, oui et oui. Il est pensé machine.</Bulle>
+                <Bulle qui="remi" humeur="content">Oui, oui et oui. Delos m’a un peu aidé.</Bulle>
               </Case>
               <Case className="fragment">
                 <Bulle qui="digit" humeur="content" droite>Alors on le branche sur le portail. Un <u>annuaire</u> pour les habitants, un <u>tableau de bord</u> pour les élus. Sans rien ressaisir.</Bulle>
@@ -35,7 +35,7 @@ export function Ep5Externe() {
             </div>
             <div style={{ width: 300 }}>
               <Narrateur className="fragment">
-                C’est là que tout se joue. Un fichier pensé humain, il faut le refaire avant de le publier. Un fichier pensé machine, on le branche tel quel.
+                C’est là que tout se joue. Un aide-mémoire, il faut le refaire avant de le publier. Une base de données, on la branche telle quelle.
               </Narrateur>
             </div>
           </div>
@@ -43,7 +43,7 @@ export function Ep5Externe() {
       </section>
 
       <section>
-        <Planche ep="Ép. 5" titre="Ce qu’on a déjà fait avec les villes">
+        <Planche ep="Ép. 6" titre="Ce qu’on a déjà fait avec les villes">
           <Vitrine />
         </Planche>
       </section>
