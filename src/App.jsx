@@ -4,11 +4,10 @@ import 'reveal.js/dist/reset.css';
 import 'reveal.js/dist/reveal.css';
 import './styles.css';
 import { Accueil } from './slides/Accueil';
-import { Donnees } from './slides/Donnees';
-import { Typologies } from './slides/Typologies';
-import { Conception } from './slides/Conception';
-import { Module2 } from './slides/Module2';
-import { ModernDataStack } from './slides/ModernDataStack';
+import { MonFichier } from './slides/MonFichier';
+import { Structurer } from './slides/Structurer';
+import { Valoriser } from './slides/Valoriser';
+import { ChezNous } from './slides/ChezNous';
 import { Ressources } from './slides/Ressources';
 
 export function App() {
@@ -20,7 +19,13 @@ export function App() {
       center: true,
       width: 1100,
       height: 700,
+      margin: 0.05,
+      preloadIframes: false,
     });
+    // Le simulateur (carte Leaflet) a besoin de savoir quand sa slide devient visible
+    const relay = (e) => window.dispatchEvent(new CustomEvent('reveal:slidechanged', { detail: e }));
+    deck.on('slidechanged', relay);
+    deck.on('ready', relay);
     deck.initialize().catch(console.error);
     return () => deck.destroy();
   }, []);
@@ -29,11 +34,10 @@ export function App() {
     <div className="reveal">
       <div className="slides">
         <Accueil />
-        <Donnees />
-        <Typologies />
-        <Conception />
-        <Module2 />
-        <ModernDataStack />
+        <MonFichier />
+        <Structurer />
+        <Valoriser />
+        <ChezNous />
         <Ressources />
       </div>
     </div>

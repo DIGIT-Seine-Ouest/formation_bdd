@@ -1,47 +1,56 @@
+// ─── Clôture : à retenir + à vous + ressources ─────────────────────────────
+import { SOURCE_URL } from '../data';
+
 const BASE = import.meta.env.BASE_URL;
 
-const bloc = (accent, label, type, title, desc, href) => `
-  <div style="display:flex; flex-direction:column; gap:8px;">
-    <p style="font-size:0.58rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-        color:${accent}; margin:0; border-bottom:2px solid ${accent}; padding-bottom:6px;">${label}</p>
-    <a href="${BASE}${href}" download style="
-        display:flex; flex-direction:column; flex:1; text-decoration:none; color:inherit;
-        background:#ffffff; border:1px solid #e5e7eb; border-top:4px solid ${accent};
-        border-radius:10px; padding:16px 16px; box-shadow:0 6px 18px rgba(0,0,0,0.06);">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-        <span style="font-size:0.8rem; font-weight:700; color:#1e3a5f;">${title}</span>
-        <span style="font-size:0.46rem; font-weight:700; color:#94a3b8; border:1px solid #cbd5e1; border-radius:4px; padding:2px 6px;">${type}</span>
-      </div>
-      <p style="font-size:0.6rem; color:#64748b; margin:0 0 10px; line-height:1.4; flex:1;">${desc}</p>
-      <span style="font-size:0.58rem; font-weight:700; color:${accent};">Télécharger &darr;</span>
-    </a>
-  </div>`;
-
-const ressources = `
-<div style="max-width:1020px; margin:0 auto; text-align:left;">
-  <p style="font-size:0.64rem; text-transform:uppercase; letter-spacing:4px; color:var(--blue-dirmob, #009fe3); margin:0 0 6px; font-weight:700;">Pour aller plus loin</p>
-  <h2 style="margin:0 0 6px;">Les ressources de la formation</h2>
-  <p style="font-size:0.78rem; color:#555; margin:0 0 24px;">La théorie, le cas pratique et le résultat, côte à côte.</p>
-
-  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; align-items:stretch;">
-    ${bloc('#009fe3', 'À retenir', 'DOCX', 'Cheat sheet',
-        'Les concepts clés de la formation, en quelques pages.',
-        'ressources/cheat_sheet.docx')}
-    ${bloc('#95c11f', 'Consigne du cas pratique', 'DOCX', 'Guide de construction',
-        'Le scénario, les 3 questions métier et le pas-à-pas pour bâtir le fichier.',
-        'ressources/guide_construction.docx')}
-    ${bloc('#009fe3', 'Le fichier Excel généré', 'ZIP', 'Exercices',
-        'reclamations.xlsx (réclamations + tableau de suivi) et les données des collègues.',
-        'ressources/exercices.zip')}
-    ${bloc('#f59e0b', 'Démos SQL en live', 'ZIP', 'Données Yego',
-        'events / trips / vehicles (structure réelle MDS, mock data) + les requêtes DuckDB du cours.',
-        'ressources/yego_data.zip')}
-  </div>
-
-  <p style="font-size:0.58rem; color:#94a3b8; margin:22px 0 0; text-align:center;">Cliquez sur un bloc pour télécharger.</p>
-</div>
-`;
+const CHECK = [
+  'Une ligne = une chose (une librairie, une association, un commerce)',
+  'Une colonne = une information, une valeur par case',
+  'Rien dans la couleur : si c’est une info, c’est une colonne',
+  'Des listes de valeurs et des codes officiels (INSEE, SIRET…)',
+  'Une structure stable, qu’on alimente chaque année',
+];
 
 export function Ressources() {
-  return <section dangerouslySetInnerHTML={{ __html: ressources }} />;
+  return (
+    <>
+      <section>
+        <p className="kicker">À retenir</p>
+        <h2>Séparer l'information de sa vue</h2>
+        <div className="row">
+          <div className="col">
+            {CHECK.map((c) => (
+              <p key={c} className="fragment" style={{ margin: '0 0 12px', fontSize: 19 }}>
+                <span style={{ color: 'var(--green)', fontWeight: 900, marginRight: 8 }}>☑</span>{c}
+              </p>
+            ))}
+          </div>
+          <div className="col stack">
+            <div className="card card--blue"><p>⏱ <b>Gagner du temps</b></p><p className="small muted">On filtre au lieu de compter. On ajoute des lignes au lieu de refaire le fichier.</p></div>
+            <div className="card card--blue"><p>👁 <b>Rendre l'information lisible</b></p><p className="small muted">Carte, tableau de bord, page web : des vues générées, toujours à jour.</p></div>
+            <div className="card card--blue"><p>🚀 <b>Faciliter l'exploitation</b></p><p className="small muted">Un fichier bien structuré n'est jamais isolé : il rejoint les autres.</p></div>
+          </div>
+        </div>
+        <div className="callout fragment" style={{ marginTop: 16 }}>La vue se <b>recalcule</b>. L'information se <b>conserve</b>.</div>
+      </section>
+
+      <section>
+        <p className="kicker">À vous</p>
+        <h2>Quel fichier de suivi avez-vous… qui pourrait devenir l'une de ces pages ?</h2>
+        <div className="bar" />
+        <div className="dl">
+          <a href={`${BASE}ressources/mon_suivi_librairies_VUE.xlsx`} download>
+            <div className="card card--red"><span className="pill pill--bad">Avant · XLSX</span><p style={{ fontWeight: 700, margin: '8px 0 4px' }}>Le fichier « vue »</p><p className="small muted">Pour s'exercer : retrouvez les pièges et structurez-le.</p><p className="small" style={{ marginTop: 8, color: 'var(--blue)', fontWeight: 700 }}>Télécharger ↓</p></div>
+          </a>
+          <a href={`${BASE}ressources/mon_suivi_librairies_DONNEE.xlsx`} download>
+            <div className="card card--green"><span className="pill pill--good">Après · XLSX</span><p style={{ fontWeight: 700, margin: '8px 0 4px' }}>Le fichier « donnée »</p><p className="small muted">La correction, avec son onglet dictionnaire et sa liste déroulante.</p><p className="small" style={{ marginTop: 8, color: 'var(--blue)', fontWeight: 700 }}>Télécharger ↓</p></div>
+          </a>
+          <a href={SOURCE_URL} target="_blank" rel="noreferrer">
+            <div className="card card--blue"><span className="pill pill--blue">Source · data.gouv.fr</span><p style={{ fontWeight: 700, margin: '8px 0 4px' }}>Base des librairies en France</p><p className="small muted">Ministère de la Culture · Licence Ouverte 2.0.</p><p className="small" style={{ marginTop: 8, color: 'var(--blue)', fontWeight: 700 }}>Ouvrir ↗</p></div>
+          </a>
+        </div>
+        <p className="center small muted" style={{ marginTop: 26 }}>Venez nous voir avec votre fichier : on regarde ensemble ce qu'il peut devenir.</p>
+      </section>
+    </>
+  );
 }
