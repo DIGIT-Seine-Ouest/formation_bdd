@@ -58,7 +58,9 @@ export const QUESTIONS = [
 // ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────
 // Étapes 1 à 8 = « j’enregistre ». L’étape 9 (synthese) = « je présente ».
 // Ce qui vient d’être ajouté à l’étape n est entouré en vert (classe « neuf »).
-const TUTO_LIBS = LIBRAIRIES.slice(0, 6);
+// Extrait affiché : uniquement des libellés sans « et » (pas « BD et Mangas »), pour ne pas
+// brouiller la règle « une case = une information ». LIB003 (LIR) est en ligne 3.
+const TUTO_LIBS = ['LIB002', 'LIB003', 'LIB004', 'LIB006', 'LIB007', 'LIB008'].map((id) => LIBRAIRIES.find((l) => l[0] === id));
 const LARG = { id: 74, librairie: 232, assortiment: 128, label: 66, code_commune: 128, commune: 178, annee_suivi: 112 };
 const NEUF = { 1: 'tout', 2: ['commune'], 3: ['assortiment', 'label'], 4: ['label'], 5: ['assortiment'], 6: ['id'], 7: ['code_commune', 'commune'], 8: ['annee_suivi'] };
 
@@ -85,7 +87,7 @@ export function etapeSaisie(n) {
       rows.push(ligne({ id, librairie, assortiment, label, code_commune: code, commune: nomCommune(code), annee_suivi: 2026 }));
     });
     if (n === 8) {
-      rows.push(ligne({ id: 'LIB001', librairie: 'LE COMPTOIR DE LA BD', assortiment: 'BD et Mangas', label: 'aucun', code_commune: '92012', commune: 'Boulogne-Billancourt', annee_suivi: 2027 }, true));
+      rows.push(ligne({ id: 'LIB002', librairie: 'LES CURIEUX', assortiment: 'Religion', label: 'aucun', code_commune: '92012', commune: 'Boulogne-Billancourt', annee_suivi: 2027 }, true));
     }
   }
   return { rows, largeurs: cols.map((c) => LARG[c]), cols };

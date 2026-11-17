@@ -9,9 +9,9 @@ import { Bulle, Case, Mini, Narrateur, Planche } from '../components/BD';
 // La table LIBRAIRIE, construite élément par élément (index de fragment = ordre des clics)
 const COLS = ['librairie', 'assortiment', 'label', 'commune'];
 const LIGNES = [
-  ['LIB001', 'LE COMPTOIR DE LA BD', 'BD et Mangas', 'aucun', 'Boulogne-Billancourt'],
   ['LIB002', 'LES CURIEUX', 'Religion', 'aucun', 'Boulogne-Billancourt'],
   ['LIB003', 'LES MOTS ET LES CHOSES', 'Généraliste', 'LIR', 'Boulogne-Billancourt'],
+  ['LIB004', 'LES MOTS ET LES CHOSES NORD', 'Généraliste', 'aucun', 'Boulogne-Billancourt'],
 ];
 const ELEMENTS = [
   [1, 'Entité', 'la chose qu’on décrit → une table (un onglet)', 'courses : ARTICLE'],
