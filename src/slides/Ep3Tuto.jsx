@@ -188,7 +188,7 @@ const ETAPES = [
     titre: 'Ne pas recopier : la jointure', cel: 'F2', formule: '=RECHERCHEV(E2;communes!$A:$B;2;0)', ruban: 'Formules', commandes: CMD.recherche, dialogue: D_COMMUNES, dialogueLarge: 170,
     aide: 'RECHERCHEV(valeur_cherchée; table_matrice; no_index_col; [valeur_proche])',
     remi: 'Et la population, pour les 10 000 habitants, je la recopie ?',
-    delos: <>Surtout pas. Les collègues tiennent la table <b>communes</b> à jour. Tu saisis le <b>code commune</b>, tu <b>récupères</b> le nom ; la synthèse ira y lire la population.</>,
+    delos: <>Surtout pas : c’est la <b>jointure</b>, vue tout à l’heure. Tu saisis le <b>code commune</b>, RECHERCHEV <b>récupère</b> le nom dans la table <b>communes</b> ; la synthèse y lira la population.</>,
     regle: <>Ce qui existe ailleurs se récupère, ne se recopie pas : on saisit le code, Excel va chercher le reste.</>,
     geste: <><code>=RECHERCHEV(E2;communes!$A:$B;2;0)</code> : quoi je cherche ; où ; quelle colonne je renvoie ; 0 = exactement. code_commune au format <b>Texte</b>.</>,
   },

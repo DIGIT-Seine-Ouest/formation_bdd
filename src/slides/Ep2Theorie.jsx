@@ -1,10 +1,15 @@
-// ─── Épisode 2 : « Delos, c’est quoi une base de données ? » → BIM, 2 slides ──
+// ─── Épisode 2 : « Delos, c’est quoi une base de données ? » → BIM ─────────
 // 1. Du réel à la table : la liste de courses devient la table ARTICLE.
 // 2. Rebond : l’entité LIBRAIRIE, construite élément par élément (entité,
-//    attributs, enregistrement, valeur, identifiant) : la suite directe, c’est le tuto.
+//    attributs, enregistrement, valeur, identifiant).
+// 3. La jointure : la population n’est pas dans la table de Rémi, elle est dans
+//    COMMUNE (la table des collègues) ; le code commune relie les deux.
+// 4. Une info, une seule fois : ce qu’on évite (tout recopier), clé primaire,
+//    clé étrangère, relation 1 à N. Puis : on construit tout ça dans Excel (Ép. 3).
 // « J’enregistre ≠ je présente » vient plus tard (Ép. 3, partie « je présente »),
 // quand Rémi en a besoin ; ici, Delos ne fait que l’annoncer.
 import { Bulle, Case, Mini, Narrateur, Planche } from '../components/BD';
+import { COMMUNES, LIBRAIRIES, nomCommune } from '../remi';
 
 // La table LIBRAIRIE, construite élément par élément (index de fragment = ordre des clics)
 const COLS = ['librairie', 'assortiment', 'label', 'commune'];
@@ -22,6 +27,12 @@ const ELEMENTS = [
 ];
 const F = (i) => ({ className: 'fragment', 'data-fragment-index': i });
 
+// La jointure : 4 librairies de 3 communes, et la table COMMUNE des collègues
+const JOINT_LIBS = ['LIB002', 'LIB003', 'LIB007', 'LIB008'].map((id) => LIBRAIRIES.find((l) => l[0] === id));
+const JOINT_COMMUNES = COMMUNES.filter(([code]) => ['92012', '92022', '92040'].includes(code));
+const POP = (code) => COMMUNES.find((c) => c[0] === code)[2].toLocaleString('fr-FR');
+const BOULOGNE = LIBRAIRIES.filter((l) => l[4] === '92012');
+
 export function Ep2Theorie() {
   return (
     <>
@@ -30,7 +41,7 @@ export function Ep2Theorie() {
           <div className="ep">Épisode 2</div>
           <div className="titre" style={{ fontSize: 64 }}>« Delos, c’est quoi<br />une base de données ? »</div>
           <div className="bim fragment">BIM !</div>
-          <div className="sous fragment" style={{ marginTop: 10 }}>La théorie. Deux slides. Promis.</div>
+          <div className="sous fragment" style={{ marginTop: 10 }}>La théorie. Deux slides. Promis. (Il y en aura quatre.)</div>
         </div>
       </section>
 
@@ -112,7 +123,67 @@ export function Ep2Theorie() {
               </Narrateur>
             </div>
             <div {...F(7)} className="fragment col">
-              <Bulle qui="delos" humeur="content" size={44} droite>Maintenant, on la construit dans Excel, étape par étape. Et le total ? Pas dans la table : on le <b>présentera à part</b>.</Bulle>
+              <Bulle qui="delos" humeur="content" size={44} droite>Il manque la <b>population</b>, pour les 10 000 habitants. Elle n’est pas dans ta table… et elle n’a pas à y être.</Bulle>
+            </div>
+          </div>
+        </Planche>
+      </section>
+
+      {/* 3. La jointure : retrouver l’info là où elle est */}
+      <section>
+        <Planche ep="Ép. 2" titre="La jointure : retrouver l’info là où elle est">
+          <div className="row" style={{ marginBottom: 14 }}>
+            <Bulle qui="remi" humeur="surpris" size={46} className="col">Tu avais dit deux slides ! Et la population, je la mets où ?</Bulle>
+            <Bulle qui="delos" humeur="content" size={46} droite className="col fragment">La population appartient à une autre chose : la <b>commune</b>. Elle a sa propre table, tenue à jour par les collègues. Toi, tu notes juste le <b>code commune</b>… et tu vas chercher le reste.</Bulle>
+          </div>
+          <div className="row fragment" style={{ alignItems: 'center' }}>
+            <Case recit="📚 LIBRAIRIE · ta table" ton="blue" className="col">
+              <Mini cols={['id', 'librairie', 'code_commune']} rows={JOINT_LIBS.map(([id, nom, , , code]) => [id, nom, { v: code, c: 'hl-cle' }])} />
+            </Case>
+            <div className="center" style={{ width: 90, flexShrink: 0 }}>
+              <p style={{ fontSize: 34, lineHeight: 1 }}>⟷</p>
+              <p className="tiny" style={{ fontWeight: 700 }}>même code<br />= même commune</p>
+            </div>
+            <Case recit="🏛️ COMMUNE · la table des collègues" className="col">
+              <Mini cols={['code_commune 🔑', 'commune', 'population']} rows={JOINT_COMMUNES.map(([code, nom, pop]) => [{ v: code, c: 'hl-cle' }, nom, pop.toLocaleString('fr-FR')])} />
+            </Case>
+          </div>
+          <div className="fragment" style={{ marginTop: 18 }}>
+            <Case recit="🔗 La jointure assemble les deux, à la demande" ton="good">
+              <Mini cols={['id', 'librairie', 'code_commune', 'commune', 'population']}
+                rows={[['LIB003', 'LES MOTS ET LES CHOSES', { v: '92012', c: 'hl-cle' }, { v: nomCommune('92012'), c: 'hl-good' }, { v: POP('92012'), c: 'hl-good' }]]} />
+              <p className="small" style={{ marginTop: 8 }}>Les cases en vert ne sont <b>tapées nulle part</b> dans ta table : elles sont <b>récupérées</b> dans COMMUNE grâce au code.</p>
+            </Case>
+          </div>
+        </Planche>
+      </section>
+
+      {/* 4. Une info, une seule fois */}
+      <section>
+        <Planche ep="Ép. 2" titre="Une info, une seule fois">
+          <div className="row" style={{ marginBottom: 14 }}>
+            <Bulle qui="remi" humeur="neutre" size={46} className="col">Ce serait plus simple de tout mettre dans une seule table, non ?</Bulle>
+            <Bulle qui="delos" humeur="content" size={46} droite className="col fragment">Plus simple à écrire, plus dur à tenir. Au prochain recensement, la population change : regarde ce qu’il faut corriger.</Bulle>
+          </div>
+          <div className="row fragment" style={{ alignItems: 'stretch' }}>
+            <Case recit="Tout recopier : ce qu’on évite" ton="bad" className="col">
+              <Mini cols={['librairie', 'commune', 'population']}
+                rows={BOULOGNE.map(([, nom]) => [nom, 'Boulogne-Billancourt', { v: POP('92012'), c: 'hl-bad' }])} />
+              <p className="small" style={{ marginTop: 8 }}>La même population écrite <b>{BOULOGNE.length} fois</b> pour Boulogne : {BOULOGNE.length} cases à corriger, et le jour où l’on en oublie une, deux chiffres se contredisent.</p>
+            </Case>
+            <Case recit="Une seule fois, puis la jointure" ton="good" className="col">
+              <Mini cols={['code_commune 🔑', 'commune', 'population']} rows={[[{ v: '92012', c: 'hl-cle' }, 'Boulogne-Billancourt', { v: POP('92012'), c: 'hl-good' }]]} />
+              <p className="small" style={{ marginTop: 8 }}>La population est écrite <b>une seule fois</b>, chez ceux qui en sont responsables. On corrige une case : les {BOULOGNE.length} librairies suivent.</p>
+            </Case>
+          </div>
+          <div className="row fragment" style={{ marginTop: 16, alignItems: 'center' }}>
+            <div className="col stack" style={{ fontSize: 15.5, gap: 4 }}>
+              <p>🔑 <b>Clé primaire</b> : identifie chaque ligne <i>de sa table</i> (<code>id</code> pour LIBRAIRIE, <code>code_commune</code> pour COMMUNE).</p>
+              <p>🔗 <b>Clé étrangère</b> : la clé d’une <i>autre</i> table, rangée dans la tienne (<code>code_commune</code> dans LIBRAIRIE).</p>
+              <p>1 → N : <b>une</b> commune, <b>plusieurs</b> librairies.</p>
+            </div>
+            <div className="col">
+              <Bulle qui="delos" humeur="content" size={44} droite>Dans Excel, la jointure s’appelle <b>RECHERCHEV</b> : on la fera à l’étape 7. Allez, on construit tout ça, étape par étape.</Bulle>
             </div>
           </div>
         </Planche>
