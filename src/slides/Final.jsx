@@ -6,7 +6,7 @@ import { SOURCE_URL } from '../remi';
 const BASE = import.meta.env.BASE_URL;
 
 const RETENIR = [
-  ['✍️', 'Séparer : j’écris (une table brute) / je fais la synthèse (calculée).'],
+  ['✍️', 'Séparer : j’enregistre (une table brute) / je présente (un onglet calculé).'],
   ['❓', 'Avant la 1re colonne : j’enregistre quoi ? pour quel usage ? je l’ai déjà ailleurs ?'],
   ['1️⃣', '1 ligne = 1 chose · 1 colonne = 1 information · 1 case = 1 valeur.'],
   ['🔤', 'Le bon type, des listes fermées, des codes officiels (INSEE, SIRET…).'],
@@ -18,7 +18,7 @@ const RETENIR = [
 const KIT = [
   ['ressources/cheat_sheet_librairies.docx', '📄 À retenir', 'Cheat sheet', 'Les notions de la séance en 2 pages.', 'blue'],
   ['ressources/guide_construction_librairies.docx', '📘 Pas à pas', 'Guide de construction', 'Comment Rémi a construit son fichier, formule par formule, avec ses prompts.', 'blue'],
-  ['ressources/exercice_aide_memoire.xlsx', '👀 Avant', 'Le fichier de vendredi', 'Le fichier de vendredi : retrouvez les 7 erreurs et reconstruisez la base.', 'bad'],
+  ['ressources/gabarit_base.xlsx', '✏️ À vous', 'Le gabarit', 'Un classeur vierge : saisie · listes · synthese · dictionnaire, prêt à remplir.', 'bad'],
   ['ressources/correction_suivi_librairies.xlsx', '🤖 Après', 'La correction', 'saisie · synthese · communes · listes · dictionnaire, formules incluses.', 'good'],
 ];
 
@@ -36,7 +36,7 @@ export function Final() {
               <Perso qui="delos" humeur="content" size={110} />
             </div>
             <div style={{ background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '16px 20px', fontFamily: '"IBM Plex Serif", serif', fontSize: 24, lineHeight: 1.3, textAlign: 'center', boxShadow: '6px 6px 0 var(--yellow)' }}>
-              Soignez l’écriture,<br />la synthèse suit toute seule.
+              Soignez l’enregistrement,<br />la présentation suit toute seule.
             </div>
           </div>
         </div>

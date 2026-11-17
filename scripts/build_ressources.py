@@ -1,7 +1,7 @@
 """Génère le kit de la formation « Valoriser le potentiel des données » (fil rouge : Rémi et les librairies).
 
 public/ressources/
-  exercice_aide_memoire.xlsx         l'aide-mémoire de Rémi (onglets éclatés, couleurs, listes dans une cellule)
+  gabarit_base.xlsx                  le classeur vierge de l'Ép. 4 (saisie · listes · synthese · dictionnaire)
   correction_suivi_librairies.xlsx   saisie · synthese · communes · listes · dictionnaire (vraies formules)
   cheat_sheet_librairies.docx        les notions en 2 pages
   guide_construction_librairies.docx le pas-à-pas, formule par formule, avec les prompts Delos
@@ -59,90 +59,43 @@ def largeurs(ws, w):
         ws.column_dimensions[col].width = x
 
 
-# ── 1. L'exercice : le fichier de Rémi, fait vendredi à 17 h 45 ─────────────
-# Identique à VA_VITE dans src/remi.js (les slides montrent ce fichier).
-VA_VITE = [
-    ("Boulogne-Billancourt (6)", "Le Comptoir De La Bd", "BD + mangas", "faite (mars ?)", "", False),
-    (None, "Les Curieux", "Religion", "à faire", "", False),
-    (None, "Les Mots Et Les Choses", "Généraliste (LIR)", "12/03", "", True),
-    (None, "Les Mots Et Les Choses Nord", "géné.", "", "2e boutique", False),
-    (None, "Les Mots Et Les Images", "bd", "oui", "", True),
-    (None, "Periples 2", "Généraliste", "rappeler", "", False),
-    ("Chaville (1)", "Librairie De La Pointe", "Généraliste", "à faire", "", False),
-    ("Issy-les-Moulineaux (5)", "Chantelivre", "Généraliste", "faite", "", False),
-    (None, "Gutenberg", "généraliste", "", "", False),
-    (None, "L'Echappee Bulle", "BD-Manga", "à faire", "", False),
-    (None, "Le Livre Et La Tortue", "Généraliste", "2026-03-20", "", True),
-    (None, "Nati", "géné.", "", "", False),
-    ("Meudon (2)", "Anagramme", "Généraliste", "faite (avril)", "même que Sèvres ?", False),
-    (None, "Le Meandre", "Généraliste", "", "", False),
-    ("Sèvres (1)", "Anagramme", "Généraliste", "", "cf. Meudon", False),
-    ("Vanves (1)", "Le Cheval-Vapeur", "Généraliste", "à faire", "", False),
-    ("Ville-d'Avray (1)", "Vert Paradis", "Généraliste", "", "", False),
-]
-
-
-def exercice():
+# ── 1. Le gabarit vierge (Ép. 4 « À vous ! ») ───────────────────────────────
+def gabarit():
+    """Un classeur prêt à remplir : saisie (id + vos attributs) · listes · synthese · dictionnaire."""
     wb = Workbook()
     ws = wb.active
-    ws.title = "Librairies"
-    ws.merge_cells("A1:E1")
-    ws["A1"] = "📚 SUIVI DES LIBRAIRIES DU TERRITOIRE — 2026"
-    ws["A1"].font = Font(bold=True, color="FFFFFF", size=13)
-    ws["A1"].fill = BLEU
-    ws["A1"].alignment = Alignment(horizontal="center")
-    ws.merge_cells("A2:E2")
-    ws["A2"] = "en vert = labellisée · MAJ mars 2026 (à revoir avec Paul)"
-    ws["A2"].font = Font(italic=True, color="888888", size=9)
-    for col, h in zip("ABCDE", ["Ville", "Nom", "Spécialité", "Visite", "Remarques"]):
-        c = ws[f"{col}4"]
-        c.value = h
+    ws.title = "saisie"
+    ws.append(["id", "attribut_1", "attribut_2", "attribut_3", "attribut_4", "annee_suivi"])
+    ws.append(["XXX-001", "", "", "", "", 2026])
+    tab = Table(displayName="T_saisie", ref="A1:F2")
+    tab.tableStyleInfo = TableStyleInfo(name="TableStyleMedium4", showRowStripes=False)
+    ws.add_table(tab)
+    largeurs(ws, (12, 22, 22, 22, 22, 14))
+    ws["H1"] = "Remplacez attribut_1… par vos en-têtes (courts, minuscules, sans espace). Une ligne = une chose."
+    ws["H1"].font = Font(italic=True, color="888888")
+    wl = wb.create_sheet("listes")
+    wl.append(["liste_1", "liste_2"])
+    wl["D1"] = "Une colonne par liste de valeurs autorisées (Données › Validation des données › Liste)."
+    wl["D1"].font = Font(italic=True, color="888888")
+    wsy = wb.create_sheet("synthese")
+    wsy["A1"] = "JE PRÉSENTE — ici, tout est calculé à partir de l'onglet saisie (NB.SI, RECHERCHEV, TCD…). Rien n'est tapé."
+    wsy["A1"].font = Font(bold=True, color="FFFFFF")
+    wsy["A1"].fill = BLEU
+    wsy["A3"], wsy["B3"] = "Nombre de lignes", "=NBVAL(saisie!A:A)-1"
+    largeurs(wsy, (40, 14))
+    wd = wb.create_sheet("dictionnaire")
+    wd.append(["colonne", "signification", "format / valeurs autorisées", "exemple"])
+    wd.append(["id", "identifiant unique, ne change jamais", "XXX + 3 chiffres", "XXX-001"])
+    for c in wd[1]:
         c.font = Font(bold=True)
-        c.fill = PatternFill("solid", fgColor="D9D9D9")
-        c.border = BOX
-    debut = None
-    for i, (ville, nom, spe, visite, rem, vert) in enumerate(VA_VITE):
-        r = 5 + i
-        if ville is not None:
-            if debut is not None and r - 1 > debut:
-                ws.merge_cells(start_row=debut, end_row=r - 1, start_column=1, end_column=1)
-            debut = r
-            ws.cell(r, 1, ville).font = Font(bold=True)
-            ws.cell(r, 1).alignment = Alignment(vertical="center")
-        for j, v in enumerate((nom, spe, visite, rem), 2):
-            ws.cell(r, j, v or None)
-        for j in range(1, 6):
-            ws.cell(r, j).border = BOX
-        if vert:
-            for j in (2, 3):
-                ws.cell(r, j).fill = VERT
-    fin = 5 + len(VA_VITE) - 1
-    if fin > debut:
-        ws.merge_cells(start_row=debut, end_row=fin, start_column=1, end_column=1)
-    ws.cell(fin + 2, 1, "TOTAL").font = Font(bold=True)
-    ws.cell(fin + 2, 2, f"{len(VA_VITE)} librairies").font = Font(bold=True)
-    largeurs(ws, (26, 30, 20, 16, 20))
-    # le récap recopié à la main… et plus à jour (Issy : 4 au lieu de 5)
-    wr = wb.create_sheet("Récap (2)")
-    wr.append(["Commune", "Nb", "Labellisées"])
-    for c in wr[1]:
-        c.font = Font(bold=True)
-    for code, nom, _ in COMMUNES:
-        n = sum(1 for l in LIBS if l["code"] == code) - (1 if code == "92040" else 0)
-        lab = sum(1 for l in LIBS if l["code"] == code and l["label"] != "aucun")
-        wr.append([nom, n, lab or None])
-    wr.append(["TOTAL", "=SUM(B2:B9)", None])
-    wr["A12"] = "copié depuis l'ancienne version, à vérifier"
-    wr["A12"].font = Font(italic=True, color="C00000")
-    largeurs(wr, (24, 8, 12))
-    wb.create_sheet("Feuil1")
-    wb.save(OUT / "exercice_aide_memoire.xlsx")
+    largeurs(wd, (16, 50, 40, 14))
+    wb.save(OUT / "gabarit_base.xlsx")
 
 
 # ── 2. La correction : la base de données de Rémi ───────────────────────────
 def _colonnes(n):
     """Colonnes de l'onglet saisie à l'étape n du tuto de Delos (cf. etapeSaisie dans src/remi.js)."""
-    cols = (["id"] if n >= 6 else []) + ["librairie", "assortiment", "label"]
+    cols = ["id", "librairie", "assortiment", "label"]  # on part de la structure de l'Ép. 2
     cols += (["code_commune"] if n >= 7 else []) + ["commune"] + (["annee_suivi"] if n >= 8 else [])
     return cols
 
@@ -153,7 +106,7 @@ def _vue(ws, cellule, zoom=150):
     ws.sheet_view.selection[0].sqref = cellule
 
 
-SELECTION = {1: "A1", 2: "D3", 3: "C4", 4: "C4", 5: "B2", 6: "A2", 7: "F2", 8: "G2", 9: "B13"}
+SELECTION = {1: "A1", 2: "E3", 3: "D4", 4: "A2", 5: "C2", 6: "A2", 7: "F2", 8: "G2", 9: "B13"}
 
 
 def classeur_tuto(n):
@@ -235,7 +188,7 @@ def _communes(wb):
 
 
 def _synthese(wb):
-    # synthese (je fais la synthèse) : rien n'est saisi, tout est lu dans « saisie »
+    # synthese (je présente) : rien n'est saisi, tout est lu dans « saisie »
     wsy = wb.create_sheet("synthese")
     wsy.merge_cells("A1:E1")
     wsy["A1"] = "TABLEAU DE SUIVI — LIBRAIRIES GPSO"
@@ -358,8 +311,8 @@ PROMPTS = [
 def cheat_sheet():
     d = doc_base("À retenir", "Formation « Valoriser le potentiel des données » — Rémi et les librairies")
     d.add_heading("La chose à retenir", 1)
-    encadre(d, "On sépare « j'écris » (la base de terrain : une table brute, une ligne par fait) de « je fais la synthèse » "
-               "(le bilan : il lit, filtre et compte la base, il ne réécrit rien). Soignez l'écriture, la synthèse suit toute seule.")
+    encadre(d, "On sépare « j'enregistre » (la base : une table brute, une ligne par fait) de « je présente » "
+               "(la synthèse : elle lit, filtre et compte la base, elle ne réécrit rien). Soignez l'enregistrement, la présentation suit toute seule.")
     d.add_heading("1. Qu'est-ce qu'une base de données ?", 1)
     d.add_paragraph("Des informations sur une chose (l'entité : une librairie, un article, une association) et ses "
                     "caractéristiques (les attributs), rangées pour être retrouvées, comptées et mises à jour. "
@@ -375,8 +328,8 @@ def cheat_sheet():
     ])
     d.add_paragraph("Le test de la phrase : « La librairie LIB003, Les Mots et les Choses, généraliste, labellisée LIR, "
                     "est à Boulogne-Billancourt (92012). » Si la ligne se lit en une phrase claire, la table est bien construite.")
-    d.add_heading("3. Deux logiques : j'écris / je fais la synthèse", 1)
-    tableau(d, ["", "J'écris (OLTP)", "Je fais la synthèse (OLAP)"], [
+    d.add_heading("3. Deux logiques : j'enregistre / je présente", 1)
+    tableau(d, ["", "J'enregistre (OLTP)", "Je présente (OLAP)"], [
         ("Principe", "1 fait = 1 ligne", "vue consolidée, agrégée"),
         ("Rythme", "au fil de l'eau", "à la demande"),
         ("Objectif", "ne rien perdre", "comprendre et piloter"),
@@ -398,7 +351,7 @@ def cheat_sheet():
         ("Encodage par la couleur", "le label est du vert : invisible pour la machine, perdu à l'export", "colonne label = LIR · LR · aucun"),
         ("Listes dans une cellule", "« BD + mangas », « Généraliste (LIR) » : comptage impossible", "une information par colonne"),
     ])
-    d.add_paragraph("Racine commune : confondre l'aide-mémoire (fait pour l'œil) et la base de données (faite pour la machine).")
+    d.add_paragraph("Racine commune : confondre le fichier fait pour l'œil (présenter) et la base faite pour la machine (enregistrer).")
     d.add_heading("7. La récompense", 1)
     d.add_paragraph("Une table propre → TCD en 4 clics, filtres instantanés, formules qui se mettent à jour à chaque saisie :")
     code(d, "=NB.SI(saisie!E:E;\"92012\")      =RECHERCHEV(E2;communes!$A:$C;3;0)      =INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))")
@@ -419,11 +372,11 @@ def guide():
     puces(d, ["Q1 — Quelle commune compte le plus de librairies ?", "Q2 — Combien sont labellisées par le ministère ?",
               "Q3 — Quelle commune est la mieux dotée pour 10 000 habitants ?"])
     d.add_heading("La démarche en deux temps", 1)
-    puces(d, ["Temps 1 — J'écris : on construit une table propre, une ligne par librairie (onglet saisie).",
-              "Temps 2 — Je fais la synthèse : on récupère ce que les collègues maintiennent déjà (la population, onglet communes) "
+    puces(d, ["Temps 1 — J'enregistre : on construit une table propre, une ligne par librairie (onglet saisie).",
+              "Temps 2 — Je présente : on récupère ce que les collègues maintiennent déjà (la population, onglet communes) "
               "et on calcule les réponses (onglet synthese)."])
 
-    d.add_heading("TEMPS 1 — J'écris : l'onglet saisie", 1)
+    d.add_heading("TEMPS 1 — J'enregistre : l'onglet saisie", 1)
     d.add_heading("L'entité et ses attributs", 2)
     tableau(d, ["colonne", "type / choix", "rôle"], [
         ("id", "identifiant (LIB001)", "unique, stable, sans signification : deux « ANAGRAMME » existent (Meudon, Sèvres)"),
@@ -444,7 +397,7 @@ def guide():
     d.add_heading("Le test de la phrase", 2)
     encadre(d, "« La librairie LIB003, Les Mots et les Choses, généraliste, labellisée LIR, est à Boulogne-Billancourt (92012), relevé 2026. »")
 
-    d.add_heading("TEMPS 2 — Récupérer, puis faire la synthèse", 1)
+    d.add_heading("TEMPS 2 — Récupérer, puis présenter", 1)
     d.add_heading("La table des collègues : communes", 2)
     d.add_paragraph("La population n'appartient pas à Rémi : les collègues la tiennent à jour dans la table communes "
                     "(code_commune, commune, population). On ne la recopie pas, on la récupère grâce au code commune.")
@@ -504,7 +457,7 @@ def guide():
 
 if __name__ == "__main__":
     import sys
-    exercice()
+    gabarit()
     # La correction livrée contient un onglet TCD ajouté dans le vrai Excel (openpyxl ne sait pas
     # créer de tableau croisé dynamique) : on ne l'écrase que sur demande explicite.
     if "--correction" in sys.argv or not (OUT / "correction_suivi_librairies.xlsx").exists():

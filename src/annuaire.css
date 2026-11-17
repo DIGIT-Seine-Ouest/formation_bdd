@@ -1,0 +1,31 @@
+/* La page usagers : annuaire des librairies (style site public, pas BD) */
+.annuaire { font-family: Roboto, "Segoe UI", sans-serif; color: #1f2933; background: #fff; text-align: left; border: 1px solid #d9e2ec; border-radius: 10px; overflow: hidden; box-shadow: 0 12px 30px rgba(15,76,117,.15); }
+.annuaire header { background: linear-gradient(120deg, #0f4c75, #009fe3); color: #fff; padding: 14px 22px 12px; }
+.annuaire .marque { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .85; }
+.annuaire h1 { font-family: "IBM Plex Serif", serif; font-size: 26px; margin: 2px 0; color: #fff; text-transform: none; }
+.annuaire header p { font-size: 14px; opacity: .95; margin: 0; }
+.annuaire .filtres { display: flex; gap: 10px; padding: 10px 22px 6px; align-items: center; flex-wrap: wrap; }
+.annuaire input[type=search], .annuaire select { font: inherit; font-size: 14px; padding: 6px 10px; border: 1px solid #bcccdc; border-radius: 6px; background: #fff; color: #1f2933; }
+.annuaire input[type=search] { flex: 1; min-width: 180px; }
+.annuaire .bascule { font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.annuaire .communes { display: flex; gap: 6px; flex-wrap: wrap; padding: 4px 22px; }
+.annuaire .communes button { font: inherit; font-size: 13px; border: 1px solid #bcccdc; background: #f0f4f8; border-radius: 999px; padding: 3px 11px; cursor: pointer; color: #243b53; }
+.annuaire .communes button span { background: #d9e2ec; border-radius: 999px; padding: 0 6px; margin-left: 3px; font-size: 11px; }
+.annuaire .communes button.on { background: #009fe3; border-color: #009fe3; color: #fff; }
+.annuaire .communes button.on span { background: rgba(255,255,255,.3); }
+.annuaire .compte { padding: 6px 22px 0; font-size: 13px; color: #627d98; margin: 0; }
+.annuaire .cartes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 8px 22px 10px; max-height: 270px; overflow-y: auto; }
+.annuaire.plein .cartes { max-height: none; }
+.annuaire article { border: 1px solid #d9e2ec; border-left: 4px solid #95c11f; border-radius: 6px; padding: 8px 10px; background: #fff; }
+.annuaire article h3 { font-size: 15px; margin: 0 0 4px; color: #102a43; font-family: Roboto, sans-serif; text-transform: none; letter-spacing: 0; }
+.annuaire .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 4px; }
+.annuaire .tags span { font-size: 11.5px; background: #e6f6fd; color: #0f4c75; border-radius: 4px; padding: 1px 7px; }
+.annuaire .tags span.lab { background: #fff3c4; color: #8d5b00; font-weight: 700; }
+.annuaire .lieu { font-size: 12.5px; color: #486581; margin: 0; }
+.annuaire .vide { grid-column: 1 / -1; color: #627d98; }
+.annuaire footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-top: 1px solid #d9e2ec; padding: 8px 22px; font-size: 12px; color: #627d98; background: #f8fafc; }
+.annuaire footer a { color: #0f4c75; }
+.annuaire footer button { font: inherit; font-size: 12.5px; border: 0; background: #0f4c75; color: #fff; border-radius: 6px; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
+@media (max-width: 720px) { .annuaire .cartes { grid-template-columns: 1fr; } .annuaire footer { flex-direction: column; align-items: flex-start; } }
+body.page-annuaire { margin: 0; background: #f0f4f8; padding: 16px; }
+body.page-annuaire .annuaire { max-width: 1000px; margin: 0 auto; }

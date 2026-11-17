@@ -37,6 +37,8 @@ export const COMMUNES = [
 ];
 
 export const nomCommune = (code) => COMMUNES.find((c) => c[0] === code)[1];
+// Codes postaux (colonne Code_postal de la source), pour la page usagers
+export const CODE_POSTAL = { 92012: '92100', 92022: '92370', 92040: '92130', 92047: '92430', 92048: '92190', 92072: '92310', 92075: '92170', 92077: '92410' };
 
 // La synthèse, calculée comme le ferait l'onglet « synthese » d'Excel
 export const SYNTHESE = COMMUNES.map(([code, nom, pop]) => {
@@ -46,97 +48,23 @@ export const SYNTHESE = COMMUNES.map(([code, nom, pop]) => {
 export const NB_LAB = LIBRAIRIES.filter((l) => l[3] !== 'aucun').length;
 export const fr = (x) => x.toLocaleString('fr-FR');
 
-// Les questions qui arriveront plus tard (Mme Tartempion) : la mission, elle, n’en pose aucune.
+// Les questions de Super Nanny, pour la réunion de 15 h.
 export const QUESTIONS = [
   ['Q1', 'Quelle commune compte le plus de librairies ?'],
   ['Q2', 'Combien sont labellisées par le ministère ?'],
   ['Q3', 'Quelle commune est la mieux dotée pour 10 000 habitants ?'],
 ];
 
-// ── Le fichier de Rémi, fait vendredi à 17 h 45, « vite fait » ──────────────
-// [ville fusionnée (ou null), nom, spécialité, visite, remarques, en vert ?]
-// Identique à public/ressources/exercice_aide_memoire.xlsx
-export const VA_VITE = [
-  ['Boulogne-Billancourt (6)', 'Le Comptoir De La Bd', 'BD + mangas', 'faite (mars ?)', '', false],
-  [null, 'Les Curieux', 'Religion', 'à faire', '', false],
-  [null, 'Les Mots Et Les Choses', 'Généraliste (LIR)', '12/03', '', true],
-  [null, 'Les Mots Et Les Choses Nord', 'géné.', '', '2e boutique', false],
-  [null, 'Les Mots Et Les Images', 'bd', 'oui', '', true],
-  [null, 'Periples 2', 'Généraliste', 'rappeler', '', false],
-  ['Chaville (1)', 'Librairie De La Pointe', 'Généraliste', 'à faire', '', false],
-  ['Issy-les-Moulineaux (5)', 'Chantelivre', 'Généraliste', 'faite', '', false],
-  [null, 'Gutenberg', 'généraliste', '', '', false],
-  [null, "L'Echappee Bulle", 'BD-Manga', 'à faire', '', false],
-  [null, 'Le Livre Et La Tortue', 'Généraliste', '2026-03-20', '', true],
-  [null, 'Nati', 'géné.', '', '', false],
-  ['Meudon (2)', 'Anagramme', 'Généraliste', 'faite (avril)', 'même que Sèvres ?', false],
-  [null, 'Le Meandre', 'Généraliste', '', '', false],
-  ['Sèvres (1)', 'Anagramme', 'Généraliste', '', 'cf. Meudon', false],
-  ['Vanves (1)', 'Le Cheval-Vapeur', 'Généraliste', 'à faire', '', false],
-  ["Ville-d'Avray (1)", 'Vert Paradis', 'Généraliste', '', '', false],
-];
-export const VA_VITE_ONGLETS = ['Librairies', 'Récap (2)', 'Feuil1'];
-const PREMIERE = 5; // les données commencent ligne 5
-export const DERNIERE = PREMIERE + VA_VITE.length + 1; // ligne du TOTAL
-
-// Grille complète (ligne 1 → TOTAL) au format du composant <Excel />
-function grille() {
-  const g = [
-    [{ v: '📚 SUIVI DES LIBRAIRIES DU TERRITOIRE — 2026', c: 'titre', cs: 5 }, null, null, null, null],
-    [{ v: 'en vert = labellisée · MAJ mars 2026 (à revoir avec Paul)', c: 'note', cs: 5 }, null, null, null, null],
-    ['', '', '', '', ''],
-    ['Ville', 'Nom', 'Spécialité', 'Visite', 'Remarques'].map((v) => ({ v, c: 'hh' })),
-  ];
-  VA_VITE.forEach(([ville, nom, spe, visite, rem, vert], i) => {
-    let span = 1;
-    while (VA_VITE[i + span] && VA_VITE[i + span][0] === null) span++;
-    g.push([
-      ville === null ? null : { v: ville, c: 'fusion', rs: span, grp: span },
-      { v: nom, c: vert ? 'vert' : '' }, { v: spe, c: vert ? 'vert' : '' }, visite, rem,
-    ]);
-  });
-  g.push(['', '', '', '', '']);
-  g.push([{ v: 'TOTAL', c: 'gras' }, { v: '17 librairies', c: 'gras' }, '', '', '']);
-  return g;
-}
-
-// Extrait de la grille (lignes de → a), avec cases en erreur et repères numérotés.
-// marques : { A5: 2, … } · err : ['A5', 'B7', …]
-export function vaVite({ de = 1, a = DERNIERE, marques = {}, err = [], marquesFragment = false } = {}) {
-  const g = grille();
-  // début de groupe fusionné pour chaque ligne
-  const tete = {};
-  g.forEach((row, i) => {
-    if (row[0] && row[0].grp) for (let k = 0; k < row[0].grp; k++) tete[i + 1 + k] = i + 1;
-  });
-  const rows = [];
-  for (let r = de; r <= a; r++) {
-    const row = g[r - 1].map((cell, j) => {
-      let c = cell;
-      if (j === 0 && cell === null && tete[r] && r === de) c = { ...g[tete[r] - 1][0] }; // fusion coupée par l’extrait
-      if (c === null) return null;
-      const o = typeof c === 'object' ? { ...c } : { v: c };
-      if (o.grp) o.rs = Math.min(tete[r] + o.grp - 1, a) - r + 1;
-      const cle = 'ABCDE'[j] + r;
-      if (err.includes(cle)) o.c = `${o.c || ''} err`;
-      if (marques[cle]) { o.m = marques[cle]; o.mf = marquesFragment; }
-      return o;
-    });
-    rows.push(row);
-  }
-  return rows;
-}
-
 // ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────
+// Étapes 1 à 8 = « j’enregistre ». L’étape 9 (synthese) = « je présente ».
 // Ce qui vient d’être ajouté à l’étape n est entouré en vert (classe « neuf »).
 const TUTO_LIBS = LIBRAIRIES.slice(0, 6);
 const LARG = { id: 74, librairie: 232, assortiment: 128, label: 66, code_commune: 128, commune: 178, annee_suivi: 112 };
 const NEUF = { 1: 'tout', 2: ['commune'], 3: ['assortiment', 'label'], 4: ['label'], 5: ['assortiment'], 6: ['id'], 7: ['code_commune', 'commune'], 8: ['annee_suivi'] };
 
 export function etapeSaisie(n) {
-  const cols = [];
-  if (n >= 6) cols.push('id');
-  cols.push('librairie', 'assortiment', 'label');
+  // On part de la structure posée à l’Ép. 2 : id, librairie, assortiment, label, commune
+  const cols = ['id', 'librairie', 'assortiment', 'label'];
   if (n >= 7) cols.push('code_commune');
   cols.push('commune');
   if (n >= 8) cols.push('annee_suivi');

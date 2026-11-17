@@ -2,7 +2,7 @@
 // 1. Du réel à la table : la liste de courses devient la table ARTICLE.
 // 2. Rebond : l’entité LIBRAIRIE, construite élément par élément (entité,
 //    attributs, enregistrement, valeur, identifiant) : la suite directe, c’est le tuto.
-// « J’écris ≠ je fais la synthèse » vient plus tard (Ép. 3, avant l’étape 9),
+// « J’enregistre ≠ je présente » vient plus tard (Ép. 3, partie « je présente »),
 // quand Rémi en a besoin ; ici, Delos ne fait que l’annoncer.
 import { Bulle, Case, Mini, Narrateur, Planche } from '../components/BD';
 
@@ -112,7 +112,7 @@ export function Ep2Theorie() {
               </Narrateur>
             </div>
             <div {...F(7)} className="fragment col">
-              <Bulle qui="delos" humeur="content" size={44} droite>Maintenant, on la construit dans Excel, étape par étape. Et le total ? Pas dans la table : on le <b>calculera à part</b>.</Bulle>
+              <Bulle qui="delos" humeur="content" size={44} droite>Maintenant, on la construit dans Excel, étape par étape. Et le total ? Pas dans la table : on le <b>présentera à part</b>.</Bulle>
             </div>
           </div>
         </Planche>

@@ -1,16 +1,16 @@
-// ─── Épisode 3 : le tuto de Delos, étape par étape ─────────────────────────
-// Chaque étape : question de Rémi → théorie courte de Delos → ⚠️ piège (une
-// erreur du « fichier de vendredi ») → 💡 geste Excel, sur la vraie base.
-// Visuel : Excel pour Windows reconstruit en HTML (onglet du ruban, bouton à
-// cliquer entouré, boîtes de dialogue en fragments). Libellés : Excel Windows
-// en français (support.microsoft.com/fr-fr). Avant l’étape 9 : « j’écris ≠ je fais
-// la synthèse » (annoncé à l’Ép. 2). Puis le TCD, puis Mme Tartempion.
-import { Fragment } from 'react';
+// ─── Épisode 3 : le tuto de Delos — J’ENREGISTRE, puis JE PRÉSENTE ─────────
+// Partie 1 « J’enregistre » : on part de la structure posée à l’Ép. 2 (id,
+// librairie, assortiment, label, commune) et on avance ensemble, étape par
+// étape : question de Rémi → théorie de Delos → 📏 la règle → 💡 le geste Excel.
+// Partie 2 « Je présente » : la table n’est pas présentable → j’enregistre ≠ je
+// présente → l’onglet synthese → le TCD → la mise à jour se fait toute seule →
+// Super Nanny a ses réponses en 10 s.
+// Visuels : Excel pour Windows reconstruit en HTML, libellés Microsoft fr-FR.
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import {
   Dialogue, Excel, PanneauTCD, XBoutons, XCase, XChamp, XLabel, XListe, XOnglets, XRadio,
 } from '../components/Excel';
-import { COMMUNES, LIBRAIRIES, NB_LAB, QUESTIONS, SYNTHESE, etapeSaisie } from '../remi';
+import { COMMUNES, LIBRAIRIES, NB_LAB, QUESTIONS, SYNTHESE, etapeSaisie, nomCommune } from '../remi';
 
 const FICHIER = 'correction_suivi_librairies.xlsx';
 const dec = (x) => x.toFixed(2).replace('.', ',');
@@ -18,17 +18,30 @@ const Q1 = SYNTHESE.reduce((a, b) => (b.n > a.n ? b : a));
 const Q3 = SYNTHESE.reduce((a, b) => (b.densite > a.densite ? b : a));
 const ASSORTIMENTS = ['Généraliste', 'BD et Mangas', 'Jeunesse', 'Religion', 'Arts - Musées et Monuments', 'Mieux-être et spiritualité', 'VO', 'Imaginaire - Policier'];
 
-// L’onglet synthese (identique à public/ressources/correction_suivi_librairies.xlsx)
-const SYNTH = [
-  [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 5 }, null, null, null, null],
-  [{ v: 'Librairies suivies', c: 'gras' }, { v: LIBRAIRIES.length, c: 'res' }, '', '', ''],
-  [{ v: 'Labellisées (LIR + LR)', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
-  [{ v: 'code', c: 'h' }, { v: 'commune', c: 'h' }, { v: 'librairies', c: 'h' }, { v: 'population', c: 'h' }, { v: 'pour 10 000 hab.', c: 'h' }],
-  ...SYNTHESE.map((s) => [s.code, { v: s.nom, c: 'calc' }, { v: s.n, c: 'calc' }, { v: s.pop, c: 'calc' }, { v: dec(s.densite), c: 'calc num' }]),
-  [{ v: 'Q1 · le plus de librairies', c: 'gras' }, { v: Q1.nom, c: 'res' }, { v: Q1.n, c: 'res' }, '', ''],
-  [{ v: 'Q2 · labellisées', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
-  [{ v: 'Q3 · pour 10 000 hab.', c: 'gras' }, { v: Q3.nom, c: 'res' }, { v: dec(Q3.densite), c: 'res num' }, '', ''],
-];
+// L’onglet synthese (identique à public/ressources/correction_suivi_librairies.xlsx).
+// ajout = une librairie de plus dans saisie (démonstration de la mise à jour) : les cellules qui changent sont marquées « neuf ».
+function synth({ ajout } = {}) {
+  const libs = ajout ? [...LIBRAIRIES, ajout] : LIBRAIRIES;
+  const s = COMMUNES.map(([code, nom, pop]) => {
+    const n = libs.filter((l) => l[4] === code).length;
+    const avant = SYNTHESE.find((x) => x.code === code).n;
+    return { code, nom, pop, n, d: Math.round((n / pop) * 10000 * 100) / 100, change: n !== avant };
+  });
+  const q1 = s.reduce((a, b) => (b.n > a.n ? b : a));
+  const q3 = s.reduce((a, b) => (b.d > a.d ? b : a));
+  const neuf = (c, on) => (on ? `${c} neuf` : c);
+  return [
+    [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 5 }, null, null, null, null],
+    [{ v: 'Librairies suivies', c: 'gras' }, { v: libs.length, c: neuf('res', !!ajout) }, '', '', ''],
+    [{ v: 'Labellisées (LIR + LR)', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
+    [{ v: 'code', c: 'h' }, { v: 'commune', c: 'h' }, { v: 'librairies', c: 'h' }, { v: 'population', c: 'h' }, { v: 'pour 10 000 hab.', c: 'h' }],
+    ...s.map((x) => [x.code, { v: x.nom, c: 'calc' }, { v: x.n, c: neuf('calc', x.change) }, { v: x.pop, c: 'calc' }, { v: dec(x.d), c: neuf('calc num', x.change) }]),
+    [{ v: 'Q1 · le plus de librairies', c: 'gras' }, { v: q1.nom, c: 'res' }, { v: q1.n, c: 'res' }, '', ''],
+    [{ v: 'Q2 · labellisées', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
+    [{ v: 'Q3 · pour 10 000 hab.', c: 'gras' }, { v: q3.nom, c: 'res' }, { v: dec(q3.d), c: 'res num' }, '', ''],
+  ];
+}
+const LARG_SYNTH = [210, 190, 90, 100, 130];
 
 // Entoure la cellule sélectionnée (ex. « D3 ») ; extra = propriétés ajoutées à la cellule (liste déroulante…)
 function selection(rows, ref, extra = {}) {
@@ -52,17 +65,14 @@ const CMD = {
     { groupe: 'Cellules', items: [['⊞', 'Insérer'], ['⊟', 'Supprimer'], ['▭', 'Format']] }],
   validation: [{ groupe: 'Trier et filtrer', items: [['↕', 'Trier'], ['⏷', 'Filtrer']] },
     { groupe: 'Outils de données', items: [['⫼', 'Convertir'], ['⚡', 'Remplissage instantané'], ['⊟', 'Supprimer les doublons'], ['☑', 'Validation des données', true], ['⊕', 'Consolider']] }],
-  inserer: [{ groupe: 'Presse-papiers', items: [['📋', 'Coller']] },
-    { groupe: 'Cellules', items: [['⊞', 'Insérer', true], ['⊟', 'Supprimer'], ['▭', 'Format']] },
-    { groupe: 'Édition', items: [['Σ', 'Somme automatique'], ['⬇', 'Recopier']] }],
   recherche: [{ groupe: 'Bibliothèque de fonctions', items: [['fx', 'Insérer une fonction'], ['Σ', 'Somme automatique'], ['?', 'Logique'], ['A', 'Texte'], ['🔎', 'Recherche et référence', true], ['…', 'Plus de fonctions']] }],
 };
 
 // ── Les boîtes de dialogue (libellés Excel Windows) ──
 const D_TABLEAU = (
-  <Dialogue titre="Créer un tableau" className="fragment" style={{ left: 300, top: 150, width: 300 }}>
+  <Dialogue titre="Créer un tableau" className="fragment" style={{ left: 330, top: 150, width: 300 }}>
     <XLabel>Où se trouvent les données de votre tableau ?</XLabel>
-    <XChamp focus>=$A$1:$D$18</XChamp>
+    <XChamp focus>=$A$1:$E$18</XChamp>
     <XCase on>Mon tableau comporte des en-têtes</XCase>
     <XBoutons items={[['OK', true], ['Annuler']]} />
   </Dialogue>
@@ -81,7 +91,7 @@ const D_MFC = (
     <XLabel>Modifier la description de la règle :</XLabel>
     <div className="xd-cadre">
       <XLabel>Appliquer une mise en forme aux valeurs pour lesquelles cette formule est vraie :</XLabel>
-      <XChamp focus>=$C2="LIR"</XChamp>
+      <XChamp focus>=$D2="LIR"</XChamp>
       <div className="xd-apercu"><span>Aperçu :</span><span className="ap">AaBbCcYyZz</span><span className="xd-boutons" style={{ margin: 0 }}><span className="b">Format...</span></span></div>
     </div>
     <XBoutons items={[['OK', true], ['Annuler']]} />
@@ -104,8 +114,8 @@ const D_VALIDATION = (
   </Dialogue>
 );
 const D_ALERTE = (
-  <Dialogue titre="Valeur non autorisée" className="fragment" style={{ left: 150, top: 175, width: 400 }}>
-    <div className="xd-alerte"><span className="ic">✕</span><span>Choisissez une valeur de la liste (onglet listes).<br /><i style={{ color: '#666' }}>Rémi vient de taper « géné. » en B3.</i></span></div>
+  <Dialogue titre="Valeur non autorisée" className="fragment" style={{ left: 200, top: 175, width: 400 }}>
+    <div className="xd-alerte"><span className="ic">✕</span><span>Choisissez une valeur de la liste (onglet listes).<br /><i style={{ color: '#666' }}>Rémi vient de taper « géné. » en C3.</i></span></div>
     <XBoutons items={[['Réessayer', true], ['Annuler'], ['Aide']]} />
   </Dialogue>
 );
@@ -119,71 +129,72 @@ const D_COMMUNES = (
   </div>
 );
 
+// ── Partie 1 : J’ENREGISTRE (étapes 1 à 8) ; l’étape 9 ouvre « je présente » ──
 const ETAPES = [
   {
-    titre: 'Partir des objectifs : les en-têtes', cel: 'A1', formule: 'librairie',
+    titre: 'On part de la structure : les en-têtes', cel: 'A1', formule: 'id',
     remi: 'Je commence par un joli titre en haut ?',
-    delos: <>Non : tu pars des <b>4 objectifs</b> du mail. Par commune → <b>commune</b> ; labellisées → <b>label</b> ; spécialités → <b>assortiment</b> ; et la <b>librairie</b> elle-même. La population ? On ira la chercher (étape 7).</>,
-    piege: <>Un <b>titre et une note au-dessus du tableau</b> : je lis la ligne 1 comme une librairie nommée « 📚 SUIVI DES… », et la ligne 3 comme une librairie sans nom.</>,
-    geste: <>Ligne 1 = les en-têtes, et rien d’autre : courts, en minuscules, sans espace. Le titre va dans le nom de l’onglet (<code>saisie</code>) ou du fichier.</>,
+    delos: <>Non : on part de la structure qu’on vient de poser. <b>id</b>, <b>librairie</b>, <b>assortiment</b>, <b>label</b>, <b>commune</b> : cinq en-têtes en ligne 1, et c’est tout. La population ? On ira la chercher (étape 7).</>,
+    regle: <>La ligne 1 contient les en-têtes, et rien d’autre : pas de titre au-dessus, pas de ligne vide.</>,
+    geste: <>Taper les 5 en-têtes en A1:E1 : courts, en minuscules, sans espace. Le titre va dans le nom de l’onglet : double-clic sur « Feuil1 » › <code>saisie</code>.</>,
   },
   {
-    titre: 'Une ligne = une librairie', cel: 'D3', formule: 'Boulogne-Billancourt', ruban: 'Insertion', commandes: CMD.tableau, dialogue: D_TABLEAU,
+    titre: 'Une ligne = une librairie', cel: 'E3', formule: 'Boulogne-Billancourt', ruban: 'Insertion', commandes: CMD.tableau, dialogue: D_TABLEAU,
     remi: 'Six librairies à Boulogne : je fusionne la ville, c’est plus aéré ?',
     delos: <>Chaque ligne doit se lire <b>toute seule</b>. On répète la commune sur chaque ligne : ça ne coûte rien, et je peux trier, filtrer, compter.</>,
-    piege: <>Les <b>cellules fusionnées</b> : pour moi, seule la 1re ligne est à Boulogne, les cinq autres n’ont pas de ville. Et Excel refuse de trier.</>,
+    regle: <>Un enregistrement = une ligne complète. Jamais de cellules fusionnées : la commune est répétée.</>,
     geste: <><span className="raccourci">Ctrl + T</span> (ou Insertion › <b>Tableau</b>) › « Mon tableau comporte des en-têtes » › OK. Filtres inclus, et le tableau s’agrandit tout seul.</>,
   },
   {
-    titre: 'Une case = une information', cel: 'C4', formule: 'LIR',
-    remi: '« Généraliste (LIR) », c’est complet, non ?',
+    titre: 'Une case = une information', cel: 'D4', formule: 'LIR',
+    remi: 'Et si j’écris « Généraliste (LIR) », c’est plus complet, non ?',
     delos: <>C’est <b>deux réponses à deux questions</b>. Le label a sa propre colonne. Recoller deux colonnes, Excel le fait en une formule ; redécouper un texte libre, presque jamais.</>,
-    piege: <><b>Deux infos dans une case</b> : « Généraliste (LIR) », « Boulogne-Billancourt (6) »… et un comptage tapé à la main, faux dès la prochaine ligne.</>,
-    geste: <>Le test : si tu écris « et », une virgule ou des parenthèses dans une case, il te manque une colonne.</>,
+    regle: <>Une valeur par case. Si on a envie d’écrire « et », une virgule ou des parenthèses, il manque une colonne.</>,
+    geste: <>Chaque information dans sa colonne : « Généraliste » en <code>assortiment</code>, « LIR » en <code>label</code>. Pour les recoller à l’affichage : <code>=C4&amp;" ("&amp;D4&amp;")"</code>.</>,
   },
   {
-    titre: 'Rien dans la couleur', cel: 'A2', formule: 'LE COMPTOIR DE LA BD', ruban: 'Accueil', commandes: CMD.mfc, dialogue: D_MFC, dialogueLarge: 330,
+    titre: 'Rien dans la couleur', cel: 'A2', formule: 'LIB001', ruban: 'Accueil', commandes: CMD.mfc, dialogue: D_MFC, dialogueLarge: 330,
     remi: 'Je peux quand même mettre en vert les labellisées ?',
     delos: <>Oui, si c’est la <b>colonne label</b> qui décide. Moi, je ne vois pas les couleurs. Le CSV et l’imprimante noir et blanc non plus.</>,
-    piege: <>Le <b>vert mis à la main</b> : l’information n’existe que pour l’œil. Impossible de compter les labellisées.</>,
-    geste: <>Sélectionner A2:D18 › Accueil › <b>Mise en forme conditionnelle</b> › Nouvelle règle › « Utiliser une formule… » › <code>=$C2="LIR"</code> › Format… › Remplissage vert.</>,
+    regle: <>Une information ne vit jamais dans une couleur : la couleur se calcule à partir d’une colonne.</>,
+    geste: <>Sélectionner A2:E18 › Accueil › <b>Mise en forme conditionnelle</b> › Nouvelle règle › « Utiliser une formule… » › <code>=$D2="LIR"</code> › Format… › Remplissage vert.</>,
   },
   {
-    titre: 'Des valeurs contrôlées', cel: 'B2', formule: 'BD et Mangas', ruban: 'Données', commandes: CMD.validation, dialogue: <>{D_VALIDATION}{D_ALERTE}</>, dialogueLarge: 280,
+    titre: 'Des valeurs contrôlées', cel: 'C2', formule: 'BD et Mangas', ruban: 'Données', commandes: CMD.validation, dialogue: <>{D_VALIDATION}{D_ALERTE}</>, dialogueLarge: 280,
     liste: ASSORTIMENTS,
     remi: '« géné. », « Généraliste »… tout le monde comprend, non ?',
     delos: <>Pas moi : « bd », « BD + mangas » et « BD-Manga », ça me fait <b>trois spécialités</b>. Ce qui se répète se <b>choisit</b> dans une liste, ça ne se tape pas.</>,
-    piege: <><b>Des valeurs écrites à la main</b> : trois orthographes pour la BD, et une colonne Visite qui mélange dates, « oui » et « à faire ».</>,
+    regle: <>Ce qui se répète se choisit dans une liste fermée : une seule orthographe, et des comptages justes.</>,
     geste: <>Un onglet <code>listes</code>, puis Données › <b>Validation des données</b> › Autoriser : Liste › Source <code>=listes!$A$2:$A$12</code>. Onglet « Alerte d’erreur » : le message affiché en cas de faute.</>,
   },
   {
-    titre: 'Un identifiant', cel: 'A2', formule: 'LIB001', ruban: 'Accueil', commandes: CMD.inserer,
-    remi: 'Le nom de la librairie, ça suffit pour la retrouver ?',
-    delos: <>Tu as <b>deux « Anagramme »</b>, une à Meudon, une à Sèvres. Il faut une clé <b>unique, stable, sans signification</b> : LIB013 et LIB015.</>,
-    piege: <><b>Pas d’identifiant</b> : Rémi a lui-même noté « même que Sèvres ? » dans ses remarques.</>,
-    geste: <>Clic droit sur la colonne A › <b>Insérer</b>. Taper <code>id</code>, LIB001, LIB002, puis tirer la poignée de recopie. Jamais « Anagramme-Meudon » : si elle déménage, l’identifiant ment.</>,
+    titre: 'Un identifiant vraiment unique', cel: 'A2', formule: 'LIB001', ruban: 'Accueil', commandes: CMD.mfc,
+    remi: 'Les id, c’est vraiment utile ? Le nom suffit, non ?',
+    delos: <>Tu as <b>deux « Anagramme »</b>, une à Meudon, une à Sèvres. Sans clé, je ne sais pas laquelle tu modifies. LIB013 et LIB015 : <b>unique, stable, sans signification</b>.</>,
+    regle: <>Un identifiant par ligne, qui ne change jamais. Jamais « Anagramme-Meudon » : si elle déménage, l’identifiant ment.</>,
+    geste: <>Vérifier : sélectionner la colonne A › Accueil › Mise en forme conditionnelle › Règles de mise en surbrillance des cellules › <b>Valeurs en double</b>. Rien ne s’allume ? Chaque id est unique.</>,
   },
   {
     titre: 'Ne pas recopier : la jointure', cel: 'F2', formule: '=RECHERCHEV(E2;communes!$A:$B;2;0)', ruban: 'Formules', commandes: CMD.recherche, dialogue: D_COMMUNES, dialogueLarge: 170,
     aide: 'RECHERCHEV(valeur_cherchée; table_matrice; no_index_col; [valeur_proche])',
     remi: 'Et la population, pour les 10 000 habitants, je la recopie ?',
     delos: <>Surtout pas. Les collègues tiennent la table <b>communes</b> à jour. Tu saisis le <b>code commune</b>, et tu <b>récupères</b> le reste.</>,
-    piege: <><b>Retaper ce qui existe ailleurs</b> : une faute de frappe, une population périmée… et deux versions qui finissent par se contredire.</>,
+    regle: <>Ce qui existe ailleurs se récupère, ne se recopie pas : on saisit le code, Excel va chercher le reste.</>,
     geste: <><code>=RECHERCHEV(E2;communes!$A:$B;2;0)</code> : quoi je cherche ; où ; quelle colonne je renvoie ; 0 = exactement. code_commune au format <b>Texte</b>.</>,
   },
   {
     titre: 'Le temps est une colonne', cel: 'G2', formule: '2026',
     remi: 'Et l’an prochain, je crée un onglet « 2027 » ?',
-    delos: <>Non : des <b>lignes en plus</b>, avec une colonne <b>annee_suivi</b>. Un seul tableau, et la synthèse compare les années toute seule.</>,
-    piege: <><b>Un onglet par année</b> : impossible de comparer, et chaque onglet finit par raconter autre chose.</>,
+    delos: <>Non : des <b>lignes en plus</b>, avec une colonne <b>annee_suivi</b>. Un seul tableau, et la présentation compare les années toute seule.</>,
+    regle: <>Le temps est une colonne : des lignes en plus chaque année, jamais un onglet par année.</>,
     geste: <>Une colonne <code>annee_suivi</code> = 2026. En 2027, on colle les nouvelles lignes sous le tableau : il s’agrandit tout seul.</>,
   },
   {
-    titre: 'Je fais la synthèse', cel: 'B13', formule: '=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))', compact: true,
-    vue: { rows: SYNTH, largeurs: [210, 190, 90, 100, 130] },
-    remi: 'Et les totaux, je les tape où ?',
-    delos: <>Nulle part. L’onglet <b>synthese</b> ne contient que des formules : il <b>lit</b> l’onglet saisie. Une ligne de plus ? Tout se recalcule.</>,
-    piege: <>Le <b>TOTAL tapé à la main</b> et le « Récap (2) » recopié : il dit 4 librairies à Issy. Il y en a 5.</>,
+    titre: 'Je présente : l’onglet synthese', cel: 'B13', formule: '=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))', compact: true,
+    vue: { rows: synth(), largeurs: LARG_SYNTH },
+    remi: 'Ici, j’ai le droit aux couleurs et aux titres ?',
+    delos: <>Ici, oui ! C’est l’onglet fait pour <b>l’œil</b>. Mais il ne contient que des formules : il <b>lit</b> l’onglet saisie. Rien n’y est tapé.</>,
+    regle: <>Présenter, c’est calculer : titres, couleurs et totaux sont permis… à condition que tout vienne de saisie.</>,
     geste: <>Quatre formules à connaître : <code>NBVAL</code>, <code>NB.SI</code>, <code>RECHERCHEV</code>, <code>INDEX/EQUIV</code>. Et sans formule ? Le TCD, juste après.</>,
   },
 ];
@@ -195,7 +206,7 @@ function Etape({ e, n }) {
   return (
     <section>
       <div className="planche-head">
-        <span className="ep">Étape {n}/{ETAPES.length}</span>
+        <span className="ep">{n <= 8 ? `J’enregistre · ${n}/8` : 'Je présente'}</span>
         <h2>{e.titre}</h2>
       </div>
       <div className="row" style={{ marginBottom: 10 }}>
@@ -212,39 +223,65 @@ function Etape({ e, n }) {
         </div>
       </div>
       <div className="row" style={{ marginTop: 10, alignItems: 'stretch' }}>
-        <div className="etape-piege col fragment">⚠️ <b>Le piège du fichier de vendredi.</b> {e.piege}</div>
+        <div className="etape-regle col fragment">📏 <b>La règle.</b> {e.regle}</div>
         <div className="etape-tip col fragment"><div>{e.geste}</div></div>
       </div>
     </section>
   );
 }
 
-// La chose à retenir, au moment où Rémi en a besoin : avant de faire ses totaux.
+// ── Partie 2 : JE PRÉSENTE ──
+function PasPresentable() {
+  const brut = etapeSaisie(8);
+  return (
+    <section>
+      <div className="planche-head">
+        <span className="ep">Je présente</span>
+        <h2>J’ai enregistré. Maintenant, je présente… ça ?</h2>
+      </div>
+      <div className="row" style={{ marginBottom: 10 }}>
+        <Bulle qui="remi" humeur="content" size={46} className="col">Tout est enregistré ! Pour la Direction de la Culture, j’envoie l’onglet saisie ?</Bulle>
+        <Bulle qui="delos" humeur="surpris" size={46} droite className="col fragment">Tel quel ? Des codes, des majuscules, pas un total, pas un graphique. C’est parfait pour <b>enregistrer</b>. Pas pour <b>présenter</b>.</Bulle>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: brut.largeurs.reduce((a, b) => a + b, 36), maxWidth: '100%', position: 'relative' }}>
+          <Excel fichier={FICHIER} onglets={['saisie', 'listes', 'communes']} cellule="A1" formule="id" largeurs={brut.largeurs}
+            rows={brut.rows.map((r) => r.map((c) => (typeof c === 'object' && c !== null ? { ...c, c: (c.c || '').replace('neuf', '') } : c)))} />
+          <div className="tampon fragment">Pas présentable</div>
+        </div>
+      </div>
+      <div className="row" style={{ marginTop: 10 }}>
+        <Bulle qui="remi" humeur="stress" size={44} className="col fragment">Alors j’ajoute des couleurs, un titre et un total en bas ?</Bulle>
+        <Bulle qui="delos" humeur="content" size={44} droite className="col fragment">Surtout pas ici : tu casserais tout ce qu’on vient de construire. On présente <b>à part</b>, dans un autre onglet.</Bulle>
+      </div>
+    </section>
+  );
+}
+
 function Retenir() {
   return (
     <section>
-      <Planche ep="Ép. 3" titre="La chose à retenir : j’écris ≠ je fais la synthèse">
+      <Planche ep="Ép. 3" titre="La chose à retenir : j’enregistre ≠ je présente">
         <div className="row" style={{ marginBottom: 14 }}>
-          <Bulle qui="remi" humeur="content" size={50} className="col">Ma table est propre ! Et les totaux pour la Direction de la Culture, je les mets en bas ?</Bulle>
-          <Bulle qui="delos" humeur="surpris" size={50} droite className="col fragment">Surtout pas. Ta liste de courses, c’est « j’écris ». Le total du ticket de caisse, c’est « je fais la synthèse ». Personne ne recopie son ticket au bas de sa liste.</Bulle>
+          <Bulle qui="remi" humeur="neutre" size={50} className="col">Deux onglets pour les mêmes données ?</Bulle>
+          <Bulle qui="delos" humeur="content" size={50} droite className="col fragment">Deux usages. Ta liste de courses, tu l’<b>enregistres</b>. Le ticket de caisse <b>présente</b> le total. Personne ne recopie son ticket au bas de sa liste.</Bulle>
         </div>
         <Case className="fragment">
           <table className="logiques">
-            <thead><tr><th /><th style={{ color: 'var(--blue)' }}>✍️ J’écris</th><th style={{ color: 'var(--green-dark)' }}>📊 Je fais la synthèse</th></tr></thead>
+            <thead><tr><th /><th style={{ color: 'var(--blue)' }}>✍️ J’enregistre</th><th style={{ color: 'var(--green-dark)' }}>📊 Je présente</th></tr></thead>
             <tbody>
-              <tr><td>Principe</td><td>1 fait = 1 ligne, brute</td><td>une vue consolidée, calculée</td></tr>
-              <tr><td>Pour qui ?</td><td>la machine : pas de couleur, pas de total</td><td>l’œil : couleurs, totaux, graphiques</td></tr>
+              <tr><td>Principe</td><td>1 fait = 1 ligne, brute</td><td>une vue calculée, mise en forme</td></tr>
+              <tr><td>Pour qui ?</td><td>la machine : pas de couleur, pas de total</td><td>l’œil : titres, couleurs, totaux, graphiques</td></tr>
               <tr><td>Les courses</td><td>la liste</td><td>le ticket de caisse</td></tr>
-              <tr><td>Chez Rémi</td><td>l’onglet <code>saisie</code> (étapes 1 à 8)</td><td>l’onglet <code>synthese</code> (étape 9)</td></tr>
+              <tr><td>Chez Rémi</td><td>l’onglet <code>saisie</code></td><td>l’onglet <code>synthese</code> et le TCD</td></tr>
             </tbody>
           </table>
         </Case>
         <div className="fragment" style={{ marginTop: 18, textAlign: 'center' }}>
           <div style={{ display: 'inline-block', background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '12px 24px', fontFamily: '"IBM Plex Serif", serif', fontSize: 24, boxShadow: '6px 6px 0 var(--yellow)' }}>
-            Soignez l’écriture, la synthèse suit toute seule.
+            Soignez l’enregistrement, la présentation suit toute seule.
           </div>
         </div>
-        <p className="tiny muted fragment" style={{ marginTop: 10 }}>Pour les curieux, les vrais noms : OLTP (écriture) et OLAP (analyse).</p>
       </Planche>
     </section>
   );
@@ -258,69 +295,111 @@ const PIVOT = [
   [{ v: 'Total général', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }],
 ];
 
+function TCD() {
+  return (
+    <section>
+      <div className="planche-head">
+        <span className="ep">Je présente</span>
+        <h2>Sans formule : le tableau croisé dynamique</h2>
+      </div>
+      <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', justifyContent: 'center' }}>
+        <div className="fragment" style={{ width: 360, flexShrink: 0 }}>
+          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>① Insertion › Tableau croisé dynamique</p>
+          <Dialogue titre="Tableau croisé dynamique à partir d’un tableau ou d’une plage" style={{ position: 'relative', width: '100%' }}>
+            <XLabel>Sélectionnez une table ou une plage</XLabel>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Tableau/Plage :</span><div style={{ flex: 1 }}><XChamp focus>T_saisie</XChamp></div></div>
+            <XLabel>Choisissez l’emplacement du tableau croisé dynamique</XLabel>
+            <XRadio on>Nouvelle feuille de calcul</XRadio>
+            <XRadio>Feuille de calcul existante</XRadio>
+            <XLabel>Choisissez si vous souhaitez analyser plusieurs tables</XLabel>
+            <XCase>Ajouter ces données au modèle de données</XCase>
+            <XBoutons items={[['OK', true], ['Annuler']]} />
+          </Dialogue>
+        </div>
+        <div className="fragment" style={{ width: 640, flexShrink: 0 }}>
+          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ c’est compté</p>
+          <Excel fichier={FICHIER} onglets={['TCD', 'saisie', 'listes', 'communes', 'synthese']} cellule="B4" formule="6"
+            ruban="Analyse du tableau croisé dynamique" contexte={['Analyse du tableau croisé dynamique', 'Création']}
+            largeurs={[200, 120]} rows={PIVOT}
+            panneau={<PanneauTCD champs={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']} coches={['id', 'commune']} lignes={['commune']} valeurs={['Nombre de id']} />} />
+        </div>
+      </div>
+      <div className="row" style={{ marginTop: 10, alignItems: 'center' }}>
+        <Bulle qui="remi" humeur="stress" size={40} className="col">INDEX, EQUIV… Il n’y a pas plus simple ?</Bulle>
+        <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. <code>T_saisie</code> est reconnu tout seul. Il ne marche que sur une table propre… comme la tienne.</Bulle>
+      </div>
+    </section>
+  );
+}
+
+// La démonstration : une ligne de plus dans saisie, la présentation suit toute seule
+const AJOUT = ['LIB018', 'NOUVELLE LIBRAIRIE (exemple)', 'Généraliste', 'aucun', '92075'];
+const SAISIE_FIN = [
+  ...LIBRAIRIES.slice(14).map(([id, nom, a, l, code]) => [id, nom, a, l, { v: code, c: 'bleu' }, { v: nomCommune(code), c: 'calc' }, 2026]),
+  [{ v: AJOUT[0], c: 'neuf sel' }, { v: AJOUT[1], c: 'neuf' }, { v: AJOUT[2], c: 'neuf' }, { v: AJOUT[3], c: 'neuf' }, { v: AJOUT[4], c: 'neuf bleu' }, { v: 'Vanves', c: 'neuf calc' }, { v: 2026, c: 'neuf' }],
+];
+
+function MiseAJour() {
+  return (
+    <section>
+      <div className="planche-head">
+        <span className="ep">Je présente</span>
+        <h2>La mise à jour se fait toute seule</h2>
+      </div>
+      <div className="row" style={{ alignItems: 'flex-start' }}>
+        <div className="stack" style={{ width: 300, flexShrink: 0, gap: 12 }}>
+          <Bulle qui="remi" humeur="stress" size={44}>Une librairie ouvre à Vanves <i>(exemple)</i>. Je refais toute ma présentation ?</Bulle>
+          <Bulle qui="delos" humeur="content" size={44} droite className="fragment">Tu ajoutes <b>une ligne</b> dans saisie. C’est tout.</Bulle>
+          <Bulle qui="remi" humeur="surpris" size={44} className="fragment">… 17 → 18, Vanves 1 → 2. Tout seul ?!</Bulle>
+          <div className="fragment" style={{ background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '10px 14px', fontFamily: '"IBM Plex Serif", serif', fontSize: 18, boxShadow: '5px 5px 0 var(--yellow)' }}>
+            Enregistrer d’un côté, présenter de l’autre : chaque mise à jour se propage toute seule. Le TCD ? Clic droit › Actualiser.
+          </div>
+        </div>
+        <div className="col stack" style={{ gap: 10, minWidth: 0 }}>
+          <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} cellule="A19" formule="LIB018"
+            entetes={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']}
+            largeurs={[60, 200, 92, 46, 92, 112, 76]} debut={16} rows={SAISIE_FIN} />
+          <div className="fragment">
+            <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="B2" formule="=NBVAL(saisie!A:A)-1"
+              largeurs={[176, 160, 70, 80, 110]} rows={synth({ ajout: AJOUT }).slice(0, 12)} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function Ep3Tuto() {
   return (
     <>
-      <Chapitre fond="#0f4c75" ep="Épisode 3" titre="Le tuto de Delos" sous="Neuf étapes. Rémi pose la question, Delos explique, le fichier de vendredi montre le piège." promesse="⏱ Gagner du temps" />
+      <Chapitre fond="#0f4c75" ep="Épisode 3" titre="Le tuto de Delos" sous="On part de la structure, et on avance ensemble : d’abord j’enregistre, ensuite je présente." promesse="⏱ Gagner du temps" />
 
-      {ETAPES.map((e, i) => (
-        <Fragment key={e.titre}>
-          {i === 8 && <Retenir />}
-          <Etape e={e} n={i + 1} />
-        </Fragment>
-      ))}
+      {ETAPES.slice(0, 8).map((e, i) => <Etape key={e.titre} e={e} n={i + 1} />)}
 
-      <section>
-        <div className="planche-head">
-          <span className="ep">Bonus</span>
-          <h2>Sans formule : le tableau croisé dynamique</h2>
-        </div>
-        <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', justifyContent: 'center' }}>
-          <div className="fragment" style={{ width: 360, flexShrink: 0 }}>
-            <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>① Insertion › Tableau croisé dynamique</p>
-            <Dialogue titre="Tableau croisé dynamique à partir d’un tableau ou d’une plage" style={{ position: 'relative', width: '100%' }}>
-              <XLabel>Sélectionnez une table ou une plage</XLabel>
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Tableau/Plage :</span><div style={{ flex: 1 }}><XChamp focus>T_saisie</XChamp></div></div>
-              <XLabel>Choisissez l’emplacement du tableau croisé dynamique</XLabel>
-              <XRadio on>Nouvelle feuille de calcul</XRadio>
-              <XRadio>Feuille de calcul existante</XRadio>
-              <XLabel>Choisissez si vous souhaitez analyser plusieurs tables</XLabel>
-              <XCase>Ajouter ces données au modèle de données</XCase>
-              <XBoutons items={[['OK', true], ['Annuler']]} />
-            </Dialogue>
-          </div>
-          <div className="fragment" style={{ width: 640, flexShrink: 0 }}>
-            <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ c’est compté</p>
-            <Excel fichier={FICHIER} onglets={['TCD', 'saisie', 'listes', 'communes', 'synthese']} cellule="B4" formule="6"
-              ruban="Analyse du tableau croisé dynamique" contexte={['Analyse du tableau croisé dynamique', 'Création']}
-              largeurs={[200, 120]} rows={PIVOT}
-              panneau={<PanneauTCD champs={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']} coches={['id', 'commune']} lignes={['commune']} valeurs={['Nombre de id']} />} />
-          </div>
-        </div>
-        <div className="row" style={{ marginTop: 10, alignItems: 'center' }}>
-          <Bulle qui="remi" humeur="stress" size={40} className="col">INDEX, EQUIV… Il n’y a pas plus simple ?</Bulle>
-          <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. <code>T_saisie</code> est reconnu tout seul. Nouvelle librairie ? Clic droit › <b>Actualiser</b>.</Bulle>
-        </div>
-      </section>
+      <PasPresentable />
+      <Retenir />
+      <Etape e={ETAPES[8]} n={9} />
+      <TCD />
+      <MiseAJour />
 
       <section>
         <Planche ep="Ép. 3" titre="Mardi, 14 h 02 : les questions arrivent">
           <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr 1.1fr', gap: 18 }}>
             <Case>
-              <Bulle qui="tartempion" humeur="stress" size={60}>Rémi ! Pour la réunion de 15 h, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
+              <Bulle qui="nanny" humeur="stress" size={60}>Rémi ! Pour la réunion de 15 h, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
             </Case>
             <Case className="fragment center">
               <Bulle qui="remi" humeur="content" size={60}>Q1 : {Q1.nom.split('-')[0]}, {Q1.n}. Q2 : {NB_LAB}. Q3 : {Q3.nom}.</Bulle>
               <p className="sfx" style={{ fontSize: 46, marginTop: 14 }}>10 secondes !</p>
             </Case>
             <Case className="fragment">
-              <Bulle qui="tartempion" humeur="surpris" size={60}>{Q3.nom} ?!</Bulle>
+              <Bulle qui="nanny" humeur="surpris" size={60}>{Q3.nom} ?!</Bulle>
               <div style={{ height: 12 }} />
-              <Bulle qui="delos" humeur="content" size={60} droite>Une librairie pour {COMMUNES.find((c) => c[0] === Q3.code)[2].toLocaleString('fr-FR')} habitants. Les chiffres ne mentent pas. Les cellules fusionnées, si.</Bulle>
+              <Bulle qui="delos" humeur="content" size={60} droite>Une librairie pour {COMMUNES.find((c) => c[0] === Q3.code)[2].toLocaleString('fr-FR')} habitants. Les chiffres ne mentent pas.</Bulle>
             </Case>
           </div>
           <Narrateur className="fragment" style={{ marginTop: 22 }}>
-            Avec le fichier de vendredi, il aurait fallu tout recompter à la main. Avec la base, 10 secondes. Et l’an prochain, Rémi colle ses lignes 2027 sous le tableau : la synthèse se met à jour toute seule.
+            Enregistré proprement, présenté à part : 10 secondes pour répondre. Et l’an prochain, Rémi colle ses lignes 2027 sous le tableau : la présentation se met à jour toute seule.
           </Narrateur>
         </Planche>
       </section>

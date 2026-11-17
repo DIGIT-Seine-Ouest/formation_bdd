@@ -1,9 +1,9 @@
 // Les personnages de la BD, dessinés en SVG (pas de photo : le site est public).
-// <Perso qui="remi|tartempion|delos|digit" humeur="neutre|content|stress|surpris" size={72} />
+// <Perso qui="remi|nanny|delos|digit" humeur="neutre|content|stress|surpris" size={72} />
 import { useId } from 'react';
 
-export const NOMS = { remi: 'Rémi', tartempion: 'Mme Tartempion', delos: 'Delos', digit: 'La DIGIT' };
-const FOND = { remi: '#cfeefe', tartempion: '#fde2e4', delos: '#d7f3f1', digit: '#e3f5c8' };
+export const NOMS = { remi: 'Rémi', nanny: 'Super Nanny', delos: 'Delos', digit: 'La DIGIT' };
+const FOND = { remi: '#cfeefe', nanny: '#fde2e4', delos: '#d7f3f1', digit: '#e3f5c8' };
 
 function Bouche({ h, x = 60, y = 68, couleur = '#7a3b2e' }) {
   if (h === 'content') return <path d={`M${x - 8} ${y - 2} Q${x} ${y + 7} ${x + 8} ${y - 2}`} stroke={couleur} strokeWidth="2.4" fill="none" strokeLinecap="round" />;
@@ -64,7 +64,7 @@ function Remi({ h }) {
   );
 }
 
-function Tartempion({ h }) {
+function Nanny({ h }) {
   return (
     <>
       <path d="M12 122 C14 95 34 86 60 86 C86 86 106 95 108 122 Z" fill="#1e3a5f" stroke="#1f1f1f" strokeWidth="2" />
@@ -123,7 +123,7 @@ function Digit({ h }) {
   );
 }
 
-const DESSIN = { remi: Remi, tartempion: Tartempion, delos: Delos, digit: Digit };
+const DESSIN = { remi: Remi, nanny: Nanny, delos: Delos, digit: Digit };
 
 export function Perso({ qui, humeur = 'neutre', size = 72, nu = false }) {
   const id = useId().replace(/:/g, '');

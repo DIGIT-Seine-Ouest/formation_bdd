@@ -11,12 +11,13 @@
 // commandes : [{ groupe, items: [[icône, libellé, actif?], …] }] → une ligne de ruban, le bouton actif est entouré
 // panneau : contenu affiché à droite de la grille (ex. <PanneauTCD />)
 // children : boîtes de dialogue posées par-dessus la fenêtre (position absolue)
+// entetes : remplace A, B, C… (Excel affiche les en-têtes du tableau quand on fait défiler un tableau)
 const LETTRES = 'ABCDEFGHIJKLMNOP';
 const ONGLETS_RUBAN = ['Fichier', 'Accueil', 'Insertion', 'Dessin', 'Mise en page', 'Formules', 'Données', 'Révision', 'Affichage', 'Aide'];
 
 export function Excel({
   fichier, onglets = ['Feuil1'], actif = 0, cellule = 'A1', formule = '', largeurs = [], rows, debut = 1, maxH, compact = false,
-  ongletErr, ruban = 'Accueil', contexte = [], commandes, aide, panneau, zoom = 100, children,
+  ongletErr, ruban = 'Accueil', contexte = [], commandes, aide, panneau, zoom = 100, entetes, children,
 }) {
   const nbCol = largeurs.length || Math.max(...rows.map((r) => r.length));
   return (
@@ -59,7 +60,7 @@ export function Excel({
               {Array.from({ length: nbCol }, (_, i) => <col key={i} style={largeurs[i] ? { width: largeurs[i] } : undefined} />)}
             </colgroup>
             <thead>
-              <tr><th className="coin">◢</th>{Array.from({ length: nbCol }, (_, i) => <th key={i}>{LETTRES[i]}</th>)}</tr>
+              <tr><th className="coin">◢</th>{Array.from({ length: nbCol }, (_, i) => <th key={i} className={entetes ? 'tete' : ''}>{entetes ? entetes[i] : LETTRES[i]}</th>)}</tr>
             </thead>
             <tbody>
               {rows.map((r, i) => (

@@ -205,6 +205,7 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .xlw table { border-collapse: collapse; table-layout: fixed; width: 100%; font-size: 15px; font-family: Calibri, "Segoe UI", Roboto, sans-serif; }
 .xlw th { background: #f3f2f1; color: #484644; font-weight: 400; font-size: 12.5px; border: 1px solid #d2d0ce; padding: 1px 4px; text-align: center; font-family: "Segoe UI", Roboto, sans-serif; }
 .xlw th.coin { color: #c8c6c4; font-size: 9px; text-align: right; }
+.xlw th.tete { text-align: left; font-weight: 700; color: #201f1e; font-family: Calibri, "Segoe UI", sans-serif; }
 .xlw td { border: 1px solid #e1dfdd; padding: 1px 6px; height: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; color: #000; position: relative; }
 .xlw td.num { text-align: right; }
 .xlw td.titre { background: #1f4e79; color: #fff; font-weight: 700; text-align: center; font-size: 15.5px; }
@@ -301,8 +302,8 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .xtcd-b { display: none; justify-content: space-between; align-items: center; font-size: 11px; gap: 6px; }
 .xtcd-b .b { padding: 2px 8px; min-width: 0; color: #a19f9d; }
 
-.etape-piege { background: var(--red-soft); border: 3px solid var(--red); border-radius: 6px; padding: 6px 12px; font-size: 14.5px; }
-.etape-piege b { color: var(--red); }
+.etape-regle { background: #eff6ff; border: 3px solid var(--blue); border-radius: 6px; padding: 6px 12px; font-size: 14.5px; }
+.etape-regle b { color: var(--navy); }
 .etape-tip { display: flex; gap: 12px; align-items: center; background: #ecfdf5; border: 3px solid #16a34a; border-radius: 6px; padding: 6px 12px; font-size: 14.5px; box-shadow: 4px 4px 0 var(--ink); }
 .etape-tip::before { content: "💡"; font-size: 24px; }
 
@@ -416,3 +417,27 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .element { background: #fff; border: 3px solid var(--ink); border-radius: 6px; padding: 5px 10px; font-size: 14.5px; box-shadow: 3px 3px 0 var(--ink); line-height: 1.3; }
 .element b { color: var(--blue); }
 .element span { display: block; font-size: 12.5px; color: var(--muted); font-style: italic; }
+
+/* Tampon « Pas présentable » (Ép. 3, je présente) */
+.tampon { position: absolute; right: 40px; top: 120px; transform: rotate(-12deg); border: 5px solid var(--red); color: var(--red); background: rgba(255,255,255,.85); font-family: "Bangers", cursive; font-size: 44px; letter-spacing: 3px; padding: 2px 18px; border-radius: 8px; z-index: 6; }
+.tampon.fragment.visible { transform: rotate(-12deg); }
+
+/* Le cercle vertueux de la data (conclusion) */
+.cercle { position: relative; margin: 0 auto; }
+.cercle svg { position: absolute; inset: 0; }
+.cercle .centre { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; width: 360px; }
+.cercle .centre .t { font-family: "Bangers", cursive; font-size: 42px; letter-spacing: 2px; line-height: 1.05; color: var(--navy); }
+.cercle .centre .s { font-family: "IBM Plex Serif", serif; font-size: 18px; margin-top: 8px; }
+.cercle .noeud { position: absolute; transform: translate(-50%, -50%); width: 230px; background: #fff; border: 3px solid var(--ink); border-radius: 8px; box-shadow: 4px 4px 0 var(--ink); padding: 6px 10px; text-align: center; }
+.cercle .noeud.fragment.visible, .cercle .noeud.fragment { transform: translate(-50%, -50%); }
+.cercle .noeud b { display: block; font-family: "Bangers", cursive; font-size: 21px; letter-spacing: 1px; font-weight: 400; }
+.cercle .noeud span { display: block; font-size: 13.5px; line-height: 1.3; }
+.cercle .noeud.depart { background: var(--yellow); }
+
+/* Canevas « À vous » (Ép. 4) */
+.canevas { display: flex; flex-direction: column; gap: 8px; }
+.canevas > div { display: flex; gap: 10px; align-items: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 6px; }
+.canevas b { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; }
+.canevas span { display: flex; flex-direction: column; }
+.canevas strong { font-size: 16.5px; }
+.canevas i { font-size: 14px; color: var(--muted); }
