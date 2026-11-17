@@ -10,7 +10,7 @@ import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import {
   Dialogue, Excel, PanneauTCD, XBoutons, XCase, XChamp, XLabel, XListe, XOnglets, XRadio,
 } from '../components/Excel';
-import { COMMUNES, LIBRAIRIES, QUESTIONS, chiffresCles, etapeSaisie, nomCommune } from '../remi';
+import { COMMUNES, LIBRAIRIES, chiffresCles, etapeSaisie, nomCommune } from '../remi';
 
 const FICHIER = 'correction_suivi_librairies.xlsx';
 const ASSORTIMENTS = ['Généraliste', 'BD et Mangas', 'Jeunesse', 'Religion', 'Arts - Musées et Monuments', 'Mieux-être et spiritualité', 'VO', 'Imaginaire - Policier'];
@@ -23,20 +23,15 @@ function pivot(libs) {
 }
 
 // L’onglet synthese : 4 chiffres clés en gros (formules simples), le TCD en dessous (A5).
-// ajout = une librairie de plus dans saisie : ce qui change est marqué « neuf ».
-function synthese({ ajout } = {}) {
-  const libs = ajout ? [...LIBRAIRIES, ajout] : LIBRAIRIES;
-  const avant = chiffresCles();
-  const kpi = chiffresCles(libs);
-  const avantTcd = Object.fromEntries(pivot(LIBRAIRIES));
+function synthese() {
   return [
     [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 4 }, null, null, null],
-    kpi.map(([t]) => ({ v: t, c: 'kpi-l' })),
-    kpi.map(([, , v], i) => ({ v, c: `kpi-v${v !== avant[i][2] ? ' neuf' : ''}` })),
+    chiffresCles().map(([t]) => ({ v: t, c: 'kpi-l' })),
+    chiffresCles().map(([, , v]) => ({ v, c: 'kpi-v' })),
     ['', '', '', ''],
     [{ v: 'Étiquettes de lignes ▾', c: 'pivh' }, { v: 'Nombre de id', c: 'pivh' }, '', ''],
-    ...pivot(libs).map(([nom, n]) => [nom, { v: n, c: n !== avantTcd[nom] ? 'neuf' : '' }, '', '']),
-    [{ v: 'Total général', c: 'pivt' }, { v: libs.length, c: 'pivt' }, '', ''],
+    ...pivot(LIBRAIRIES).map(([nom, n]) => [nom, n, '', '']),
+    [{ v: 'Total général', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }, '', ''],
   ];
 }
 const LARG_SYNTH = [220, 200, 200, 200];
@@ -329,39 +324,56 @@ function TCD() {
   );
 }
 
-// La démonstration : une ligne de plus dans saisie, la présentation suit toute seule
+// La mise à jour, en une planche : une librairie ouvre → une ligne → Actualiser → c’est à jour.
 const AJOUT = ['LIB018', 'NOUVELLE LIBRAIRIE (exemple)', 'Généraliste', 'aucun', '92075'];
-const SAISIE_FIN = [
-  ...LIBRAIRIES.slice(14).map(([id, nom, a, l, code]) => [id, nom, a, l, { v: code, c: 'bleu' }, { v: nomCommune(code), c: 'calc' }, 2026]),
-  [{ v: AJOUT[0], c: 'neuf sel' }, { v: AJOUT[1], c: 'neuf' }, { v: AJOUT[2], c: 'neuf' }, { v: AJOUT[3], c: 'neuf' }, { v: AJOUT[4], c: 'neuf bleu' }, { v: 'Vanves', c: 'neuf calc' }, { v: 2026, c: 'neuf' }],
+const LIGNES_FIN = [
+  ...LIBRAIRIES.slice(15).map(([id, nom, a, l, code]) => [id, nom, a, l, { v: code, c: 'bleu' }, { v: nomCommune(code), c: 'calc' }]),
+  [...AJOUT.map((v, i) => ({ v, c: `neuf${i === 0 ? ' sel' : ''}${i === 4 ? ' bleu' : ''}` })), { v: 'Vanves', c: 'neuf calc' }],
 ];
 
+function Avant({ de, a }) {
+  return (
+    <span style={{ fontFamily: 'Bangers, cursive', letterSpacing: 1 }}>
+      <span style={{ color: 'var(--muted)', textDecoration: 'line-through' }}>{de}</span> → <span style={{ color: 'var(--green-dark)' }}>{a}</span>
+    </span>
+  );
+}
+
 function MiseAJour() {
+  const vanves = (libs) => libs.filter((l) => l[4] === '92075').length;
   return (
     <section>
-      <div className="planche-head">
-        <span className="ep">Je présente</span>
-        <h2>La mise à jour se fait toute seule</h2>
-      </div>
-      <div className="row" style={{ alignItems: 'flex-start' }}>
-        <div className="stack" style={{ width: 300, flexShrink: 0, gap: 12 }}>
-          <Bulle qui="remi" humeur="stress" size={44}>Une librairie ouvre à Vanves <i>(exemple)</i>. Je refais toute ma présentation ?</Bulle>
-          <Bulle qui="delos" humeur="content" size={44} droite className="fragment">Tu ajoutes <b>une ligne</b> dans saisie. C’est tout.</Bulle>
-          <Bulle qui="remi" humeur="surpris" size={44} className="fragment">… 17 → 18, Vanves 1 → 2. Tout seul ?!</Bulle>
-          <div className="fragment" style={{ background: 'var(--ink)', color: '#fff', borderRadius: 8, padding: '10px 14px', fontFamily: '"IBM Plex Serif", serif', fontSize: 18, boxShadow: '5px 5px 0 var(--yellow)' }}>
-            Enregistrer d’un côté, présenter de l’autre : chaque mise à jour se propage toute seule. Le TCD ? Clic droit › Actualiser.
-          </div>
+      <Planche ep="Ép. 3" titre="Mardi, 14 h 02 : une librairie ouvre">
+        <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.35fr 0.9fr', gap: 16, alignItems: 'stretch' }}>
+          <Case recit="14 h 02">
+            <Bulle qui="nanny" humeur="stress" size={58}>Rémi ! Une librairie vient d’ouvrir à Vanves <i>(exemple)</i>. Il faut tout refaire pour la réunion de 15 h ?</Bulle>
+          </Case>
+          <Case recit="① J’enregistre" ton="blue" className="fragment">
+            <Bulle qui="remi" humeur="content" size={46}>Non : j’ajoute <b>une ligne</b> dans saisie.</Bulle>
+            <div style={{ marginTop: 12 }}>
+              <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} cellule="A19" formule="LIB018"
+                entetes={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune']}
+                largeurs={[56, 196, 86, 44, 92, 84]} debut={17} rows={LIGNES_FIN} />
+            </div>
+          </Case>
+          <Case recit="② Je présente" ton="good" className="fragment">
+            <Bulle qui="remi" humeur="content" size={46}>Clic droit › <b>Actualiser</b>.</Bulle>
+            <div style={{ textAlign: 'center', marginTop: 14 }}>
+              <p className="small muted">Librairies suivies</p>
+              <p style={{ fontSize: 46, lineHeight: 1.1 }}><Avant de={LIBRAIRIES.length} a={LIBRAIRIES.length + 1} /></p>
+              <p className="small muted" style={{ marginTop: 6 }}>Vanves dans le TCD</p>
+              <p style={{ fontSize: 34, lineHeight: 1.1 }}><Avant de={vanves(LIBRAIRIES)} a={vanves([...LIBRAIRIES, AJOUT])} /></p>
+              <p className="sfx" style={{ fontSize: 34, marginTop: 10 }}>14 h 03 !</p>
+            </div>
+          </Case>
         </div>
-        <div className="col stack" style={{ gap: 10, minWidth: 0 }}>
-          <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} cellule="A19" formule="LIB018"
-            entetes={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']}
-            largeurs={[60, 200, 92, 46, 92, 112, 76]} debut={16} rows={SAISIE_FIN} />
-          <div className="fragment">
-            <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="A3" formule="=NBVAL(saisie!A:A)-1"
-              largeurs={[170, 150, 150, 160]} rows={synthese({ ajout: AJOUT })} />
-          </div>
+        <div className="row fragment" style={{ marginTop: 18, alignItems: 'center' }}>
+          <Bulle qui="nanny" humeur="surpris" size={52} className="col">Déjà ?!</Bulle>
+          <Narrateur className="col" style={{ flex: 2.4 }}>
+            J’enregistre une ligne, la présentation suit toute seule. Et l’an prochain ? Les lignes 2027 sous le tableau, et c’est tout.
+          </Narrateur>
         </div>
-      </div>
+      </Planche>
     </section>
   );
 }
@@ -378,28 +390,6 @@ export function Ep3Tuto() {
       <Etape e={ETAPES[8]} n={9} />
       <TCD />
       <MiseAJour />
-
-      <section>
-        <Planche ep="Ép. 3" titre="Mardi, 14 h 02 : les questions arrivent">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr 1.1fr', gap: 18 }}>
-            <Case>
-              <Bulle qui="nanny" humeur="stress" size={60}>Rémi ! Pour la réunion de 15 h, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
-            </Case>
-            <Case className="fragment center">
-              <Bulle qui="remi" humeur="content" size={60}>Q1 : {pivot(LIBRAIRIES)[0][0].split('-')[0]}, {pivot(LIBRAIRIES)[0][1]}. Q2 : {chiffresCles()[1][2]}. Q3 : {chiffresCles()[3][2]}.</Bulle>
-              <p className="sfx" style={{ fontSize: 46, marginTop: 14 }}>10 secondes !</p>
-            </Case>
-            <Case className="fragment">
-              <Bulle qui="nanny" humeur="surpris" size={60}>Déjà ?!</Bulle>
-              <div style={{ height: 12 }} />
-              <Bulle qui="delos" humeur="content" size={60} droite>Tout était déjà calculé dans synthese. Rémi n’a eu qu’à lire : en haut les chiffres, en dessous le TCD.</Bulle>
-            </Case>
-          </div>
-          <Narrateur className="fragment" style={{ marginTop: 22 }}>
-            Enregistré proprement, présenté à part : 10 secondes pour répondre. Et l’an prochain, Rémi colle ses lignes 2027 sous le tableau : la présentation se met à jour toute seule.
-          </Narrateur>
-        </Planche>
-      </section>
     </>
   );
 }

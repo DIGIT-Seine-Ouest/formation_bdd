@@ -59,12 +59,6 @@ export function chiffresCles(libs = LIBRAIRIES) {
 }
 export const fr = (x) => x.toLocaleString('fr-FR');
 
-// Les questions de Super Nanny, pour la réunion de 15 h.
-export const QUESTIONS = [
-  ['Q1', 'Quelle commune compte le plus de librairies ?'],
-  ['Q2', 'Combien sont labellisées par le ministère ?'],
-  ['Q3', 'Combien de librairies pour 10 000 habitants ?'],
-];
 
 // ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────
 // Étapes 1 à 8 = « j’enregistre ». L’étape 9 (synthese) = « je présente ».
