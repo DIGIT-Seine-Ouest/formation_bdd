@@ -1,4 +1,4 @@
-// ─── Épisode 5 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
+// ─── Épisode 4 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
 // Rémi demande → la DIGIT : « oui, ensemble : un annuaire et un tableau de bord
 // dynamique » → les deux résultats → « on l’a déjà fait avec Meudon, Sèvres,
 // Boulogne » → la DIGIT conclut : le cercle vertueux de la data.
@@ -51,14 +51,14 @@ function Cercle() {
   );
 }
 
-export function Ep5Valoriser() {
+export function Ep4Valoriser() {
   return (
     <>
-      <Chapitre fond="#4c2a85" ep="Épisode 5" titre="Rémi appelle la DIGIT" sous="La base est prête. Et si elle servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
+      <Chapitre fond="#4c2a85" ep="Épisode 4" titre="Rémi appelle la DIGIT" sous="La base est prête. Et si elle servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
 
       {/* 1. Le coup de fil : on le fait ensemble */}
       <section>
-        <Planche ep="Ép. 5" titre="Le coup de fil">
+        <Planche ep="Ép. 4" titre="Le coup de fil">
           <div className="row" style={{ alignItems: 'flex-start' }}>
             <div className="col stack">
               <Case>
@@ -85,7 +85,7 @@ export function Ep5Valoriser() {
 
       {/* 2. Résultat n°1 : l’annuaire */}
       <section>
-        <Planche ep="Ép. 5" titre="Résultat n°1 : l’annuaire pour les habitants">
+        <Planche ep="Ép. 4" titre="Résultat n°1 : l’annuaire pour les habitants">
           <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
             <Bulle qui="digit" humeur="content" size={44} className="col">La base de Rémi, branchée telle quelle : chacun cherche, filtre, télécharge.</Bulle>
             <a className="btn" href={`${BASE}annuaire.html`} target="_blank" rel="noreferrer" style={{ flexShrink: 0 }}>Ouvrir la page ↗</a>
@@ -96,7 +96,7 @@ export function Ep5Valoriser() {
 
       {/* 3. Résultat n°2 : le tableau de bord dynamique */}
       <section>
-        <Planche ep="Ép. 5" titre="Résultat n°2 : le tableau de bord dynamique">
+        <Planche ep="Ép. 4" titre="Résultat n°2 : le tableau de bord dynamique">
           <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
             <Bulle qui="digit" humeur="content" size={44} className="col">La même base, pour l’équipe : cliquez une commune, tout se recalcule. Et chaque ligne ajoutée par Rémi apparaît ici toute seule.</Bulle>
           </div>
@@ -106,7 +106,7 @@ export function Ep5Valoriser() {
 
       {/* 4. Déjà fait avec les villes */}
       <section>
-        <Planche ep="Ép. 5" titre="Cette démarche, on l’a déjà faite">
+        <Planche ep="Ép. 4" titre="Cette démarche, on l’a déjà faite">
           <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
             <Bulle qui="digit" humeur="content" size={44} className="col">Rémi, tu n’es pas le premier : on a déjà fait ce chemin avec des villes du territoire, comme <b>Meudon</b>, <b>Sèvres</b> ou <b>Boulogne-Billancourt</b>.</Bulle>
           </div>

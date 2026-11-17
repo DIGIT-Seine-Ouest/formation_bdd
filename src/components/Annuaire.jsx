@@ -2,7 +2,7 @@
 // directement à partir de la base de Rémi (src/remi.js), sans rien ressaisir.
 // Seules les informations de la source sont affichées (nom, spécialité, label,
 // commune, code postal) : Base des librairies en France, ministère de la Culture.
-// Utilisé dans la présentation (Ép. 5) et en page autonome (annuaire.html).
+// Utilisé dans la présentation (Ép. 4) et en page autonome (annuaire.html).
 import { useMemo, useState } from 'react';
 import '../annuaire.css';
 import { CODE_POSTAL, COMMUNES, LIBRAIRIES, SOURCE_URL, nomCommune } from '../remi';

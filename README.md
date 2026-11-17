@@ -58,7 +58,7 @@ python3 scripts/build_ressources.py
 
 | Dossier / fichier | Contenu |
 |---|---|
-| `src/slides/` | un fichier par épisode : `Ouverture`, `Ep1Mission`, `Ep2Theorie`, `Ep3Tuto`, `Ep4Pratique`, `Ep5Valoriser`, `Final` |
+| `src/slides/` | un fichier par épisode : `Ouverture`, `Ep1Mission`, `Ep2Theorie`, `Ep3Tuto`, `NotesRemi`, `Ep4Valoriser`, `Final` |
 | `src/components/` | les briques : bulles et cases de BD, personnages, écrans Excel, annuaire, tableau de bord, vitrine des villes |
 | `src/remi.js` | les données : les 17 librairies de GPSO et la population des communes |
 | `src/styles.css` | le style de la présentation |

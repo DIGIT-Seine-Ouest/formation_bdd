@@ -1,7 +1,7 @@
 """Génère le kit de la formation « Valoriser le potentiel des données » (fil rouge : Rémi et les librairies).
 
 public/ressources/
-  gabarit_base.xlsx                  le classeur vierge de l'Ép. 4 (saisie · listes · synthese · dictionnaire)
+  gabarit_base.xlsx                  le classeur vierge pour démarrer sa propre base (saisie · listes · synthese · dictionnaire)
   correction_suivi_librairies.xlsx   saisie · synthese · communes · listes · dictionnaire (vraies formules)
   cheat_sheet_librairies.docx        les notions en 2 pages
   guide_construction_librairies.docx le pas-à-pas, formule par formule, avec les prompts Delos
@@ -322,8 +322,9 @@ def cheat_sheet():
         ("identifiant (clé primaire)", "unique, stable, sans signification", "LIB013 (jamais « Anagramme-Meudon »)"),
         ("clé étrangère", "un identifiant qui pointe vers une autre table", "code_commune → communes"),
     ])
-    d.add_paragraph("Le test de la phrase : « La librairie LIB003, Les Mots et les Choses, généraliste, labellisée LIR, "
-                    "est à Boulogne-Billancourt (92012). » Si la ligne se lit en une phrase claire, la table est bien construite.")
+    d.add_paragraph("Le test de la phrase : « Les Mots et les Choses est une librairie généraliste de Boulogne-Billancourt, "
+                    "labellisée LIR ; son identifiant est LIB003. » Si chaque ligne se lit comme une phrase claire, "
+                    "la table est bien construite.")
     d.add_heading("3. Deux logiques : j'enregistre / je présente", 1)
     tableau(d, ["", "J'enregistre (OLTP)", "Je présente (OLAP)"], [
         ("Principe", "1 fait = 1 ligne", "vue consolidée, agrégée"),
@@ -391,7 +392,8 @@ def guide():
               "=listes!$B$2:$B$4 (label), =listes!$C$2:$C$9 (code_commune).",
               "Sélectionner la colonne code_commune › format Texte (sinon 01004 devient 1004)."])
     d.add_heading("Le test de la phrase", 2)
-    encadre(d, "« La librairie LIB003, Les Mots et les Choses, généraliste, labellisée LIR, est à Boulogne-Billancourt (92012), relevé 2026. »")
+    encadre(d, "« Les Mots et les Choses est une librairie généraliste de Boulogne-Billancourt (92012), labellisée LIR ; "
+               "son identifiant est LIB003, relevé 2026. »")
 
     d.add_heading("TEMPS 2 — Récupérer, puis présenter", 1)
     d.add_heading("La table des collègues : communes", 2)

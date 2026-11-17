@@ -449,3 +449,17 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
     background: #e2f0d9; height: 54px; line-height: 1.1;
 }
 .xlw td.kpi-v.neuf { background-color: #c6efce; }
+.xlw td.tcd-q, .xlw.compact td.tcd-q { font-weight: 700; color: #0f4c75; font-size: 13px; background: #fff; border-bottom: 2px solid #9bc2e6; }
+
+/* ── Les notes de Rémi : un carnet ligné ── */
+.carnet {
+    display: grid; grid-template-columns: 1.15fr 1fr; gap: 30px;
+    background: #fff repeating-linear-gradient(#fff 0 30px, #dbeafe 30px 31px);
+    border: 3px solid var(--ink); border-radius: 6px; box-shadow: 6px 6px 0 var(--ink);
+    padding: 14px 24px 14px 52px; position: relative;
+    font-family: "Comic Neue", cursive; font-weight: 700;
+}
+.carnet::before { content: ""; position: absolute; left: 34px; top: 0; bottom: 0; width: 2px; background: #f87171; }
+.carnet p { margin: 0; line-height: 31px; font-size: 18px; }
+.carnet .carnet-titre { font-family: "Bangers", cursive; font-weight: 400; font-size: 23px; letter-spacing: 1px; color: var(--navy); }
+.carnet .carnet-titre span { font-family: Roboto, sans-serif; font-size: 13px; letter-spacing: 0; color: var(--muted); margin-left: 6px; }

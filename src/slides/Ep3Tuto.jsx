@@ -15,26 +15,43 @@ import { COMMUNES, LIBRAIRIES, chiffresCles, etapeSaisie, nomCommune } from '../
 const FICHIER = 'correction_suivi_librairies.xlsx';
 const ASSORTIMENTS = ['Généraliste', 'BD et Mangas', 'Jeunesse', 'Religion', 'Arts - Musées et Monuments', 'Mieux-être et spiritualité', 'VO', 'Imaginaire - Policier'];
 
-// Le TCD : nombre de librairies par commune, du plus grand au plus petit
-function pivot(libs) {
-  return COMMUNES.map(([code, nom]) => [nom, libs.filter((l) => l[4] === code).length])
-    .filter(([, n]) => n > 0)
-    .sort((x, y) => y[1] - x[1]);
-}
+// Un TCD : nombre de librairies par valeur d’une colonne, du plus grand au plus petit
+const compte = (libs, cle) => {
+  const m = new Map();
+  libs.forEach((l) => m.set(cle(l), (m.get(cle(l)) || 0) + 1));
+  return [...m.entries()].sort((x, y) => y[1] - x[1]);
+};
+const parCommune = (libs) => compte(libs, (l) => nomCommune(l[4]));
+const LABELLISEES = LIBRAIRIES.filter((l) => l[3] === 'LIR');
 
-// L’onglet synthese : 4 chiffres clés en gros (formules simples), le TCD en dessous (A5).
+// Les 3 TCD de l’onglet synthese, chacun titré par la question qu’il règle, en-têtes renommés
+const TCDS = [
+  { q: '① Où sont les librairies ?', cols: ['Commune', 'Nombre de librairies'], lignes: parCommune(LIBRAIRIES), total: LIBRAIRIES.length },
+  { q: '② Quelles spécialités ?', cols: ['Spécialité', 'Nombre de librairies'], lignes: compte(LIBRAIRIES, (l) => l[2]), total: LIBRAIRIES.length },
+  { q: '③ Où sont les labellisées ?', cols: ['Commune', 'Labellisées (LIR)'], lignes: parCommune(LABELLISEES), total: LABELLISEES.length },
+];
+// Les 3 chiffres clés, un au-dessus de chaque TCD (Généralistes se lit dans le TCD ②)
+const KPI3 = chiffresCles().filter(([t]) => t !== 'Généralistes');
+
+// L’onglet synthese : 3 chiffres clés en gros, puis 3 TCD côte à côte (A6, C6, E6)
 function synthese() {
+  const hauteur = Math.max(...TCDS.map((t) => t.lignes.length)) + 1;
+  const corps = Array.from({ length: hauteur }, (_, i) => TCDS.flatMap((t) => {
+    if (i < t.lignes.length) return [t.lignes[i][0], t.lignes[i][1]];
+    if (i === t.lignes.length) return [{ v: 'Total', c: 'pivt' }, { v: t.total, c: 'pivt' }];
+    return ['', ''];
+  }));
   return [
-    [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 4 }, null, null, null],
-    chiffresCles().map(([t]) => ({ v: t, c: 'kpi-l' })),
-    chiffresCles().map(([, , v]) => ({ v, c: 'kpi-v' })),
-    ['', '', '', ''],
-    [{ v: 'Étiquettes de lignes ▾', c: 'pivh' }, { v: 'Nombre de id', c: 'pivh' }, '', ''],
-    ...pivot(LIBRAIRIES).map(([nom, n]) => [nom, n, '', '']),
-    [{ v: 'Total général', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }, '', ''],
+    [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 6 }, null, null, null, null, null],
+    KPI3.flatMap(([t]) => [{ v: t, c: 'kpi-l', cs: 2 }, null]),
+    KPI3.flatMap(([, , v]) => [{ v, c: 'kpi-v', cs: 2 }, null]),
+    ['', '', '', '', '', ''],
+    TCDS.flatMap((t) => [{ v: t.q, c: 'tcd-q', cs: 2 }, null]),
+    TCDS.flatMap((t) => [{ v: `${t.cols[0]} ▾`, c: 'pivh' }, { v: t.cols[1], c: 'pivh' }]),
+    ...corps,
   ];
 }
-const LARG_SYNTH = [220, 200, 200, 200];
+const LARG_SYNTH = [168, 132, 118, 132, 168, 124];
 
 // Entoure la cellule sélectionnée (ex. « D3 ») ; extra = propriétés ajoutées à la cellule (liste déroulante…)
 function selection(rows, ref, extra = {}) {
@@ -183,12 +200,12 @@ const ETAPES = [
     geste: <>Une colonne <code>annee_suivi</code> = 2026. En 2027, on colle les nouvelles lignes sous le tableau : il s’agrandit tout seul.</>,
   },
   {
-    titre: 'Je présente : l’onglet synthese', cel: 'B3', formule: '=NB.SI(saisie!D:D;"LIR")', compact: true,
+    titre: 'Je présente : l’onglet synthese', cel: 'C3', formule: '=NB.SI(saisie!D:D;"LIR")', compact: true,
     vue: { rows: synthese(), largeurs: LARG_SYNTH },
     remi: 'Ici, j’ai le droit aux couleurs et aux titres ?',
-    delos: <>Oui : c’est l’onglet pour <b>l’œil</b>. Quatre chiffres en gros, un TCD en dessous. Tout est <b>calculé</b>, rien n’est tapé.</>,
-    regle: <>Présenter, c’est calculer : on lit l’onglet saisie, on ne recopie rien.</>,
-    geste: <><code>=NBVAL(saisie!A:A)-1</code> compte les librairies, <code>=NB.SI(saisie!D:D;"LIR")</code> compte les labellisées. C’est tout.</>,
+    delos: <>Oui : c’est l’onglet pour <b>l’œil</b>. Trois chiffres en gros, et trois TCD qui répondent chacun à <b>une question</b>. Tout est calculé, rien n’est tapé.</>,
+    regle: <>Présenter, c’est calculer… et parler la langue de ceux qui lisent : « Nombre de librairies », jamais « Nombre de id ».</>,
+    geste: <>Les chiffres : <code>=NBVAL(saisie!A:A)-1</code> et <code>=NB.SI(saisie!D:D;"LIR")</code>. Les TCD : un titre en forme de question au-dessus, des en-têtes renommés.</>,
   },
 ];
 
@@ -281,10 +298,20 @@ function Retenir() {
 }
 
 const PIVOT = [
-  [{ v: 'Étiquettes de lignes ▾', c: 'pivh' }, { v: 'Nombre de id', c: 'pivh' }],
-  ...pivot(LIBRAIRIES).map(([nom, n], i) => [nom, { v: n, c: i === 0 ? 'sel' : '' }]),
-  [{ v: 'Total général', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }],
+  [{ v: 'Commune ▾', c: 'pivh' }, { v: 'Nombre de librairies', c: 'pivh sel' }],
+  ...parCommune(LIBRAIRIES).map(([nom, n]) => [nom, n]),
+  [{ v: 'Total', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }],
 ];
+const D_RENOMMER = (
+  <Dialogue titre="Paramètres des champs de valeurs" className="fragment" style={{ left: 30, top: 70, width: 330 }}>
+    <XLabel>Nom de la source : id</XLabel>
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Nom personnalisé :</span><div style={{ flex: 1 }}><XChamp focus>Nombre de librairies</XChamp></div></div>
+    <XOnglets items={['Synthèse des valeurs par', 'Afficher les valeurs']} />
+    <XLabel>Résumer le champ de valeur par :</XLabel>
+    <XListe>Nombre</XListe>
+    <XBoutons items={[['OK', true], ['Annuler']]} />
+  </Dialogue>
+);
 
 function TCD() {
   return (
@@ -302,23 +329,25 @@ function TCD() {
             <XLabel>Choisissez l’emplacement du tableau croisé dynamique</XLabel>
             <XRadio>Nouvelle feuille de calcul</XRadio>
             <XRadio on>Feuille de calcul existante</XRadio>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Emplacement :</span><div style={{ flex: 1 }}><XChamp>synthese!$A$5</XChamp></div></div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Emplacement :</span><div style={{ flex: 1 }}><XChamp>synthese!$A$6</XChamp></div></div>
             <XLabel>Choisissez si vous souhaitez analyser plusieurs tables</XLabel>
             <XCase>Ajouter ces données au modèle de données</XCase>
             <XBoutons items={[['OK', true], ['Annuler']]} />
           </Dialogue>
         </div>
         <div className="fragment" style={{ width: 640, flexShrink: 0 }}>
-          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ trié : Q1 se lit en haut</p>
-          <Excel fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="B6" formule="6" debut={5}
+          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ on renomme</p>
+          <Excel fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="B6" formule="Nombre de librairies" debut={6}
             ruban="Analyse du tableau croisé dynamique" contexte={['Analyse du tableau croisé dynamique', 'Création']}
-            largeurs={[200, 120]} rows={PIVOT}
-            panneau={<PanneauTCD champs={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']} coches={['id', 'commune']} lignes={['commune']} valeurs={['Nombre de id']} />} />
+            largeurs={[200, 150]} rows={PIVOT}
+            panneau={<PanneauTCD champs={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']} coches={['id', 'commune']} lignes={['commune']} valeurs={['Nombre de librairies']} />}>
+            {D_RENOMMER}
+          </Excel>
         </div>
       </div>
       <div className="row" style={{ marginTop: 10, alignItems: 'center' }}>
         <Bulle qui="remi" humeur="stress" size={40} className="col">Et pour compter par commune, je fais une formule par commune ?</Bulle>
-        <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. On le pose sous les chiffres, dans synthese. Il ne marche que sur une table propre… comme la tienne.</Bulle>
+        <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. Puis on renomme : « Nombre de id » ne parle à personne, « Nombre de librairies » à tout le monde.</Bulle>
       </div>
     </section>
   );

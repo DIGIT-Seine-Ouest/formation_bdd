@@ -108,7 +108,7 @@ export function Ep2Theorie() {
           <div className="row" style={{ marginTop: 12, alignItems: 'center' }}>
             <div {...F(6)} className="fragment col">
               <Narrateur style={{ fontSize: 16 }}>
-                <b>Le test de la phrase</b> : « La librairie <b>LIB003</b>, Les Mots et les Choses, généraliste, labellisée LIR, est à Boulogne-Billancourt. » Une ligne = une phrase : la table est bien construite.
+                <b>Le test de la phrase</b> : « <b>Les Mots et les Choses</b> est une librairie <b>généraliste</b> de <b>Boulogne-Billancourt</b>, labellisée <b>LIR</b> ; son identifiant est <b>LIB003</b>. » Si chaque ligne se lit comme une phrase claire, la table est bien construite.
               </Narrateur>
             </div>
             <div {...F(7)} className="fragment col">

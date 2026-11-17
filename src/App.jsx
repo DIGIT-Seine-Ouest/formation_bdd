@@ -7,8 +7,8 @@ import { Ouverture } from './slides/Ouverture';
 import { Ep1Mission } from './slides/Ep1Mission';
 import { Ep2Theorie } from './slides/Ep2Theorie';
 import { Ep3Tuto } from './slides/Ep3Tuto';
-import { Ep4Pratique } from './slides/Ep4Pratique';
-import { Ep5Valoriser } from './slides/Ep5Valoriser';
+import { NotesRemi } from './slides/NotesRemi';
+import { Ep4Valoriser } from './slides/Ep4Valoriser';
 import { Final } from './slides/Final';
 
 export function App() {
@@ -37,8 +37,8 @@ export function App() {
         <Ep1Mission />
         <Ep2Theorie />
         <Ep3Tuto />
-        <Ep4Pratique />
-        <Ep5Valoriser />
+        <NotesRemi />
+        <Ep4Valoriser />
         <Final />
       </div>
     </div>
