@@ -10,38 +10,36 @@ import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
 import {
   Dialogue, Excel, PanneauTCD, XBoutons, XCase, XChamp, XLabel, XListe, XOnglets, XRadio,
 } from '../components/Excel';
-import { COMMUNES, LIBRAIRIES, NB_LAB, QUESTIONS, SYNTHESE, etapeSaisie, nomCommune } from '../remi';
+import { COMMUNES, LIBRAIRIES, QUESTIONS, chiffresCles, etapeSaisie, nomCommune } from '../remi';
 
 const FICHIER = 'correction_suivi_librairies.xlsx';
-const dec = (x) => x.toFixed(2).replace('.', ',');
-const Q1 = SYNTHESE.reduce((a, b) => (b.n > a.n ? b : a));
-const Q3 = SYNTHESE.reduce((a, b) => (b.densite > a.densite ? b : a));
 const ASSORTIMENTS = ['Généraliste', 'BD et Mangas', 'Jeunesse', 'Religion', 'Arts - Musées et Monuments', 'Mieux-être et spiritualité', 'VO', 'Imaginaire - Policier'];
 
-// L’onglet synthese (identique à public/ressources/correction_suivi_librairies.xlsx).
-// ajout = une librairie de plus dans saisie (démonstration de la mise à jour) : les cellules qui changent sont marquées « neuf ».
-function synth({ ajout } = {}) {
+// Le TCD : nombre de librairies par commune, du plus grand au plus petit
+function pivot(libs) {
+  return COMMUNES.map(([code, nom]) => [nom, libs.filter((l) => l[4] === code).length])
+    .filter(([, n]) => n > 0)
+    .sort((x, y) => y[1] - x[1]);
+}
+
+// L’onglet synthese : 4 chiffres clés en gros (formules simples), le TCD en dessous (A5).
+// ajout = une librairie de plus dans saisie : ce qui change est marqué « neuf ».
+function synthese({ ajout } = {}) {
   const libs = ajout ? [...LIBRAIRIES, ajout] : LIBRAIRIES;
-  const s = COMMUNES.map(([code, nom, pop]) => {
-    const n = libs.filter((l) => l[4] === code).length;
-    const avant = SYNTHESE.find((x) => x.code === code).n;
-    return { code, nom, pop, n, d: Math.round((n / pop) * 10000 * 100) / 100, change: n !== avant };
-  });
-  const q1 = s.reduce((a, b) => (b.n > a.n ? b : a));
-  const q3 = s.reduce((a, b) => (b.d > a.d ? b : a));
-  const neuf = (c, on) => (on ? `${c} neuf` : c);
+  const avant = chiffresCles();
+  const kpi = chiffresCles(libs);
+  const avantTcd = Object.fromEntries(pivot(LIBRAIRIES));
   return [
-    [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 5 }, null, null, null, null],
-    [{ v: 'Librairies suivies', c: 'gras' }, { v: libs.length, c: neuf('res', !!ajout) }, '', '', ''],
-    [{ v: 'Labellisées (LIR + LR)', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
-    [{ v: 'code', c: 'h' }, { v: 'commune', c: 'h' }, { v: 'librairies', c: 'h' }, { v: 'population', c: 'h' }, { v: 'pour 10 000 hab.', c: 'h' }],
-    ...s.map((x) => [x.code, { v: x.nom, c: 'calc' }, { v: x.n, c: neuf('calc', x.change) }, { v: x.pop, c: 'calc' }, { v: dec(x.d), c: neuf('calc num', x.change) }]),
-    [{ v: 'Q1 · le plus de librairies', c: 'gras' }, { v: q1.nom, c: 'res' }, { v: q1.n, c: 'res' }, '', ''],
-    [{ v: 'Q2 · labellisées', c: 'gras' }, { v: NB_LAB, c: 'res' }, '', '', ''],
-    [{ v: 'Q3 · pour 10 000 hab.', c: 'gras' }, { v: q3.nom, c: 'res' }, { v: dec(q3.d), c: 'res num' }, '', ''],
+    [{ v: 'TABLEAU DE SUIVI — LIBRAIRIES GPSO', c: 'titre', cs: 4 }, null, null, null],
+    kpi.map(([t]) => ({ v: t, c: 'kpi-l' })),
+    kpi.map(([, , v], i) => ({ v, c: `kpi-v${v !== avant[i][2] ? ' neuf' : ''}` })),
+    ['', '', '', ''],
+    [{ v: 'Étiquettes de lignes ▾', c: 'pivh' }, { v: 'Nombre de id', c: 'pivh' }, '', ''],
+    ...pivot(libs).map(([nom, n]) => [nom, { v: n, c: n !== avantTcd[nom] ? 'neuf' : '' }, '', '']),
+    [{ v: 'Total général', c: 'pivt' }, { v: libs.length, c: 'pivt' }, '', ''],
   ];
 }
-const LARG_SYNTH = [210, 190, 90, 100, 130];
+const LARG_SYNTH = [220, 200, 200, 200];
 
 // Entoure la cellule sélectionnée (ex. « D3 ») ; extra = propriétés ajoutées à la cellule (liste déroulante…)
 function selection(rows, ref, extra = {}) {
@@ -178,7 +176,7 @@ const ETAPES = [
     titre: 'Ne pas recopier : la jointure', cel: 'F2', formule: '=RECHERCHEV(E2;communes!$A:$B;2;0)', ruban: 'Formules', commandes: CMD.recherche, dialogue: D_COMMUNES, dialogueLarge: 170,
     aide: 'RECHERCHEV(valeur_cherchée; table_matrice; no_index_col; [valeur_proche])',
     remi: 'Et la population, pour les 10 000 habitants, je la recopie ?',
-    delos: <>Surtout pas. Les collègues tiennent la table <b>communes</b> à jour. Tu saisis le <b>code commune</b>, et tu <b>récupères</b> le reste.</>,
+    delos: <>Surtout pas. Les collègues tiennent la table <b>communes</b> à jour. Tu saisis le <b>code commune</b>, tu <b>récupères</b> le nom ; la synthèse ira y lire la population.</>,
     regle: <>Ce qui existe ailleurs se récupère, ne se recopie pas : on saisit le code, Excel va chercher le reste.</>,
     geste: <><code>=RECHERCHEV(E2;communes!$A:$B;2;0)</code> : quoi je cherche ; où ; quelle colonne je renvoie ; 0 = exactement. code_commune au format <b>Texte</b>.</>,
   },
@@ -190,12 +188,12 @@ const ETAPES = [
     geste: <>Une colonne <code>annee_suivi</code> = 2026. En 2027, on colle les nouvelles lignes sous le tableau : il s’agrandit tout seul.</>,
   },
   {
-    titre: 'Je présente : l’onglet synthese', cel: 'B13', formule: '=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))', compact: true,
-    vue: { rows: synth(), largeurs: LARG_SYNTH },
+    titre: 'Je présente : l’onglet synthese', cel: 'B3', formule: '=NB.SI(saisie!D:D;"LIR")', compact: true,
+    vue: { rows: synthese(), largeurs: LARG_SYNTH },
     remi: 'Ici, j’ai le droit aux couleurs et aux titres ?',
-    delos: <>Ici, oui ! C’est l’onglet fait pour <b>l’œil</b>. Mais il ne contient que des formules : il <b>lit</b> l’onglet saisie. Rien n’y est tapé.</>,
-    regle: <>Présenter, c’est calculer : titres, couleurs et totaux sont permis… à condition que tout vienne de saisie.</>,
-    geste: <>Quatre formules à connaître : <code>NBVAL</code>, <code>NB.SI</code>, <code>RECHERCHEV</code>, <code>INDEX/EQUIV</code>. Et sans formule ? Le TCD, juste après.</>,
+    delos: <>Oui : c’est l’onglet pour <b>l’œil</b>. Quatre chiffres en gros, un TCD en dessous. Tout est <b>calculé</b>, rien n’est tapé.</>,
+    regle: <>Présenter, c’est calculer : on lit l’onglet saisie, on ne recopie rien.</>,
+    geste: <><code>=NBVAL(saisie!A:A)-1</code> compte les librairies, <code>=NB.SI(saisie!D:D;"LIR")</code> compte les labellisées. C’est tout.</>,
   },
 ];
 
@@ -288,10 +286,8 @@ function Retenir() {
 }
 
 const PIVOT = [
-  ['', ''],
-  ['', ''],
   [{ v: 'Étiquettes de lignes ▾', c: 'pivh' }, { v: 'Nombre de id', c: 'pivh' }],
-  ...SYNTHESE.filter((s) => s.n).map((s) => [s.nom, { v: s.n, c: s.nom === 'Boulogne-Billancourt' ? 'sel' : '' }]),
+  ...pivot(LIBRAIRIES).map(([nom, n], i) => [nom, { v: n, c: i === 0 ? 'sel' : '' }]),
   [{ v: 'Total général', c: 'pivt' }, { v: LIBRAIRIES.length, c: 'pivt' }],
 ];
 
@@ -309,24 +305,25 @@ function TCD() {
             <XLabel>Sélectionnez une table ou une plage</XLabel>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Tableau/Plage :</span><div style={{ flex: 1 }}><XChamp focus>T_saisie</XChamp></div></div>
             <XLabel>Choisissez l’emplacement du tableau croisé dynamique</XLabel>
-            <XRadio on>Nouvelle feuille de calcul</XRadio>
-            <XRadio>Feuille de calcul existante</XRadio>
+            <XRadio>Nouvelle feuille de calcul</XRadio>
+            <XRadio on>Feuille de calcul existante</XRadio>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span>Emplacement :</span><div style={{ flex: 1 }}><XChamp>synthese!$A$5</XChamp></div></div>
             <XLabel>Choisissez si vous souhaitez analyser plusieurs tables</XLabel>
             <XCase>Ajouter ces données au modèle de données</XCase>
             <XBoutons items={[['OK', true], ['Annuler']]} />
           </Dialogue>
         </div>
         <div className="fragment" style={{ width: 640, flexShrink: 0 }}>
-          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ c’est compté</p>
-          <Excel fichier={FICHIER} onglets={['TCD', 'saisie', 'listes', 'communes', 'synthese']} cellule="B4" formule="6"
+          <p style={{ fontFamily: 'Bangers, cursive', fontSize: 19, letterSpacing: 1, marginBottom: 4 }}>② commune dans Lignes · ③ id dans Valeurs · ④ trié : Q1 se lit en haut</p>
+          <Excel fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="B6" formule="6" debut={5}
             ruban="Analyse du tableau croisé dynamique" contexte={['Analyse du tableau croisé dynamique', 'Création']}
             largeurs={[200, 120]} rows={PIVOT}
             panneau={<PanneauTCD champs={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']} coches={['id', 'commune']} lignes={['commune']} valeurs={['Nombre de id']} />} />
         </div>
       </div>
       <div className="row" style={{ marginTop: 10, alignItems: 'center' }}>
-        <Bulle qui="remi" humeur="stress" size={40} className="col">INDEX, EQUIV… Il n’y a pas plus simple ?</Bulle>
-        <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. <code>T_saisie</code> est reconnu tout seul. Il ne marche que sur une table propre… comme la tienne.</Bulle>
+        <Bulle qui="remi" humeur="stress" size={40} className="col">Et pour compter par commune, je fais une formule par commune ?</Bulle>
+        <Bulle qui="delos" humeur="content" size={40} droite className="col fragment">Le TCD : quatre clics, et c’est Excel qui compte. On le pose sous les chiffres, dans synthese. Il ne marche que sur une table propre… comme la tienne.</Bulle>
       </div>
     </section>
   );
@@ -360,8 +357,8 @@ function MiseAJour() {
             entetes={['id', 'librairie', 'assortiment', 'label', 'code_commune', 'commune', 'annee_suivi']}
             largeurs={[60, 200, 92, 46, 92, 112, 76]} debut={16} rows={SAISIE_FIN} />
           <div className="fragment">
-            <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="B2" formule="=NBVAL(saisie!A:A)-1"
-              largeurs={[176, 160, 70, 80, 110]} rows={synth({ ajout: AJOUT }).slice(0, 12)} />
+            <Excel compact fichier={FICHIER} onglets={['saisie', 'listes', 'communes', 'synthese']} actif={3} cellule="A3" formule="=NBVAL(saisie!A:A)-1"
+              largeurs={[170, 150, 150, 160]} rows={synthese({ ajout: AJOUT })} />
           </div>
         </div>
       </div>
@@ -389,13 +386,13 @@ export function Ep3Tuto() {
               <Bulle qui="nanny" humeur="stress" size={60}>Rémi ! Pour la réunion de 15 h, <b>tout de suite</b> : {QUESTIONS.map(([q, t]) => <span key={q} style={{ display: 'block', fontSize: 15, marginTop: 4 }}>{q} · {t}</span>)}</Bulle>
             </Case>
             <Case className="fragment center">
-              <Bulle qui="remi" humeur="content" size={60}>Q1 : {Q1.nom.split('-')[0]}, {Q1.n}. Q2 : {NB_LAB}. Q3 : {Q3.nom}.</Bulle>
+              <Bulle qui="remi" humeur="content" size={60}>Q1 : {pivot(LIBRAIRIES)[0][0].split('-')[0]}, {pivot(LIBRAIRIES)[0][1]}. Q2 : {chiffresCles()[1][2]}. Q3 : {chiffresCles()[3][2]}.</Bulle>
               <p className="sfx" style={{ fontSize: 46, marginTop: 14 }}>10 secondes !</p>
             </Case>
             <Case className="fragment">
-              <Bulle qui="nanny" humeur="surpris" size={60}>{Q3.nom} ?!</Bulle>
+              <Bulle qui="nanny" humeur="surpris" size={60}>Déjà ?!</Bulle>
               <div style={{ height: 12 }} />
-              <Bulle qui="delos" humeur="content" size={60} droite>Une librairie pour {COMMUNES.find((c) => c[0] === Q3.code)[2].toLocaleString('fr-FR')} habitants. Les chiffres ne mentent pas.</Bulle>
+              <Bulle qui="delos" humeur="content" size={60} droite>Tout était déjà calculé dans synthese. Rémi n’a eu qu’à lire : en haut les chiffres, en dessous le TCD.</Bulle>
             </Case>
           </div>
           <Narrateur className="fragment" style={{ marginTop: 22 }}>

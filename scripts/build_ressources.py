@@ -187,41 +187,37 @@ def _communes(wb):
     _vue(wc, "A2")
 
 
+KPI_SYNTHESE = [
+    ("Librairies suivies", "=COUNTA(saisie!A:A)-1"),
+    ("Labellisées (LIR)", '=COUNTIF(saisie!D:D,"LIR")'),
+    ("Généralistes", '=COUNTIF(saisie!C:C,"Généraliste")'),
+    ("Pour 10 000 habitants", "=A3/SUM(communes!C:C)*10000"),
+]
+
+
 def _synthese(wb):
-    # synthese (je présente) : rien n'est saisi, tout est lu dans « saisie »
+    # synthese (je présente) : 4 chiffres clés, formules simples, et le TCD en dessous (A5).
+    # Rien n'est saisi ici : tout est lu dans « saisie » (et « communes » pour la population).
     wsy = wb.create_sheet("synthese")
-    wsy.merge_cells("A1:E1")
+    wsy.merge_cells("A1:D1")
     wsy["A1"] = "TABLEAU DE SUIVI — LIBRAIRIES GPSO"
     wsy["A1"].font = Font(bold=True, color="FFFFFF", size=13)
     wsy["A1"].fill = BLEU
     wsy["A1"].alignment = Alignment(horizontal="center")
-    wsy["A2"], wsy["B2"] = "Librairies suivies", "=COUNTA(saisie!A:A)-1"
-    wsy["A3"], wsy["B3"] = "Labellisées (LIR + LR)", '=COUNTIF(saisie!D:D,"LIR")+COUNTIF(saisie!D:D,"LR")'
-    wsy.append(["code", "commune", "librairies", "population", "pour 10 000 hab."])
-    for c in wsy[4]:
-        c.font = Font(bold=True, color="FFFFFF")
-        c.fill = PatternFill("solid", fgColor="217346")
-    for i, (code, _, _) in enumerate(COMMUNES, 5):
-        wsy[f"A{i}"] = code
-        wsy[f"A{i}"].number_format = "@"
-        wsy[f"B{i}"] = f"=VLOOKUP(A{i},communes!$A:$C,2,0)"
-        wsy[f"C{i}"] = f"=COUNTIF(saisie!E:E,A{i})"
-        wsy[f"D{i}"] = f"=VLOOKUP(A{i},communes!$A:$C,3,0)"
-        wsy[f"E{i}"] = f"=ROUND(C{i}/D{i}*10000,2)"
-        wsy[f"E{i}"].number_format = "0.00"
-    wsy["A13"], wsy["B13"], wsy["C13"] = "Q1 · le plus de librairies", "=INDEX(B5:B12,MATCH(MAX(C5:C12),C5:C12,0))", "=MAX(C5:C12)"
-    wsy["A14"], wsy["B14"] = "Q2 · labellisées", "=B3"
-    wsy["A15"], wsy["B15"], wsy["C15"] = "Q3 · pour 10 000 hab.", "=INDEX(B5:B12,MATCH(MAX(E5:E12),E5:E12,0))", "=MAX(E5:E12)"
-    for r in (2, 3, 13, 14, 15):
-        wsy[f"A{r}"].font = Font(bold=True)
-        for col in "BC":
-            wsy[f"{col}{r}"].fill = VERT_EXCEL
-            wsy[f"{col}{r}"].font = Font(bold=True, color="375623")
-    wsy["A17"] = "Rien n'est saisi ici : tout est lu dans l'onglet saisie. Ajoutez une librairie dans saisie, ce tableau se met à jour."
-    wsy["A17"].font = Font(italic=True, color="888888")
-    largeurs(wsy, (28, 24, 12, 12, 16))
-    wsy["C15"].number_format = "0.00"
-    _vue(wsy, "B13")
+    for col, (titre, formule) in zip("ABCD", KPI_SYNTHESE):
+        wsy[f"{col}2"] = titre
+        wsy[f"{col}2"].font = Font(color="555555", size=9)
+        wsy[f"{col}2"].alignment = Alignment(horizontal="center")
+        wsy[f"{col}3"] = formule
+        wsy[f"{col}3"].font = Font(bold=True, color="375623", size=24)
+        wsy[f"{col}3"].fill = VERT_EXCEL
+        wsy[f"{col}3"].alignment = Alignment(horizontal="center", vertical="center")
+    wsy.row_dimensions[3].height = 42
+    wsy["D3"].number_format = "0.00"
+    wsy["A5"] = "↓ ici, le TCD : Insertion › Tableau croisé dynamique › Feuille de calcul existante › synthese!$A$5"
+    wsy["A5"].font = Font(italic=True, color="888888")
+    largeurs(wsy, (26, 22, 22, 24))
+    _vue(wsy, "B3")
 
 
 def _dictionnaire(wb):
@@ -354,7 +350,7 @@ def cheat_sheet():
     d.add_paragraph("Racine commune : confondre le fichier fait pour l'œil (présenter) et la base faite pour la machine (enregistrer).")
     d.add_heading("7. La récompense", 1)
     d.add_paragraph("Une table propre → TCD en 4 clics, filtres instantanés, formules qui se mettent à jour à chaque saisie :")
-    code(d, "=NB.SI(saisie!E:E;\"92012\")      =RECHERCHEV(E2;communes!$A:$C;3;0)      =INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))")
+    code(d, "=NBVAL(saisie!A:A)-1      =NB.SI(saisie!D:D;\"LIR\")      =A3/SOMME(communes!C:C)*10000")
     d.add_heading("8. Avec Delos (ou tout assistant IA)", 1)
     puces(d, ["Il propose, vous vérifiez.", "Jamais de données personnelles ou sensibles : des en-têtes et quelques lignes d'exemple suffisent."])
     d.save(OUT / "cheat_sheet_librairies.docx")
@@ -406,26 +402,27 @@ def guide():
     d.add_paragraph("RECHERCHEV(quoi je cherche ; où je cherche ; quelle colonne je renvoie ; 0 = correspondance exacte). "
                     "Ici : on cherche le code de la ligne (E2) dans la table communes et on renvoie la 2e colonne, le nom. "
                     "Avec 3 au lieu de 2, on renvoie la population.")
-    d.add_heading("L'onglet synthese : rien n'est saisi", 2)
+    d.add_heading("L'onglet synthese : 4 chiffres en gros, rien n'est saisi", 2)
     tableau(d, ["cellule", "formule", "résultat"], [
-        ("B2 librairies suivies", "=NBVAL(saisie!A:A)-1", "17"),
-        ("B3 labellisées", "=NB.SI(saisie!D:D;\"LIR\")+NB.SI(saisie!D:D;\"LR\")", "3"),
-        ("C5 librairies de la commune", "=NB.SI(saisie!E:E;A5)", "6 (Boulogne)"),
-        ("D5 population", "=RECHERCHEV(A5;communes!$A:$C;3;0)", "119 019"),
-        ("E5 pour 10 000 hab.", "=ARRONDI(C5/D5*10000;2)", "0,50"),
+        ("A3 librairies suivies", "=NBVAL(saisie!A:A)-1", "17"),
+        ("B3 labellisées", "=NB.SI(saisie!D:D;\"LIR\")", "3"),
+        ("C3 généralistes", "=NB.SI(saisie!C:C;\"Généraliste\")", "13"),
+        ("D3 pour 10 000 habitants", "=A3/SOMME(communes!C:C)*10000", "0,54"),
     ])
-    d.add_heading("Les 3 réponses : trouver la championne", 2)
-    tableau(d, ["question", "formule", "réponse"], [
-        ("Q1", "=INDEX(B5:B12;EQUIV(MAX(C5:C12);C5:C12;0))", "Boulogne-Billancourt (6)"),
-        ("Q2", "=B3", "3"),
-        ("Q3", "=INDEX(B5:B12;EQUIV(MAX(E5:E12);E5:E12;0))", "Ville-d'Avray (0,90)"),
-    ])
-    d.add_paragraph("MAX trouve le plus grand nombre, EQUIV repère sa position, INDEX renvoie le nom à cette position.")
-    d.add_heading("Sans formule : le tableau croisé dynamique", 2)
+    d.add_paragraph("NBVAL compte les lignes remplies (moins l'en-tête), NB.SI compte celles qui correspondent à un critère, "
+                    "SOMME additionne la population de la table des collègues.")
+    d.add_heading("Le tableau croisé dynamique, sous les chiffres", 2)
     puces(d, ["Cliquer dans l'onglet saisie (une cellule suffit).",
-              "Insertion › Tableau croisé dynamique › OK.",
+              "Insertion › Tableau croisé dynamique › Feuille de calcul existante › Emplacement : synthese!$A$5 › OK.",
               "Glisser commune dans Lignes, id dans Valeurs : Excel compte tout seul (« Nombre de id »).",
+              "Trier du plus grand au plus petit : la première ligne répond à Q1.",
               "Nouvelle librairie saisie ? Clic droit sur le TCD › Actualiser."])
+    d.add_heading("Les 3 questions de la réunion de 15 h", 2)
+    tableau(d, ["question", "où lire la réponse", "réponse"], [
+        ("Q1 — Quelle commune compte le plus de librairies ?", "1re ligne du TCD", "Boulogne-Billancourt (6)"),
+        ("Q2 — Combien sont labellisées ?", "synthese!B3", "3"),
+        ("Q3 — Combien de librairies pour 10 000 habitants ?", "synthese!D3", "0,54"),
+    ])
     d.add_heading("L'année prochaine", 2)
     d.add_paragraph("On ajoute les lignes 2027 sous les lignes 2026, avec annee_suivi = 2027 (les librairies gardent leur id). "
                     "Pour compter une seule année, on ajoute un critère :")
@@ -444,10 +441,7 @@ def guide():
         ("NB.SI(plage ; critère)", "compte les cellules qui remplissent une condition"),
         ("NB.SI.ENS(plage1 ; crit1 ; plage2 ; crit2)", "idem, avec plusieurs conditions"),
         ("RECHERCHEV(valeur ; plage ; n° colonne ; 0)", "jointure : renvoie une info d'une autre table"),
-        ("INDEX(plage ; position)", "renvoie la valeur à une position"),
-        ("EQUIV(valeur ; plage ; 0)", "renvoie la position d'une valeur"),
-        ("MAX(plage)", "le plus grand nombre"),
-        ("ARRONDI(nombre ; décimales)", "arrondit"),
+        ("SOMME(plage)", "additionne les nombres d'une plage"),
         ("$A$2", "référence figée quand on recopie la formule"),
     ])
     d.add_paragraph("Données : Base des librairies en France (Ministère de la Culture, data.gouv.fr, Licence Ouverte 2.0) ; "

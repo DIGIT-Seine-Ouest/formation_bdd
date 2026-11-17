@@ -46,13 +46,24 @@ export const SYNTHESE = COMMUNES.map(([code, nom, pop]) => {
   return { code, nom, pop, n, densite: Math.round((n / pop) * 10000 * 100) / 100 };
 });
 export const NB_LAB = LIBRAIRIES.filter((l) => l[3] !== 'aucun').length;
+export const POP_TOTALE = COMMUNES.reduce((s, c) => s + c[2], 0);
+// Les 4 chiffres clés de l’onglet synthese : [titre, formule Excel FR, valeur]
+export function chiffresCles(libs = LIBRAIRIES) {
+  const fr2 = (x) => x.toFixed(2).replace('.', ',');
+  return [
+    ['Librairies suivies', '=NBVAL(saisie!A:A)-1', libs.length],
+    ['Labellisées (LIR)', '=NB.SI(saisie!D:D;"LIR")', libs.filter((l) => l[3] === 'LIR').length],
+    ['Généralistes', '=NB.SI(saisie!C:C;"Généraliste")', libs.filter((l) => l[2] === 'Généraliste').length],
+    ['Pour 10 000 habitants', '=A3/SOMME(communes!C:C)*10000', fr2((libs.length / POP_TOTALE) * 10000)],
+  ];
+}
 export const fr = (x) => x.toLocaleString('fr-FR');
 
 // Les questions de Super Nanny, pour la réunion de 15 h.
 export const QUESTIONS = [
   ['Q1', 'Quelle commune compte le plus de librairies ?'],
   ['Q2', 'Combien sont labellisées par le ministère ?'],
-  ['Q3', 'Quelle commune est la mieux dotée pour 10 000 habitants ?'],
+  ['Q3', 'Combien de librairies pour 10 000 habitants ?'],
 ];
 
 // ── Le tuto de Delos : l’onglet « saisie », construit étape par étape ────────

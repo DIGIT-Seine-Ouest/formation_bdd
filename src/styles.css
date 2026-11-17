@@ -441,3 +441,11 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .canevas span { display: flex; flex-direction: column; }
 .canevas strong { font-size: 16.5px; }
 .canevas i { font-size: 14px; color: var(--muted); }
+
+/* ── Onglet synthese : les chiffres clés en gros ── */
+.xlw td.kpi-l, .xlw.compact td.kpi-l { text-align: center; font-size: 12px; color: #555; background: #f4f9ef; height: 20px; }
+.xlw td.kpi-v, .xlw.compact td.kpi-v {
+    text-align: center; font-size: 34px; font-weight: 700; color: #375623;
+    background: #e2f0d9; height: 54px; line-height: 1.1;
+}
+.xlw td.kpi-v.neuf { background-color: #c6efce; }
