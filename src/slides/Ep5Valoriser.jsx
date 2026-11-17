@@ -1,8 +1,10 @@
 // ─── Épisode 5 : et si ça servait à tout le monde ? Rémi appelle la DIGIT ─────────────────────
-// Le coup de fil → nos réalisations → la page pour les usagers (vraie, construite
-// sur la base de Rémi) → conclusion : le lignage de la donnée, le cercle vertueux.
+// Rémi demande → la DIGIT : « oui, ensemble : un annuaire et un tableau de bord
+// dynamique » → les deux résultats → « on l’a déjà fait avec Meudon, Sèvres,
+// Boulogne » → la DIGIT conclut : le cercle vertueux de la data.
 import { Annuaire } from '../components/Annuaire';
 import { Bulle, Case, Chapitre, Narrateur, Planche } from '../components/BD';
+import { TableauDeBord } from '../components/TableauDeBord';
 import { Vitrine } from '../components/Vitrine';
 import { SOURCE_URL } from '../remi';
 
@@ -17,7 +19,7 @@ const CERCLE = [
   ['🌍', 'On réutilise', 'habitants, applis, presse, chercheurs, collectivités'],
   ['🔁', 'On améliore', 'un usager signale une ouverture : Rémi ajoute une ligne'],
 ];
-const W = 960, H = 520, CX = W / 2, CY = H / 2, RX = 345, RY = 200;
+const W = 960, H = 460, CX = W / 2, CY = H / 2, RX = 345, RY = 172;
 
 function Cercle() {
   const pos = CERCLE.map((_, i) => {
@@ -52,55 +54,75 @@ function Cercle() {
 export function Ep5Valoriser() {
   return (
     <>
-      <Chapitre fond="#4c2a85" ep="Épisode 5" titre="Rémi appelle la DIGIT" sous="Le fichier marche. Et s’il servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
+      <Chapitre fond="#4c2a85" ep="Épisode 5" titre="Rémi appelle la DIGIT" sous="La base est prête. Et si elle servait à tout le monde ?" promesse="🚀 Faciliter l’exploitation" />
 
+      {/* 1. Le coup de fil : on le fait ensemble */}
       <section>
         <Planche ep="Ép. 5" titre="Le coup de fil">
           <div className="row" style={{ alignItems: 'flex-start' }}>
             <div className="col stack">
               <Case>
-                <Bulle qui="remi" humeur="content">Allô la DIGIT ? J’ai un fichier sur les librairies. Ça peut servir à d’autres ?</Bulle>
+                <Bulle qui="remi" humeur="content">Allô la DIGIT ? Ma base des librairies est prête. On peut en faire quelque chose ?</Bulle>
               </Case>
               <Case className="fragment">
-                <Bulle qui="digit" humeur="neutre" droite>Il est comment, ton fichier ? Une ligne par librairie ? Des codes INSEE ? Un dictionnaire ?</Bulle>
+                <Bulle qui="digit" humeur="content" droite>Oui ! Ensemble, on en fait deux choses : un <u>annuaire</u> pour les habitants, et un <u>tableau de bord dynamique</u> pour ton équipe.</Bulle>
               </Case>
               <Case className="fragment">
-                <Bulle qui="remi" humeur="content">Oui, oui et oui. Delos m’a un peu aidé.</Bulle>
+                <Bulle qui="remi" humeur="surpris">Il faut tout ressaisir ?</Bulle>
               </Case>
               <Case className="fragment">
-                <Bulle qui="digit" humeur="content" droite>Alors on le branche sur le portail. Un <u>annuaire</u> pour les habitants, un <u>tableau de bord</u> pour les élus. Sans rien ressaisir.</Bulle>
+                <Bulle qui="digit" humeur="content" droite>Rien du tout. Ta base est bien enregistrée : on la branche telle quelle.</Bulle>
               </Case>
             </div>
             <div style={{ width: 300 }}>
               <Narrateur className="fragment">
-                C’est là que tout se joue. Un fichier fait pour l’œil, il faut le refaire avant de le publier. Une base bien enregistrée, on la branche telle quelle.
+                C’est là que tout se joue. Une base bien enregistrée se branche telle quelle. Un fichier fait pour l’œil, il faudrait le refaire.
               </Narrateur>
             </div>
           </div>
         </Planche>
       </section>
 
+      {/* 2. Résultat n°1 : l’annuaire */}
       <section>
-        <Planche ep="Ép. 5" titre="Ce qu’on a déjà fait avec les villes">
-          <Vitrine />
-        </Planche>
-      </section>
-
-      <section>
-        <Planche ep="Ép. 5" titre="Pour les usagers : la page « Les librairies près de chez vous »">
+        <Planche ep="Ép. 5" titre="Résultat n°1 : l’annuaire pour les habitants">
           <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
-            <Bulle qui="digit" humeur="content" size={44} className="col">La même base, branchée telle quelle : une page pour les habitants. Cherchez, filtrez, téléchargez.</Bulle>
+            <Bulle qui="digit" humeur="content" size={44} className="col">La base de Rémi, branchée telle quelle : chacun cherche, filtre, télécharge.</Bulle>
             <a className="btn" href={`${BASE}annuaire.html`} target="_blank" rel="noreferrer" style={{ flexShrink: 0 }}>Ouvrir la page ↗</a>
           </div>
           <Annuaire />
         </Planche>
       </section>
 
+      {/* 3. Résultat n°2 : le tableau de bord dynamique */}
+      <section>
+        <Planche ep="Ép. 5" titre="Résultat n°2 : le tableau de bord dynamique">
+          <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
+            <Bulle qui="digit" humeur="content" size={44} className="col">La même base, pour l’équipe : cliquez une commune, tout se recalcule. Et chaque ligne ajoutée par Rémi apparaît ici toute seule.</Bulle>
+          </div>
+          <TableauDeBord />
+        </Planche>
+      </section>
+
+      {/* 4. Déjà fait avec les villes */}
+      <section>
+        <Planche ep="Ép. 5" titre="Cette démarche, on l’a déjà faite">
+          <div className="row" style={{ marginBottom: 10, alignItems: 'center' }}>
+            <Bulle qui="digit" humeur="content" size={44} className="col">Rémi, tu n’es pas le premier : on a déjà fait ce chemin avec des villes du territoire, comme <b>Meudon</b>, <b>Sèvres</b> ou <b>Boulogne-Billancourt</b>.</Bulle>
+          </div>
+          <Vitrine />
+        </Planche>
+      </section>
+
+      {/* 5. Conclusion de la DIGIT : le cercle vertueux */}
       <section>
         <Planche ep="Conclusion" titre="Du simple Excel au grand public">
+          <div className="row" style={{ marginBottom: 4, alignItems: 'center' }}>
+            <Bulle qui="digit" humeur="content" size={44} className="col">Et c’est ça, le <b>cercle vertueux de la data</b> : tout part d’un simple fichier Excel bien construit.</Bulle>
+          </div>
           <Cercle />
-          <Narrateur className="fragment" style={{ marginTop: 6, fontSize: 17 }}>
-            C’est le <b>lignage</b> de la donnée : d’où elle vient, par où elle passe, qui s’en sert. Tout part d’un simple fichier Excel bien construit. La base nationale ? Elle est faite <a href={SOURCE_URL} target="_blank" rel="noreferrer">exactement comme ça</a>.
+          <Narrateur className="fragment" style={{ marginTop: 4, fontSize: 16 }}>
+            C’est le <b>lignage</b> de la donnée : d’où elle vient, par où elle passe, qui s’en sert. La base nationale des librairies ? Elle est faite <a href={SOURCE_URL} target="_blank" rel="noreferrer">exactement comme ça</a>.
           </Narrateur>
         </Planche>
       </section>

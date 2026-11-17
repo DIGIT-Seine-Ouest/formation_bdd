@@ -359,7 +359,7 @@ html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 .logiques td:first-child { font-weight: 700; width: 120px; color: var(--muted); }
 
 /* ── Vitrine (iframes) ────────────────────── */
-.vitrine { display: grid; grid-template-columns: 300px 1fr; gap: 18px; height: 540px; }
+.vitrine { display: grid; grid-template-columns: 300px 1fr; gap: 18px; height: 490px; }
 .vitrine .choix { display: flex; flex-direction: column; gap: 10px; }
 .vitrine .choix button {
     text-align: left; font: inherit; cursor: pointer; background: #fff;
